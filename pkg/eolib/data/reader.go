@@ -19,6 +19,7 @@ type chunkProperties struct {
 // EoReader features a "chunked" reading mode, which is important for accurate emulation of the official game client.
 //
 // See [chunked reading] for more information.
+//
 // [chunked reading]: https://github.com/Cirras/eo-protocol/blob/master/docs/chunks.md
 type EoReader struct {
 	data      []byte

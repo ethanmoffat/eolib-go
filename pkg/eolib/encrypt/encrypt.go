@@ -62,7 +62,7 @@ func Deinterleave(data []byte) (output []byte) {
 	return
 }
 
-// FlipMsb flips the most significant bits of each byte in a sequence of bytes (exccluding values 0 and 128).
+// FlipMsb flips the most significant bits of each byte in a sequence of bytes (excluding values 0 and 128).
 // Used when encrypting and decrypting packets.
 //
 // Example:
