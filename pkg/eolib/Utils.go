@@ -11,6 +11,15 @@ func Min[T constraints.Ordered](a, b T) T {
 	return b
 }
 
+// Max provides a generic method for getting the greater of two input values.
+// In the event that the inputs are equal, the second input will be returned.
+func Max[T constraints.Ordered](a, b T) T {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 // Reverse returns a new slice containing the elements of the input slice in reverse order.
 func Reverse[T constraints.Ordered](input []T) []T {
 	ret := make([]T, len(input))
