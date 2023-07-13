@@ -30,3 +30,12 @@ func Reverse[T constraints.Ordered](input []T) []T {
 
 	return ret
 }
+
+func FindIndex[T constraints.Ordered](input []T, val T, eq func(T, T) bool) int {
+	for i, v := range input {
+		if eq(v, val) {
+			return i
+		}
+	}
+	return -1
+}
