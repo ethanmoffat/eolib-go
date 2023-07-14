@@ -21,9 +21,7 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 	output.WriteString("\n")
 
 	for _, e := range enums {
-		if len(e.Comment) > 0 {
-			output.WriteString(fmt.Sprintf("// %s :: %s\n", e.Name, sanitizeComment(e.Comment)))
-		}
+		writeTypeComment(&output, e.Name, e.Comment)
 
 		output.WriteString(fmt.Sprintf("type %s int\n\n", e.Name))
 		output.WriteString("const (\n")
@@ -35,9 +33,7 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 				output.WriteString(fmt.Sprintf("\t%s_%s", sanitizeTypeName(e.Name), v.Name))
 			}
 
-			if len(v.Comment) > 0 {
-				output.WriteString(fmt.Sprintf(" // %s", sanitizeComment(v.Comment)))
-			}
+			writeInlineComment(&output, v.Comment)
 
 			output.WriteString("\n")
 		}
@@ -46,5 +42,5 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 	}
 
 	outFileName := path.Join(outputDir, enumFileName)
-	return writeToFile(outFileName, output)
+	return writeToFile(outFileName, output.String())
 }

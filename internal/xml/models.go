@@ -21,12 +21,18 @@ type ProtocolEnum struct {
 	Type    string          `xml:"type,attr"`
 	Values  []ProtocolValue `xml:"value"`
 	Comment string          `xml:"comment"`
+
+	Package     string
+	PackagePath string
 }
 
 type ProtocolStruct struct {
 	Name         string                `xml:"name,attr"`
 	Instructions []ProtocolInstruction `xml:",any"`
 	Comment      string                `xml:"comment"`
+
+	Package     string
+	PackagePath string
 }
 
 type ProtocolPacket struct {
@@ -117,6 +123,22 @@ func (p Protocol) Validate() error {
 	for _, pkt := range p.Packets {
 		if err := validate(pkt.Instructions); err != nil {
 			return err
+		}
+	}
+
+	return nil
+}
+
+func (p Protocol) FindType(typeName string) (ps interface{}) {
+	for i, e := range p.Enums {
+		if e.Name == typeName {
+			return &p.Enums[i]
+		}
+	}
+
+	for i, st := range p.Structs {
+		if st.Name == typeName {
+			return &p.Structs[i]
 		}
 	}
 

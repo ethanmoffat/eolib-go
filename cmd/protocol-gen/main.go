@@ -44,9 +44,19 @@ func main() {
 		return nil
 	})
 
+	dirToPackageName := map[string]string{
+		"map":        "eomap",
+		"net":        "net",
+		"net/client": "client",
+		"net/server": "server",
+		"pub":        "pub",
+		"":           "protocol",
+	}
+
+	var fullSpec eoxml.Protocol  // all XML specs in a single place, for type lookups
+	var protocs []eoxml.Protocol // each individual protoc file
 	for _, file := range protocolFiles {
 		fullInputPath := path.Join(inputDir, "xml", file, "protocol.xml")
-		fullOutputPath := path.Join(outputDir, file)
 
 		fp, err := os.Open(fullInputPath)
 		if err != nil {
@@ -61,16 +71,38 @@ func main() {
 			os.Exit(1)
 		}
 
-		var protoc eoxml.Protocol
-		if err := xml.Unmarshal(bytes, &protoc); err != nil {
+		var next eoxml.Protocol
+		if err := xml.Unmarshal(bytes, &next); err != nil {
 			fmt.Printf("error unmarshalling xml: %v", err)
 			os.Exit(1)
 		}
+
+		for i := range next.Enums {
+			next.Enums[i].Package = dirToPackageName[strings.Trim(file, string(os.PathSeparator))]
+			next.Enums[i].PackagePath = file
+		}
+
+		for i := range next.Structs {
+			next.Structs[i].Package = dirToPackageName[strings.Trim(file, string(os.PathSeparator))]
+			next.Structs[i].PackagePath = file
+		}
+
+		fullSpec.Enums = append(fullSpec.Enums, next.Enums...)
+		fullSpec.Structs = append(fullSpec.Structs, next.Structs...)
+		fullSpec.Packets = append(fullSpec.Packets, next.Packets...)
+
+		protocs = append(protocs, next)
+	}
+
+	for i, file := range protocolFiles {
+		protoc := protocs[i]
 
 		if err := protoc.Validate(); err != nil {
 			fmt.Printf("error validating unmarshalled xml: %v", err)
 			os.Exit(1)
 		}
+
+		fullOutputPath := path.Join(outputDir, file)
 
 		fmt.Printf("generating code :: %s\n", file)
 		fmt.Printf("      %3d enums\n", len(protoc.Enums))
@@ -79,7 +111,9 @@ func main() {
 		}
 
 		fmt.Printf("      %3d structs\n", len(protoc.Structs))
-		// todo: structs
+		if err := codegen.GenerateStructs(fullOutputPath, protoc.Structs, fullSpec); err != nil {
+			fmt.Printf("      error generating structs: %v", err)
+		}
 
 		fmt.Printf("      %3d packets\n", len(protoc.Packets))
 		// todo: packets
