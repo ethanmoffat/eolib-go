@@ -130,19 +130,35 @@ func (p Protocol) Validate() error {
 }
 
 func (p Protocol) FindType(typeName string) (ps interface{}) {
-	for i, e := range p.Enums {
-		if e.Name == typeName {
-			return &p.Enums[i]
-		}
+	if e, ok := p.IsEnum(typeName); ok {
+		return e
 	}
 
-	for i, st := range p.Structs {
-		if st.Name == typeName {
-			return &p.Structs[i]
-		}
+	if s, ok := p.IsStruct(typeName); ok {
+		return s
 	}
 
 	return nil
+}
+
+func (p Protocol) IsEnum(typeName string) (*ProtocolEnum, bool) {
+	for i, e := range p.Enums {
+		if e.Name == typeName {
+			return &p.Enums[i], true
+		}
+	}
+
+	return nil, false
+}
+
+func (p Protocol) IsStruct(typeName string) (*ProtocolStruct, bool) {
+	for i, st := range p.Structs {
+		if st.Name == typeName {
+			return &p.Structs[i], true
+		}
+	}
+
+	return nil, false
 }
 
 func (pi ProtocolInstruction) Validate() error {

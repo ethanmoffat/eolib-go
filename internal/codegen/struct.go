@@ -3,7 +3,9 @@ package codegen
 import (
 	"fmt"
 	"path"
+	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
@@ -56,12 +58,15 @@ func writeStruct(output *strings.Builder, s xml.ProtocolStruct, fullSpec xml.Pro
 	}
 
 	// write out serialize method
-	output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) error {\n", structName))
-	output.WriteString("\treturn nil\n")
+	output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) (err error) {\n", structName))
+	output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
+	output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
+	writeSerializeBody(output, s.Instructions, s.Package, fullSpec)
+	output.WriteString("\treturn\n")
 	output.WriteString("}\n\n")
 
 	// write out deserialize method
-	output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) error {\n", structName))
+	output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) (err error) {\n", structName))
 	output.WriteString("\treturn nil\n")
 	output.WriteString("}\n\n")
 
@@ -148,15 +153,185 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 		}
 
 		// write out serialize method
-		output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) error {\n", caseStructName))
-		output.WriteString("\treturn nil\n")
+		output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) (err error) {\n", caseStructName))
+		output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
+		output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
+		writeSerializeBody(output, c.Instructions, packageName, fullSpec)
+		output.WriteString("\treturn\n")
 		output.WriteString("}\n\n")
 
 		// write out deserialize method
-		output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) error {\n", caseStructName))
-		output.WriteString("\treturn nil\n")
+		output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) (err error) {\n", caseStructName))
+		writeSwitchStructDeserializeBody(output, c.Instructions, packageName)
 		output.WriteString("}\n\n")
 	}
 
 	return
+}
+
+func writeSerializeBody(output *strings.Builder, instList []xml.ProtocolInstruction, packageName string, fullSpec xml.Protocol) {
+	for _, inst := range instList {
+		var instName string
+		if inst.Name != nil {
+			instName = snakeCaseToPascalCase(*inst.Name)
+		} else if inst.Field != nil {
+			instName = snakeCaseToPascalCase(*inst.Field)
+		}
+
+		if inst.XMLName.Local == "chunked" {
+			output.WriteString("\twriter.SanitizeStrings = true\n")
+			writeSerializeBody(output, inst.Chunked, packageName, fullSpec)
+			output.WriteString("\twriter.SanitizeStrings = false\n")
+			continue
+		}
+
+		if inst.XMLName.Local == "switch" {
+			output.WriteString("\t// todo: handle switch\n")
+			continue
+		}
+
+		if inst.XMLName.Local == "break" {
+			output.WriteString("\twriter.AddByte(0xFF)\n")
+			continue
+		}
+
+		var typeName string
+		var typeSize string
+		if strings.ContainsRune(*inst.Type, rune(':')) {
+			split := strings.Split(*inst.Type, ":")
+			typeName, typeSize = split[0], split[1]
+		} else {
+			typeName = *inst.Type
+		}
+
+		writeTypeFunc := func(methodType string, needsCastToInt bool) {
+			if len(instName) == 0 && inst.Content != nil {
+				instName = *inst.Content
+			} else {
+				instName = "s." + instName
+			}
+
+			if inst.XMLName.Local == "array" {
+				instName = instName + "[ndx]"
+			}
+
+			if needsCastToInt {
+				instName = "int(" + instName + ")"
+			}
+			output.WriteString(fmt.Sprintf("\tif err = writer.Add%s(%s); err != nil {\n\t\treturn\n\t}\n\n", methodType, instName))
+		}
+
+		getLengthExpression := func() string {
+			if _, err := strconv.ParseInt(*inst.Length, 10, 32); err == nil {
+				// string length is a numeric constant
+				return *inst.Length
+			} else {
+				// string length is a reference to another field
+				return "s." + snakeCaseToPascalCase(*inst.Length)
+			}
+		}
+
+		writeStringTypeFunc := func(methodType string) {
+			if len(instName) == 0 && inst.Content != nil {
+				instName = `"` + *inst.Content + `"`
+			} else {
+				instName = "s." + instName
+			}
+
+			if inst.XMLName.Local == "array" {
+				instName = instName + "[ndx]"
+			} else if inst.Length != nil {
+				instName = instName + ", " + getLengthExpression()
+			}
+
+			output.WriteString(fmt.Sprintf("\tif err = writer.Add%s(%s); err != nil {\n\t\treturn\n\t}\n\n", methodType, instName))
+		}
+
+		output.WriteString("\t// " + instName + " : " + inst.XMLName.Local + " : " + *inst.Type + "\n")
+
+		if inst.XMLName.Local == "array" {
+			var lenExpr string
+			if inst.Length != nil {
+				lenExpr = getLengthExpression()
+			} else {
+				lenExpr = fmt.Sprintf("len(s.%s)", instName)
+			}
+
+			output.WriteString(fmt.Sprintf("\tfor ndx := 0; ndx < %s; ndx++ {\n\t\t", lenExpr))
+		}
+
+		switch typeName {
+		case "byte":
+			writeTypeFunc("Byte", false)
+		case "char":
+			writeTypeFunc("Char", false)
+		case "short":
+			writeTypeFunc("Short", false)
+		case "three":
+			writeTypeFunc("Three", false)
+		case "int":
+			writeTypeFunc("Int", false)
+		case "bool":
+			if len(typeSize) > 0 {
+				typeName = string(unicode.ToUpper(rune(typeSize[0]))) + typeSize[1:]
+			} else {
+				typeName = "Char"
+			}
+			output.WriteString(fmt.Sprintf("\tif s.%s {\n", instName))
+			output.WriteString(fmt.Sprintf("\t\terr = writer.Add%s(1)\n\t} else {\n\t\terr = writer.Add%s(0)\n\t}\n", typeName, typeName))
+			output.WriteString("\tif err != nil {\n\t\treturn\n\t}\n\n")
+		case "blob":
+			writeTypeFunc("Bytes", false)
+		case "string":
+			if inst.Length != nil {
+				if inst.Padded != nil && *inst.Padded {
+					writeStringTypeFunc("PaddedString")
+				} else {
+					writeStringTypeFunc("FixedString")
+				}
+			} else {
+				writeStringTypeFunc("String")
+			}
+		case "encoded_string":
+			if inst.Length != nil {
+				if inst.Padded != nil && *inst.Padded {
+					writeStringTypeFunc("PaddedEncodedString")
+				} else {
+					writeStringTypeFunc("FixedEncodedString")
+				}
+			} else {
+				writeStringTypeFunc("EncodedString")
+			}
+		default:
+			if _, ok := fullSpec.IsStruct(typeName); ok {
+				if inst.XMLName.Local == "array" {
+					instName = instName + "[ndx]"
+				}
+				output.WriteString(fmt.Sprintf("\tif err = s.%s.Serialize(writer); err != nil {\n\t\treturn\n\t}\n", instName))
+			} else if e, ok := fullSpec.IsEnum(typeName); ok {
+				switch e.Type {
+				case "byte":
+					fallthrough
+				case "char":
+					fallthrough
+				case "short":
+					fallthrough
+				case "three":
+					fallthrough
+				case "int":
+					writeTypeFunc(string(unicode.ToUpper(rune(e.Type[0])))+e.Type[1:], true)
+				}
+			} else {
+				panic("Unable to find type '" + typeName + "' when writing serialization function")
+			}
+		}
+
+		if inst.XMLName.Local == "array" {
+			output.WriteString("\t}\n\n")
+		}
+	}
+}
+
+func writeSwitchStructDeserializeBody(output *strings.Builder, instList []xml.ProtocolInstruction, packageName string) {
+	output.WriteString("\treturn nil\n")
 }

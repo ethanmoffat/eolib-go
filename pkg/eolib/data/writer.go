@@ -43,9 +43,10 @@ func (w *EoWriter) AddByte(value int) error {
 }
 
 // AddBytes adds the specified bytes to the writer data.
-func (w *EoWriter) AddBytes(bytes []byte) {
+func (w *EoWriter) AddBytes(bytes []byte) error {
 	// append for slices is amortized to O(1) and automatically expands capacity of the underlying array as needed
 	w.data = append(w.data, bytes...)
+	return nil
 }
 
 // AddChar adds an encoded 1-byte integer to the writer data.
@@ -97,8 +98,8 @@ func (w *EoWriter) AddInt(number int) error {
 }
 
 // AddString adds a string to the writer data.
-func (w *EoWriter) AddString(str string) {
-	w.AddBytes(w.sanitize([]byte(str)))
+func (w *EoWriter) AddString(str string) error {
+	return w.AddBytes(w.sanitize([]byte(str)))
 }
 
 // AddFixedString adds a fixed-length string to the writer data.
@@ -118,9 +119,9 @@ func (w *EoWriter) AddPaddedString(str string, length int) (err error) {
 }
 
 // AddEncodedString encodes and adds a string to the writer data.
-func (w *EoWriter) AddEncodedString(str string) {
+func (w *EoWriter) AddEncodedString(str string) error {
 	sanitized := w.sanitize([]byte(str))
-	w.AddBytes(EncodeString(string(sanitized)))
+	return w.AddBytes(EncodeString(string(sanitized)))
 }
 
 // AddFixedEncodedString encodes and adds a fixed-length string to the writer data.
