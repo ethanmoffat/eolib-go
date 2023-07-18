@@ -20,7 +20,7 @@ func GenerateStructs(outputDir string, structs []xml.ProtocolStruct, fullSpec xm
 
 	output := strings.Builder{}
 	output.WriteString(packageDeclaration + "\n\n")
-	output.WriteString("import (\n\t\"github.com/ethanmoffat/eolib-go/pkg/eolib/data\"\n%s\n)\n\n")
+	output.WriteString("import (\n\t\"github.com/ethanmoffat/eolib-go/pkg/eolib/data\"\n%s)\n\n")
 
 	var imports []importInfo
 	for _, s := range structs {
@@ -139,6 +139,8 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 			continue
 		}
 
+		// TODO: handle default (for packets)
+		// TODO: handle integer constant cases (for packets)
 		caseName := snakeCaseToPascalCase(c.Value)
 		caseStructName := fmt.Sprintf("%s%s", switchInterfaceName, caseName)
 		writeTypeComment(output, caseStructName, c.Comment)
@@ -186,7 +188,35 @@ func writeSerializeBody(output *strings.Builder, instList []xml.ProtocolInstruct
 		}
 
 		if inst.XMLName.Local == "switch" {
-			output.WriteString("\t// todo: handle switch\n")
+			// get type of Value field
+			switchFieldType := ""
+			for _, tmpInst := range instList {
+				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instName {
+					switchFieldType = sanitizeTypeName(*tmpInst.Type)
+				}
+			}
+
+			output.WriteString(fmt.Sprintf("\tswitch s.%s {\n", instName))
+
+			for _, c := range inst.Cases {
+				if c.Default {
+					// TODO: handle default (for packets)
+					// output.WriteString(fmt.Sprintf("\tdefault:\n\t\t"))
+				} else {
+					if _, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
+						// case is for an enum value
+						output.WriteString(fmt.Sprintf("\tcase %s_%s:\n", switchFieldType, c.Value))
+						output.WriteString(fmt.Sprintf("\t\tif err = %sData.Serialize(s.%sData, writer); err != nil {\n", instName, instName))
+						output.WriteString("\t\t\treturn\n\t\t}\n")
+					} else {
+						// case is for an integer constant
+						output.WriteString(fmt.Sprintf("\tcase %s:\n", c.Value))
+						// TODO: handle integer constant cases (for packets)
+					}
+				}
+			}
+
+			output.WriteString("\t}\n")
 			continue
 		}
 
