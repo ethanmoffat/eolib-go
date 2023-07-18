@@ -10,6 +10,7 @@ import "errors"
 //	{0, 1, 2, 3, 4, 5} -> {0, 5, 1, 4, 2, 3}
 func Interleave(data []byte) (output []byte) {
 	output = make([]byte, len(data))
+	copy(output, data)
 
 	i, ii := 0, 0
 
@@ -40,6 +41,7 @@ func Interleave(data []byte) (output []byte) {
 //	{0, 1, 2, 3, 4, 5} -> {0, 2, 4, 5, 3, 1}
 func Deinterleave(data []byte) (output []byte) {
 	output = make([]byte, len(data))
+	copy(output, data)
 
 	i, ii := 0, 0
 
@@ -70,6 +72,7 @@ func Deinterleave(data []byte) (output []byte) {
 //	{0, 1, 127, 128, 129, 254, 255} -> {0, 129, 255, 128, 1, 126, 127}
 func FlipMsb(data []byte) (output []byte) {
 	output = make([]byte, len(data))
+	copy(output, data)
 
 	for i, b := range data {
 		if b&0x7F != 0 {

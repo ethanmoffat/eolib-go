@@ -161,7 +161,9 @@ func (w *EoWriter) sanitize(bytes []byte) (output []byte) {
 	}
 
 	output = make([]byte, len(bytes))
-	for i, b := range bytes {
+	copy(output, bytes)
+
+	for i, b := range output {
 		if b == 0xFF {
 			output[i] = 0x79
 		}
