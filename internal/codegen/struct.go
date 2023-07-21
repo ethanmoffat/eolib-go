@@ -366,8 +366,40 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 		}
 
 		instructionName := getInstructionName(instruction)
-		// todo: switch instructions
+
 		if instructionType == "switch" {
+			// get type of Value field
+			switchFieldType := ""
+			for _, tmpInst := range instructionList {
+				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
+					switchFieldType = sanitizeTypeName(*tmpInst.Type)
+				}
+			}
+
+			output.WriteString(fmt.Sprintf("\tswitch s.%s {\n", instructionName))
+
+			for _, c := range instruction.Cases {
+				if c.Default {
+					// TODO: handle default (for packets)
+					// output.WriteString(fmt.Sprintf("\tdefault:\n\t\t"))
+				} else {
+					if _, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
+						// case is for an enum value
+						switchDataType := fmt.Sprintf("%sData%s", instructionName, c.Value)
+						output.WriteString(fmt.Sprintf("\tcase %s_%s:\n", switchFieldType, c.Value))
+						output.WriteString(fmt.Sprintf("\t\ts.%sData = &%s{}\n", instructionName, switchDataType))
+						output.WriteString(fmt.Sprintf("\t\tif err = s.%sData.Deserialize(reader); err != nil {\n", instructionName))
+						output.WriteString("\t\t\treturn\n\t\t}\n")
+					} else {
+						// case is for an integer constant
+						output.WriteString(fmt.Sprintf("\tcase %s:\n", c.Value))
+						// TODO: handle integer constant cases (for packets)
+					}
+				}
+			}
+
+			output.WriteString("\t}\n")
+
 			continue
 		}
 
