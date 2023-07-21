@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"unicode"
 
@@ -172,4 +173,99 @@ func snakeCaseToPascalCase(input string) string {
 	camelCase := snakeCaseToCamelCase(input)
 	firstRune := []rune(camelCase)[0]
 	return string(unicode.ToUpper(firstRune)) + camelCase[1:]
+}
+
+func getInstructionTypeName(inst xml.ProtocolInstruction) (typeName string, typeSize string) {
+	if inst.Type == nil {
+		return
+	}
+
+	if strings.ContainsRune(*inst.Type, rune(':')) {
+		split := strings.Split(*inst.Type, ":")
+		typeName, typeSize = split[0], split[1]
+	} else {
+		typeName = *inst.Type
+	}
+
+	return
+}
+
+func calculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err error) {
+	var structInfo *xml.ProtocolStruct
+	var isStruct bool
+	if structInfo, isStruct = fullSpec.IsStruct(typeName); !isStruct {
+		return
+	}
+
+	var flattenedInstList []xml.ProtocolInstruction
+	for _, instruction := range (*structInfo).Instructions {
+		if instruction.XMLName.Local == "chunked" {
+			flattenedInstList = append(flattenedInstList, instruction.Chunked...)
+		} else {
+			flattenedInstList = append(flattenedInstList, instruction)
+		}
+	}
+
+	for _, instruction := range flattenedInstList {
+		switch instruction.XMLName.Local {
+		case "field":
+			fieldTypeName, fieldTypeSize := getInstructionTypeName(instruction)
+			if fieldTypeSize != "" {
+				fieldTypeName = fieldTypeSize
+			}
+
+			if instruction.Length != nil {
+				if length, err := strconv.ParseInt(*instruction.Length, 10, 32); err == nil {
+					// length is a numeric constant
+					res += int(length)
+				} else {
+					return 0, fmt.Errorf("instruction length %s must be a fixed size for %s (%s)", *instruction.Length, *instruction.Name, instruction.XMLName.Local)
+				}
+			} else {
+				if nestedSize, err := getPrimitizeTypeSize(fieldTypeName, fullSpec); err != nil {
+					return 0, err
+				} else {
+					res += nestedSize
+				}
+			}
+		case "break":
+			res += 1
+		case "array":
+		case "dummy":
+		}
+	}
+
+	return
+}
+
+func getPrimitizeTypeSize(fieldTypeName string, fullSpec xml.Protocol) (int, error) {
+	switch fieldTypeName {
+	case "byte":
+		fallthrough
+	case "char":
+		return 1, nil
+	case "short":
+		return 2, nil
+	case "three":
+		return 3, nil
+	case "int":
+		return 4, nil
+	case "bool":
+		return 1, nil
+	case "blob":
+		fallthrough
+	case "string":
+		fallthrough
+	case "encoded_string":
+		return 0, fmt.Errorf("cannot get size of %s without fixed length", fieldTypeName)
+	default:
+		if _, isStruct := fullSpec.IsStruct(fieldTypeName); isStruct {
+			return calculateTypeSize(fieldTypeName, fullSpec)
+		} else if e, isEnum := fullSpec.IsEnum(fieldTypeName); isEnum {
+			enumTypeName := sanitizeTypeName(e.Type)
+			return getPrimitizeTypeSize(enumTypeName, fullSpec)
+		} else {
+			return 0, fmt.Errorf("cannot get fixed size of unrecognized type %s", fieldTypeName)
+		}
+	}
 }
