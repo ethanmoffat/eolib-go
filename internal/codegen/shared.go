@@ -194,7 +194,7 @@ func calculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 	var structInfo *xml.ProtocolStruct
 	var isStruct bool
 	if structInfo, isStruct = fullSpec.IsStruct(typeName); !isStruct {
-		return
+		return getPrimitizeTypeSize(typeName, fullSpec)
 	}
 
 	var flattenedInstList []xml.ProtocolInstruction

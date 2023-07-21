@@ -87,6 +87,11 @@ func main() {
 			next.Structs[i].PackagePath = file
 		}
 
+		for i := range next.Packets {
+			next.Packets[i].Package = dirToPackageName[strings.Trim(file, string(os.PathSeparator))]
+			next.Packets[i].PackagePath = file
+		}
+
 		fullSpec.Enums = append(fullSpec.Enums, next.Enums...)
 		fullSpec.Structs = append(fullSpec.Structs, next.Structs...)
 		fullSpec.Packets = append(fullSpec.Packets, next.Packets...)
@@ -116,6 +121,8 @@ func main() {
 		}
 
 		fmt.Printf("      %3d packets\n", len(protoc.Packets))
-		// todo: packets
+		if err := codegen.GeneratePackets(fullOutputPath, protoc.Packets, fullSpec); err != nil {
+			fmt.Printf("      error generating packets: %v\n", err)
+		}
 	}
 }

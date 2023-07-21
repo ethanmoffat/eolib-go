@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/ethanmoffat/eolib-go/pkg/eolib"
 )
@@ -40,6 +41,9 @@ type ProtocolPacket struct {
 	Action       string                `xml:"action,attr"`
 	Instructions []ProtocolInstruction `xml:",any"`
 	Comment      string                `xml:"comment"`
+
+	Package     string
+	PackagePath string
 }
 
 type ProtocolValue struct {
@@ -159,6 +163,21 @@ func (p Protocol) IsStruct(typeName string) (*ProtocolStruct, bool) {
 	}
 
 	return nil, false
+}
+
+func (p Protocol) IsPacket(typeName string) (*ProtocolPacket, bool) {
+	for i, pkt := range p.Packets {
+		if pkt.GetTypeName() == typeName {
+			return &p.Packets[i], true
+		}
+	}
+
+	return nil, false
+}
+
+func (p ProtocolPacket) GetTypeName() string {
+	packageName := string(unicode.ToUpper([]rune(p.Package)[0])) + p.Package[1:]
+	return fmt.Sprintf("%s%s%sPacket", p.Family, p.Action, packageName)
 }
 
 func (pi ProtocolInstruction) Validate() error {
