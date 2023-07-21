@@ -26,16 +26,25 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 		output.WriteString(fmt.Sprintf("type %s int\n\n", e.Name))
 		output.WriteString("const (\n")
 
+		expected := 0
 		for i, v := range e.Values {
 			if i == 0 {
 				output.WriteString(fmt.Sprintf("\t%s_%s %s = iota", sanitizeTypeName(e.Name), v.Name, e.Name))
+				if v.Value > 0 {
+					output.WriteString(fmt.Sprintf(" + %d", v.Value))
+					expected = int(v.Value)
+				}
 			} else {
 				output.WriteString(fmt.Sprintf("\t%s_%s", sanitizeTypeName(e.Name), v.Name))
+				if expected != int(v.Value) {
+					output.WriteString(fmt.Sprintf(" = %d", v.Value))
+				}
 			}
 
 			writeInlineComment(&output, v.Comment)
 
 			output.WriteString("\n")
+			expected += 1
 		}
 
 		output.WriteString(")\n\n")
