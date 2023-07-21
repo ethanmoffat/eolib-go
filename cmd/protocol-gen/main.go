@@ -60,20 +60,20 @@ func main() {
 
 		fp, err := os.Open(fullInputPath)
 		if err != nil {
-			fmt.Printf("error opening file: %v", err)
+			fmt.Printf("error opening file: %v\n", err)
 			os.Exit(1)
 		}
 		defer fp.Close()
 
 		bytes, err := io.ReadAll(fp)
 		if err != nil {
-			fmt.Printf("error reading file: %v", err)
+			fmt.Printf("error reading file: %v\n", err)
 			os.Exit(1)
 		}
 
 		var next eoxml.Protocol
 		if err := xml.Unmarshal(bytes, &next); err != nil {
-			fmt.Printf("error unmarshalling xml: %v", err)
+			fmt.Printf("error unmarshalling xml: %v\n", err)
 			os.Exit(1)
 		}
 
@@ -98,7 +98,7 @@ func main() {
 		protoc := protocs[i]
 
 		if err := protoc.Validate(); err != nil {
-			fmt.Printf("error validating unmarshalled xml: %v", err)
+			fmt.Printf("error validating unmarshalled xml: %v\n", err)
 			os.Exit(1)
 		}
 
@@ -107,12 +107,12 @@ func main() {
 		fmt.Printf("generating code :: %s\n", file)
 		fmt.Printf("      %3d enums\n", len(protoc.Enums))
 		if err := codegen.GenerateEnums(fullOutputPath, protoc.Enums); err != nil {
-			fmt.Printf("      error generating enums: %v", err)
+			fmt.Printf("      error generating enums: %v\n", err)
 		}
 
 		fmt.Printf("      %3d structs\n", len(protoc.Structs))
 		if err := codegen.GenerateStructs(fullOutputPath, protoc.Structs, fullSpec); err != nil {
-			fmt.Printf("      error generating structs: %v", err)
+			fmt.Printf("      error generating structs: %v\n", err)
 		}
 
 		fmt.Printf("      %3d packets\n", len(protoc.Packets))
