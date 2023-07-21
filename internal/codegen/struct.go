@@ -678,8 +678,7 @@ func writeGetTypeForDeserialize(output *strings.Builder, instructionName string,
 	}
 
 	if len(instructionName) == 0 && instruction.Content != nil {
-		output.WriteString(fmt.Sprintf("\tif val := reader.Get%s(%s); val != %s {\n", methodType, lengthExpr, *instruction.Content))
-		output.WriteString(fmt.Sprintf("\t\treturn fmt.Errorf(\"unexpected value %%d when reading %s (expected=%s)\", val)\n\t}\n\n", methodType, *instruction.Content))
+		output.WriteString(fmt.Sprintf("\treader.Get%s(%s)\n", methodType, lengthExpr))
 	} else {
 		if instruction.XMLName.Local == "array" {
 			instructionName = instructionName + "[ndx]"
@@ -716,9 +715,7 @@ func writeGetStringTypeForDeserialize(output *strings.Builder, instructionName s
 	}
 
 	if len(instructionName) == 0 && instruction.Content != nil {
-		output.WriteString(fmt.Sprintf("\tif val, err := reader.Get%s(%s); val != \"%s\" || err != nil {\n", methodType, lengthExpr, *instruction.Content))
-		output.WriteString("\t\tif err != nil {\n\t\t\treturn err\n\t\t} else {\n")
-		output.WriteString(fmt.Sprintf("\t\t\treturn fmt.Errorf(\"unexpected value %%s when reading %s (expected=%s)\", val)\n\t\t}\n\t}\n\n", methodType, *instruction.Content))
+		output.WriteString(fmt.Sprintf("\tif _, err = reader.Get%s(%s); err != nil {\n\t\treturn\n\t}\n", methodType, lengthExpr))
 	} else {
 		if instruction.XMLName.Local == "array" {
 			instructionName = instructionName + "[ndx]"
