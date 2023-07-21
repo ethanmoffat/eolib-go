@@ -102,7 +102,10 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 	output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) (err error) {\n", structName))
 	output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
 	output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
-	writeSerializeBody(output, instructions, packageName, fullSpec)
+	if nextImports, err = writeSerializeBody(output, instructions, switchStructQualifier, packageName, fullSpec); err != nil {
+		return nil, err
+	}
+	importPaths = append(importPaths, nextImports...)
 	output.WriteString("\treturn\n")
 	output.WriteString("}\n\n")
 
@@ -189,9 +192,12 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 			continue
 		}
 
-		// TODO: handle default (for packets)
-		// TODO: handle integer constant cases (for packets)
-		caseName := snakeCaseToPascalCase(c.Value)
+		var caseName string
+		if c.Default {
+			caseName = "Default"
+		} else {
+			caseName = snakeCaseToPascalCase(c.Value)
+		}
 		caseStructName := fmt.Sprintf("%s%s", switchInterfaceName, caseName)
 
 		writeTypeComment(output, caseStructName, c.Comment)
@@ -212,7 +218,10 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 		output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) (err error) {\n", caseStructName))
 		output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
 		output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
-		writeSerializeBody(output, c.Instructions, packageName, fullSpec)
+		if nextImports, err = writeSerializeBody(output, c.Instructions, switchStructQualifier, packageName, fullSpec); err != nil {
+			return nil, err
+		}
+		imports = append(imports, nextImports...)
 		output.WriteString("\treturn\n")
 		output.WriteString("}\n\n")
 
@@ -230,13 +239,28 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 	return
 }
 
-func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolInstruction, packageName string, fullSpec xml.Protocol) {
+// used to track the 'outer' list of instructions when a <chunked> instruction is encountered
+// this allows any nested <switch> instructions to search both the instructions in the <chunked> section at the same level
+//
+//	as well as the outer instructions in the <struct> or <packet> when determining the type of the switch field
+var outerInstructionList []xml.ProtocolInstruction
+
+func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolInstruction, switchStructQualifier string, packageName string, fullSpec xml.Protocol) (imports []importInfo, err error) {
 	for _, instruction := range instructionList {
 		instructionType := instruction.XMLName.Local
 
 		if instructionType == "chunked" {
 			output.WriteString("\twriter.SanitizeStrings = true\n")
-			writeSerializeBody(output, instruction.Chunked, packageName, fullSpec)
+			oldOuterInstructionList := outerInstructionList
+			outerInstructionList = instructionList
+			defer func() { outerInstructionList = oldOuterInstructionList }()
+
+			if nextImports, err := writeSerializeBody(output, instruction.Chunked, switchStructQualifier, packageName, fullSpec); err != nil {
+				return nil, err
+			} else {
+				imports = append(imports, nextImports...)
+			}
+
 			output.WriteString("\twriter.SanitizeStrings = false\n")
 			continue
 		}
@@ -250,30 +274,56 @@ func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolI
 
 		if instructionType == "switch" {
 			// get type of Value field
-			switchFieldType := ""
-			for _, tmpInst := range instructionList {
+			switchFieldSanitizedType := ""
+			switchFieldEnumType := ""
+			for _, tmpInst := range append(outerInstructionList, instructionList...) {
 				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
-					switchFieldType = sanitizeTypeName(*tmpInst.Type)
+					switchFieldEnumType = *tmpInst.Type
+					switchFieldSanitizedType = sanitizeTypeName(switchFieldEnumType)
+					break
 				}
 			}
 
 			output.WriteString(fmt.Sprintf("\tswitch s.%s {\n", instructionName))
 
 			for _, c := range instruction.Cases {
+				if len(c.Instructions) == 0 {
+					continue
+				}
+
+				var switchDataType string
 				if c.Default {
-					// TODO: handle default (for packets)
-					// output.WriteString(fmt.Sprintf("\tdefault:\n\t\t"))
+					switchDataType = fmt.Sprintf("%sDataDefault", instructionName)
+					output.WriteString("\tdefault:\n")
 				} else {
+					switchDataType = fmt.Sprintf("%sData%s", instructionName, c.Value)
 					if _, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
 						// case is for an enum value
-						output.WriteString(fmt.Sprintf("\tcase %s_%s:\n", switchFieldType, c.Value))
-						output.WriteString(fmt.Sprintf("\t\tif err = s.%sData.Serialize(writer); err != nil {\n", instructionName))
-						output.WriteString("\t\t\treturn\n\t\t}\n")
+						if enumTypeInfo, ok := fullSpec.IsEnum(switchFieldEnumType); !ok {
+							return nil, fmt.Errorf("type %s in switch is not an enum", switchFieldEnumType)
+						} else {
+							packageQualifier := ""
+							if enumTypeInfo.Package != packageName {
+								packageQualifier = enumTypeInfo.Package + "."
+								imports = append(imports, importInfo{enumTypeInfo.Package, enumTypeInfo.PackagePath})
+							}
+							output.WriteString(fmt.Sprintf("\tcase %s%s_%s:\n", packageQualifier, switchFieldSanitizedType, c.Value))
+						}
 					} else {
 						// case is for an integer constant
 						output.WriteString(fmt.Sprintf("\tcase %s:\n", c.Value))
-						// TODO: handle integer constant cases (for packets)
 					}
+				}
+
+				if len(switchDataType) > 0 {
+					output.WriteString(fmt.Sprintf("\t\tswitch s.%sData.(type) {\n", instructionName))
+					output.WriteString(fmt.Sprintf("\t\tcase *%s%s:\n\t\t", switchStructQualifier, switchDataType))
+				}
+				output.WriteString(fmt.Sprintf("\t\t\tif err = s.%sData.Serialize(writer); err != nil {\n", instructionName))
+				output.WriteString("\t\t\t\treturn\n\t\t\t}\n")
+
+				if len(switchDataType) > 0 {
+					output.WriteString(fmt.Sprintf("\t\tdefault:\n\t\t\terr = fmt.Errorf(\"invalid switch struct type for switch value %%d\", s.%s)\n\t\t\treturn\n\t\t}\n", instructionName))
 				}
 			}
 
@@ -375,8 +425,12 @@ func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolI
 			output.WriteString("\t}\n\n")
 		}
 	}
+
+	return
 }
 
+// flag that determines whether a chunked section is active or not
+// this is used to determine if the next chunk should be selected in array delimiters and break bytes
 var isChunked bool
 
 func writeDeserializeBody(output *strings.Builder, instructionList []xml.ProtocolInstruction, switchStructQualifier string, packageName string, fullSpec xml.Protocol) (imports []importInfo, err error) {
@@ -387,7 +441,9 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 			output.WriteString("\treader.SetChunkedReadingMode(true)\n")
 			oldChunked := isChunked
 			isChunked = true
-			defer func() { isChunked = oldChunked }()
+			oldOuterInstructionList := outerInstructionList
+			outerInstructionList = instructionList
+			defer func() { isChunked = oldChunked; outerInstructionList = oldOuterInstructionList }()
 
 			nextImports, err := writeDeserializeBody(output, instruction.Chunked, switchStructQualifier, packageName, fullSpec)
 			if err != nil {
@@ -414,33 +470,50 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 
 		if instructionType == "switch" {
 			// get type of Value field
-			switchFieldType := ""
-			for _, tmpInst := range instructionList {
+			switchFieldSanitizedType := ""
+			switchFieldEnumType := ""
+			for _, tmpInst := range append(outerInstructionList, instructionList...) {
 				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
-					switchFieldType = sanitizeTypeName(*tmpInst.Type)
+					switchFieldEnumType = *tmpInst.Type
+					switchFieldSanitizedType = sanitizeTypeName(switchFieldEnumType)
+					break
 				}
 			}
 
 			output.WriteString(fmt.Sprintf("\tswitch s.%s {\n", instructionName))
 
 			for _, c := range instruction.Cases {
+				if len(c.Instructions) == 0 {
+					continue
+				}
+
+				var switchDataType string
 				if c.Default {
-					// TODO: handle default (for packets)
-					// output.WriteString(fmt.Sprintf("\tdefault:\n\t\t"))
+					switchDataType = fmt.Sprintf("%sDataDefault", instructionName)
+					output.WriteString("\tdefault:\n")
 				} else {
+					switchDataType = fmt.Sprintf("%sData%s", instructionName, c.Value)
 					if _, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
 						// case is for an enum value
-						switchDataType := fmt.Sprintf("%sData%s", instructionName, c.Value)
-						output.WriteString(fmt.Sprintf("\tcase %s_%s:\n", switchFieldType, c.Value))
-						output.WriteString(fmt.Sprintf("\t\ts.%sData = &%s%s{}\n", instructionName, switchStructQualifier, switchDataType))
-						output.WriteString(fmt.Sprintf("\t\tif err = s.%sData.Deserialize(reader); err != nil {\n", instructionName))
-						output.WriteString("\t\t\treturn\n\t\t}\n")
+						if enumTypeInfo, ok := fullSpec.IsEnum(switchFieldEnumType); !ok {
+							return nil, fmt.Errorf("type %s in switch is not an enum", switchFieldEnumType)
+						} else {
+							packageQualifier := ""
+							if enumTypeInfo.Package != packageName {
+								packageQualifier = enumTypeInfo.Package + "."
+								imports = append(imports, importInfo{enumTypeInfo.Package, enumTypeInfo.PackagePath})
+							}
+							output.WriteString(fmt.Sprintf("\tcase %s%s_%s:\n", packageQualifier, switchFieldSanitizedType, c.Value))
+						}
 					} else {
 						// case is for an integer constant
 						output.WriteString(fmt.Sprintf("\tcase %s:\n", c.Value))
-						// TODO: handle integer constant cases (for packets)
 					}
 				}
+
+				output.WriteString(fmt.Sprintf("\t\ts.%sData = &%s%s{}\n", instructionName, switchStructQualifier, switchDataType))
+				output.WriteString(fmt.Sprintf("\t\tif err = s.%sData.Deserialize(reader); err != nil {\n", instructionName))
+				output.WriteString("\t\t\treturn\n\t\t}\n")
 			}
 
 			output.WriteString("\t}\n")
@@ -460,8 +533,9 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 				rawLen, err := calculateTypeSize(typeName, fullSpec)
 				if err != nil {
 					lenExpr = "reader.Remaining() > 0"
+				} else {
+					lenExpr = "ndx < reader.Remaining() / " + strconv.Itoa(rawLen)
 				}
-				lenExpr = "ndx < reader.Remaining() / " + strconv.Itoa(rawLen)
 			} else {
 				lenExpr = "reader.Remaining() > 0"
 			}
