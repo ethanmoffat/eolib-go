@@ -121,8 +121,8 @@ func (r *EoReader) GetInt() int {
 }
 
 // GetString reads an unencoded string from the input data.
-func (r *EoReader) GetString() string {
-	return string(r.readBytes(r.Remaining()))
+func (r *EoReader) GetString() (string, error) {
+	return string(r.readBytes(r.Remaining())), nil
 }
 
 // GetFixedString reads an unencoded fixed string from the input data.
@@ -146,8 +146,8 @@ func (r *EoReader) GetPaddedString(length int) (string, error) {
 }
 
 // GetEncodedString reads and decodes an encoded string from the input data.
-func (r *EoReader) GetEncodedString() string {
-	return DecodeString(r.readBytes(r.Remaining()))
+func (r *EoReader) GetEncodedString() (string, error) {
+	return DecodeString(r.readBytes(r.Remaining())), nil
 }
 
 // GetFixedEncodedString reads and decodes a fixed string from the input data.
