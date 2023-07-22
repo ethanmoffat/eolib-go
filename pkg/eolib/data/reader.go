@@ -29,7 +29,7 @@ type EoReader struct {
 
 // NewEoReader initializes an [data.EoReader] with the data in the specified byte slice.
 func NewEoReader(data []byte) *EoReader {
-	return &EoReader{data, 0, chunkProperties{}}
+	return &EoReader{data, 0, chunkProperties{false, 0, -1}}
 }
 
 // Read satisfies the io.Reader interface.
@@ -254,10 +254,11 @@ func (r *EoReader) removePadding(input []byte) []byte {
 }
 
 func (r *EoReader) findNextBreakIndex() int {
-	for i := r.chunkInfo.chunkStart; i < len(r.data); i++ {
+	var i int
+	for i = r.chunkInfo.chunkStart; i < len(r.data); i++ {
 		if r.data[i] == 0xFF {
-			return i
+			break
 		}
 	}
-	return r.chunkInfo.chunkStart
+	return i
 }
