@@ -1,10 +1,11 @@
-package data
+package data_test
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/text/encoding/charmap"
 )
@@ -69,7 +70,7 @@ func TestEncodeNumber(t *testing.T) {
 	for _, tc := range encodeNumberTestCases {
 		t.Run(fmt.Sprintf("%d should encode to [%d, %d, %d, %d]", tc.number, tc.a, tc.b, tc.c, tc.d),
 			func(t *testing.T) {
-				actual := EncodeNumber(tc.number)
+				actual := data.EncodeNumber(tc.number)
 				assert.Equal(t, []byte{tc.a, tc.b, tc.c, tc.d}, actual)
 			})
 	}
@@ -79,7 +80,7 @@ func TestDecodeNumber(t *testing.T) {
 	for _, tc := range encodeNumberTestCases {
 		t.Run(fmt.Sprintf("[%d, %d, %d, %d] should decode to %d", tc.a, tc.b, tc.c, tc.d, tc.number),
 			func(t *testing.T) {
-				actual := DecodeNumber([]byte{tc.a, tc.b, tc.c, tc.d})
+				actual := data.DecodeNumber([]byte{tc.a, tc.b, tc.c, tc.d})
 				assert.Equal(t, tc.number, actual)
 			})
 	}
@@ -90,7 +91,7 @@ func TestEncodeString(t *testing.T) {
 		t.Run(fmt.Sprintf("%s should encode to %s", tc.decoded, tc.encoded),
 			func(t *testing.T) {
 				bytes := toBytes(tc.decoded)
-				encoded := EncodeString(bytes)
+				encoded := data.EncodeString(bytes)
 				assert.Equal(t, toBytes(tc.encoded), encoded)
 			})
 	}
@@ -101,7 +102,7 @@ func TestDecodeString(t *testing.T) {
 		t.Run(fmt.Sprintf("%s should decode to %s", tc.encoded, tc.decoded),
 			func(t *testing.T) {
 				bytes := toBytes(tc.encoded)
-				decoded := DecodeString(bytes)
+				decoded := data.DecodeString(bytes)
 				assert.Equal(t, toBytes(tc.decoded), decoded)
 			})
 	}
