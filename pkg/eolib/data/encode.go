@@ -73,8 +73,9 @@ func invert(bytes []byte) []byte {
 	flippy := len(bytes)%2 == 1
 
 	retBytes := make([]byte, len(bytes))
+	copy(retBytes, bytes)
 
-	for i, c := range bytes {
+	for i, c := range retBytes {
 		retBytes[i] = c
 
 		f := 0
@@ -86,8 +87,8 @@ func invert(bytes []byte) []byte {
 			}
 		}
 
-		if c >= 0x22 && c <= 0x7e {
-			retBytes[i] = byte(0x9F - int(c) - f)
+		if c >= 0x22 && c <= 0x7E {
+			retBytes[i] = 0x9F - c - byte(f)
 		}
 
 		flippy = !flippy

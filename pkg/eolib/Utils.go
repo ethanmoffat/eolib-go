@@ -23,6 +23,7 @@ func Max[T constraints.Ordered](a, b T) T {
 // Reverse returns a new slice containing the elements of the input slice in reverse order.
 func Reverse[T constraints.Ordered](input []T) []T {
 	ret := make([]T, len(input))
+	copy(ret, input)
 
 	for i, j := 0, len(input)-1; i < j; i, j = i+1, j-1 {
 		ret[i], ret[j] = input[j], input[i]
