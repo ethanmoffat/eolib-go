@@ -121,14 +121,14 @@ func (w *EoWriter) AddPaddedString(str string, length int) (err error) {
 // AddEncodedString encodes and adds a string to the writer data.
 func (w *EoWriter) AddEncodedString(str string) error {
 	sanitized := w.sanitize([]byte(str))
-	return w.AddBytes(EncodeString(string(sanitized)))
+	return w.AddBytes(EncodeString(sanitized))
 }
 
 // AddFixedEncodedString encodes and adds a fixed-length string to the writer data.
 func (w *EoWriter) AddFixedEncodedString(str string, length int) (err error) {
 	if err = w.checkLength(str, length, false); err == nil {
 		sanitized := w.sanitize([]byte(str))
-		w.AddBytes(EncodeString(string(sanitized)))
+		w.AddBytes(EncodeString(sanitized))
 	}
 	return
 }
@@ -138,7 +138,7 @@ func (w *EoWriter) AddPaddedEncodedString(str string, length int) (err error) {
 	if err = w.checkLength(str, length, true); err == nil {
 		sanitized := w.sanitize([]byte(str))
 		padded := w.addPadding(sanitized, length)
-		w.AddBytes(EncodeString(string(padded)))
+		w.AddBytes(EncodeString(padded))
 	}
 	return
 }
