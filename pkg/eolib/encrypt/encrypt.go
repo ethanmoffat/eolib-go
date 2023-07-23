@@ -104,8 +104,8 @@ func SwapMultiples(data []byte, multiple int) (output []byte, err error) {
 
 	sequenceLength := 0
 
-	for i, b := range output {
-		if i != len(output) && int(b)%multiple == 0 {
+	for i := 0; i <= len(output); i++ {
+		if i != len(output) && int(output[i])%multiple == 0 {
 			sequenceLength++
 		} else {
 			if sequenceLength > 1 {
