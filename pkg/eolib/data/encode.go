@@ -62,7 +62,7 @@ func DecodeNumber(bytes []byte) int {
 
 // EncodeString encodes a string by inverting the bytes and then reversing them.
 func EncodeString(str []byte) []byte {
-	inverted := invert([]byte(str))
+	inverted := invert(str)
 	return eolib.Reverse(inverted)
 }
 
@@ -107,6 +107,14 @@ func windows1252String(bytes []byte) string {
 		next := charmap.Windows1252.DecodeByte(b)
 		ret = append(ret, next)
 	}
-
 	return string(ret)
+}
+
+func windows1252Bytes(str string) []byte {
+	ret := make([]byte, 0, len(str))
+	for _, r := range str {
+		next, _ := charmap.Windows1252.EncodeRune(r)
+		ret = append(ret, next)
+	}
+	return ret
 }
