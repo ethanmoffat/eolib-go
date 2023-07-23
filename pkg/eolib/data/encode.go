@@ -1,6 +1,8 @@
 package data
 
-import eolib "github.com/ethanmoffat/eolib-go/pkg/eolib"
+import (
+	eolib "github.com/ethanmoffat/eolib-go/pkg/eolib"
+)
 
 // EncodeNumber encodes a number to a sequence of bytes.
 func EncodeNumber(number int) []byte {
@@ -58,23 +60,24 @@ func DecodeNumber(bytes []byte) int {
 }
 
 // EncodeString encodes a string by inverting the bytes and then reversing them.
-func EncodeString(str string) []byte {
-	inverted := invert([]byte(str))
+func EncodeString(str []byte) []byte {
+	inverted := invert(str)
 	return eolib.Reverse(inverted)
 }
 
 // DecodeString decodes a string by reversing the bytes and then inverting them.
-func DecodeString(bytes []byte) string {
+func DecodeString(bytes []byte) []byte {
 	reversed := eolib.Reverse(bytes)
-	return string(invert(reversed))
+	return invert(reversed)
 }
 
 func invert(bytes []byte) []byte {
 	flippy := len(bytes)%2 == 1
 
 	retBytes := make([]byte, len(bytes))
+	copy(retBytes, bytes)
 
-	for i, c := range bytes {
+	for i, c := range retBytes {
 		retBytes[i] = c
 
 		f := 0
@@ -86,8 +89,8 @@ func invert(bytes []byte) []byte {
 			}
 		}
 
-		if c >= 0x22 && c <= 0x7e {
-			retBytes[i] = byte(0x9F - int(c) - f)
+		if c >= 0x22 && c <= 0x7E {
+			retBytes[i] = 0x9F - c - byte(f)
 		}
 
 		flippy = !flippy

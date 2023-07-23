@@ -6,6 +6,11 @@ type PacketSequencer struct {
 	counter        int
 }
 
+// NewPacketSequencer creates a new packet sequencer with the specified [SequenceGetter] and a counter of 0.
+func NewPacketSequencer(getter SequenceGetter) PacketSequencer {
+	return PacketSequencer{getter, 0}
+}
+
 // NextSequence returns the next sequence value, updating the sequence counter in the process
 //
 // Note: this is not a monotonic operation. The sequence counter increases from 0 to 9 before looping back around to 0.

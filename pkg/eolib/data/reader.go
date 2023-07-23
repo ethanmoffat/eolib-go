@@ -29,7 +29,7 @@ type EoReader struct {
 
 // NewEoReader initializes an [data.EoReader] with the data in the specified byte slice.
 func NewEoReader(data []byte) *EoReader {
-	return &EoReader{data, 0, chunkProperties{}}
+	return &EoReader{data, 0, chunkProperties{false, 0, -1}}
 }
 
 // Read satisfies the io.Reader interface.
@@ -147,7 +147,7 @@ func (r *EoReader) GetPaddedString(length int) (string, error) {
 
 // GetEncodedString reads and decodes an encoded string from the input data.
 func (r *EoReader) GetEncodedString() (string, error) {
-	return DecodeString(r.readBytes(r.Remaining())), nil
+	return StringFromBytes(DecodeString(r.readBytes(r.Remaining()))), nil
 }
 
 // GetFixedEncodedString reads and decodes a fixed string from the input data.
@@ -156,7 +156,7 @@ func (r *EoReader) GetFixedEncodedString(length int) (string, error) {
 		return "", errors.New("negative length")
 	}
 
-	return DecodeString(r.readBytes(length)), nil
+	return StringFromBytes(DecodeString(r.readBytes(length))), nil
 }
 
 // GetPaddedEncodedString reads and decodes a fixed string from the input data and removes trailing padding bytes (0xFF value).
@@ -254,10 +254,11 @@ func (r *EoReader) removePadding(input []byte) []byte {
 }
 
 func (r *EoReader) findNextBreakIndex() int {
-	for i := r.chunkInfo.chunkStart; i < len(r.data); i++ {
+	var i int
+	for i = r.chunkInfo.chunkStart; i < len(r.data); i++ {
 		if r.data[i] == 0xFF {
-			return i
+			break
 		}
 	}
-	return r.chunkInfo.chunkStart
+	return i
 }
