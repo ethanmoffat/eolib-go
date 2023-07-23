@@ -2,7 +2,6 @@ package data
 
 import (
 	eolib "github.com/ethanmoffat/eolib-go/pkg/eolib"
-	"golang.org/x/text/encoding/charmap"
 )
 
 // EncodeNumber encodes a number to a sequence of bytes.
@@ -98,23 +97,4 @@ func invert(bytes []byte) []byte {
 	}
 
 	return retBytes
-}
-
-// windows1252String converts a sequence of bytes to a string using the Windows-1252 character set
-func windows1252String(bytes []byte) string {
-	var ret []rune
-	for _, b := range bytes {
-		next := charmap.Windows1252.DecodeByte(b)
-		ret = append(ret, next)
-	}
-	return string(ret)
-}
-
-func windows1252Bytes(str string) []byte {
-	ret := make([]byte, 0, len(str))
-	for _, r := range str {
-		next, _ := charmap.Windows1252.EncodeRune(r)
-		ret = append(ret, next)
-	}
-	return ret
 }

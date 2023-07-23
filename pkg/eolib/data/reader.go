@@ -147,7 +147,7 @@ func (r *EoReader) GetPaddedString(length int) (string, error) {
 
 // GetEncodedString reads and decodes an encoded string from the input data.
 func (r *EoReader) GetEncodedString() (string, error) {
-	return windows1252String(DecodeString(r.readBytes(r.Remaining()))), nil
+	return StringFromBytes(DecodeString(r.readBytes(r.Remaining()))), nil
 }
 
 // GetFixedEncodedString reads and decodes a fixed string from the input data.
@@ -156,7 +156,7 @@ func (r *EoReader) GetFixedEncodedString(length int) (string, error) {
 		return "", errors.New("negative length")
 	}
 
-	return windows1252String(DecodeString(r.readBytes(length))), nil
+	return StringFromBytes(DecodeString(r.readBytes(length))), nil
 }
 
 // GetPaddedEncodedString reads and decodes a fixed string from the input data and removes trailing padding bytes (0xFF value).
