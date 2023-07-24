@@ -148,8 +148,8 @@ func (w *EoWriter) Length() int {
 	return len(w.data)
 }
 
-// ToByteArray gets the writer data as a byte array.
-func (w *EoWriter) ToByteArray() []byte {
+// Array gets the writer data as a byte array.
+func (w *EoWriter) Array() []byte {
 	ret := make([]byte, len(w.data))
 	copy(ret, w.data)
 	return ret

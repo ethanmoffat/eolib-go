@@ -32,8 +32,8 @@ func (s *Coords) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Coords) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// X : field : char
 	s.X = reader.GetChar()

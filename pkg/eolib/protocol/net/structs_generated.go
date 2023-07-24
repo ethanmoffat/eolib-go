@@ -38,8 +38,8 @@ func (s *Version) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Version) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Major : field : char
 	s.Major = reader.GetChar()
@@ -75,8 +75,8 @@ func (s *Weight) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Weight) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Current : field : char
 	s.Current = reader.GetChar()
@@ -110,8 +110,8 @@ func (s *Item) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Item) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Id : field : short
 	s.Id = reader.GetShort()
@@ -145,8 +145,8 @@ func (s *ThreeItem) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ThreeItem) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Id : field : short
 	s.Id = reader.GetShort()
@@ -180,8 +180,8 @@ func (s *CharItem) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *CharItem) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Id : field : short
 	s.Id = reader.GetShort()
@@ -215,8 +215,8 @@ func (s *Spell) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Spell) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Id : field : short
 	s.Id = reader.GetShort()

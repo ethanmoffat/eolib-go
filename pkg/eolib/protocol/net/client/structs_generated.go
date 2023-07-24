@@ -33,8 +33,8 @@ func (s *ByteCoords) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ByteCoords) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// X : field : byte
 	s.X = int(reader.GetByte())
@@ -73,8 +73,8 @@ func (s *WalkAction) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WalkAction) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Direction : field : Direction
 	s.Direction = protocol.Direction(reader.GetChar())

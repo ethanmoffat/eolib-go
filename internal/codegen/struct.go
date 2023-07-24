@@ -122,8 +122,8 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 
 	// write out deserialize method
 	output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) (err error) {\n", structName))
-	output.WriteString("\toldChunkedReadingMode := reader.GetChunkedReadingMode()\n")
-	output.WriteString("\tdefer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()\n\n")
+	output.WriteString("\toldIsChunked := reader.IsChunked()\n")
+	output.WriteString("\tdefer func() { reader.SetIsChunked(oldIsChunked) }()\n\n")
 	if nextImports, err = writeDeserializeBody(output, instructions, switchStructQualifier, packageName, fullSpec); err != nil {
 		return nil, err
 	}
@@ -238,8 +238,8 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 
 		// write out deserialize method
 		output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) (err error) {\n", caseStructName))
-		output.WriteString("\toldChunkedReadingMode := reader.GetChunkedReadingMode()\n")
-		output.WriteString("\tdefer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()\n\n")
+		output.WriteString("\toldIsChunked := reader.IsChunked()\n")
+		output.WriteString("\tdefer func() { reader.SetIsChunked(oldIsChunked) }()\n\n")
 		if nextImports, err = writeDeserializeBody(output, c.Instructions, switchStructQualifier, packageName, fullSpec); err != nil {
 			return nil, err
 		}
@@ -449,7 +449,7 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 		instructionType := instruction.XMLName.Local
 
 		if instructionType == "chunked" {
-			output.WriteString("\treader.SetChunkedReadingMode(true)\n")
+			output.WriteString("\treader.SetIsChunked(true)\n")
 			oldChunked := isChunked
 			isChunked = true
 			oldOuterInstructionList := outerInstructionList
@@ -462,7 +462,7 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 			}
 			imports = append(imports, nextImports...)
 
-			output.WriteString("\treader.SetChunkedReadingMode(false)\n\n")
+			output.WriteString("\treader.SetIsChunked(false)\n\n")
 			continue
 		}
 
