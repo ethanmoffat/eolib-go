@@ -6,7 +6,7 @@ import (
 
 // Packet represents a packet object in the EO network protocol.
 type Packet interface {
-	protocol.Serializer
+	protocol.EoData
 
 	Family() PacketFamily // Family gets the family of the EO packet.
 	Action() PacketAction // Action gets the action of the EO packet.EoData
