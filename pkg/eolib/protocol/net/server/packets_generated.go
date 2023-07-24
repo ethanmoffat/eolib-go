@@ -37,8 +37,8 @@ func (s *InitInitReplyCodeDataOutOfDate) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *InitInitReplyCodeDataOutOfDate) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Version : field : Version
 	if err = s.Version.Deserialize(reader); err != nil {
@@ -95,8 +95,8 @@ func (s *InitInitReplyCodeDataOk) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *InitInitReplyCodeDataOk) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Seq1 : field : byte
 	s.Seq1 = int(reader.GetByte())
@@ -141,8 +141,8 @@ func (s *InitInitBanTypeData0) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *InitInitBanTypeData0) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MinutesRemaining : field : byte
 	s.MinutesRemaining = int(reader.GetByte())
@@ -167,8 +167,8 @@ func (s *InitInitBanTypeDataTemporary) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitBanTypeDataTemporary) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MinutesRemaining : field : byte
 	s.MinutesRemaining = int(reader.GetByte())
@@ -211,8 +211,8 @@ func (s *InitInitReplyCodeDataBanned) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *InitInitReplyCodeDataBanned) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// BanType : field : InitBanType
 	s.BanType = InitBanType(reader.GetByte())
@@ -248,8 +248,8 @@ func (s *InitInitReplyCodeDataWarpMap) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitReplyCodeDataWarpMap) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapFile : field : MapFile
 	if err = s.MapFile.Deserialize(reader); err != nil {
@@ -275,8 +275,8 @@ func (s *InitInitReplyCodeDataFileEmf) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitReplyCodeDataFileEmf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapFile : field : MapFile
 	if err = s.MapFile.Deserialize(reader); err != nil {
@@ -302,8 +302,8 @@ func (s *InitInitReplyCodeDataFileEif) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitReplyCodeDataFileEif) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -329,8 +329,8 @@ func (s *InitInitReplyCodeDataFileEnf) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitReplyCodeDataFileEnf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -356,8 +356,8 @@ func (s *InitInitReplyCodeDataFileEsf) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitReplyCodeDataFileEsf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -383,8 +383,8 @@ func (s *InitInitReplyCodeDataFileEcf) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *InitInitReplyCodeDataFileEcf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -410,8 +410,8 @@ func (s *InitInitReplyCodeDataMapMutation) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *InitInitReplyCodeDataMapMutation) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapFile : field : MapFile
 	if err = s.MapFile.Deserialize(reader); err != nil {
@@ -439,15 +439,15 @@ func (s *InitInitReplyCodeDataPlayersList) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *InitInitReplyCodeDataPlayersList) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayersList : field : PlayersList
 	if err = s.PlayersList.Deserialize(reader); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -470,15 +470,15 @@ func (s *InitInitReplyCodeDataPlayersListFriends) Serialize(writer data.EoWriter
 }
 
 func (s *InitInitReplyCodeDataPlayersListFriends) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayersList : field : PlayersListFriends
 	if err = s.PlayersList.Deserialize(reader); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -626,8 +626,8 @@ func (s *InitInitServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *InitInitServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : InitReply
 	s.ReplyCode = InitReply(reader.GetByte())
@@ -722,8 +722,8 @@ func (s *WarpPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WarpPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapFile : field : MapFile
 	if err = s.MapFile.Deserialize(reader); err != nil {
@@ -758,8 +758,8 @@ func (s *WelcomePingServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WelcomePingServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapFile : field : MapFile
 	if err = s.MapFile.Deserialize(reader); err != nil {
@@ -794,8 +794,8 @@ func (s *WelcomePongServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WelcomePongServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -830,8 +830,8 @@ func (s *WelcomeNet242ServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *WelcomeNet242ServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -866,8 +866,8 @@ func (s *WelcomeNet243ServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *WelcomeNet243ServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -904,15 +904,15 @@ func (s *PlayersListServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PlayersListServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayersList : field : PlayersList
 	if err = s.PlayersList.Deserialize(reader); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -942,8 +942,8 @@ func (s *WarpCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WarpCreateServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapFile : field : MapFile
 	if err = s.MapFile.Deserialize(reader); err != nil {
@@ -980,15 +980,15 @@ func (s *PlayersReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PlayersReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayersList : field : PlayersListFriends
 	if err = s.PlayersList.Deserialize(reader); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -1018,8 +1018,8 @@ func (s *WelcomeNet244ServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *WelcomeNet244ServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PubFile : field : PubFile
 	if err = s.PubFile.Deserialize(reader); err != nil {
@@ -1061,8 +1061,8 @@ func (s *ConnectionPlayerServerPacket) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *ConnectionPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Seq1 : field : short
 	s.Seq1 = reader.GetShort()
@@ -1098,8 +1098,8 @@ func (s *AccountReplyReplyCodeDataExists) Serialize(writer data.EoWriter) (err e
 }
 
 func (s *AccountReplyReplyCodeDataExists) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1125,8 +1125,8 @@ func (s *AccountReplyReplyCodeDataNotApproved) Serialize(writer data.EoWriter) (
 }
 
 func (s *AccountReplyReplyCodeDataNotApproved) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1152,8 +1152,8 @@ func (s *AccountReplyReplyCodeDataCreated) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *AccountReplyReplyCodeDataCreated) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1179,8 +1179,8 @@ func (s *AccountReplyReplyCodeDataChangeFailed) Serialize(writer data.EoWriter) 
 }
 
 func (s *AccountReplyReplyCodeDataChangeFailed) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1206,8 +1206,8 @@ func (s *AccountReplyReplyCodeDataChanged) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *AccountReplyReplyCodeDataChanged) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1233,8 +1233,8 @@ func (s *AccountReplyReplyCodeDataRequestDenied) Serialize(writer data.EoWriter)
 }
 
 func (s *AccountReplyReplyCodeDataRequestDenied) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1267,8 +1267,8 @@ func (s *AccountReplyReplyCodeDataDefault) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *AccountReplyReplyCodeDataDefault) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SequenceStart : field : char
 	s.SequenceStart = reader.GetChar()
@@ -1373,8 +1373,8 @@ func (s *AccountReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AccountReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : AccountReply
 	s.ReplyCode = AccountReply(reader.GetShort())
@@ -1445,8 +1445,8 @@ func (s *CharacterReplyReplyCodeDataExists) Serialize(writer data.EoWriter) (err
 }
 
 func (s *CharacterReplyReplyCodeDataExists) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1472,8 +1472,8 @@ func (s *CharacterReplyReplyCodeDataFull) Serialize(writer data.EoWriter) (err e
 }
 
 func (s *CharacterReplyReplyCodeDataFull) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1499,8 +1499,8 @@ func (s *CharacterReplyReplyCodeDataFull3) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *CharacterReplyReplyCodeDataFull3) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1526,8 +1526,8 @@ func (s *CharacterReplyReplyCodeDataNotApproved) Serialize(writer data.EoWriter)
 }
 
 func (s *CharacterReplyReplyCodeDataNotApproved) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1570,8 +1570,8 @@ func (s *CharacterReplyReplyCodeDataOk) Serialize(writer data.EoWriter) (err err
 }
 
 func (s *CharacterReplyReplyCodeDataOk) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// CharactersCount : length : char
 	s.CharactersCount = reader.GetChar()
@@ -1618,8 +1618,8 @@ func (s *CharacterReplyReplyCodeDataDeleted) Serialize(writer data.EoWriter) (er
 }
 
 func (s *CharacterReplyReplyCodeDataDeleted) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// CharactersCount : length : char
 	s.CharactersCount = reader.GetChar()
@@ -1654,8 +1654,8 @@ func (s *CharacterReplyReplyCodeDataDefault) Serialize(writer data.EoWriter) (er
 }
 
 func (s *CharacterReplyReplyCodeDataDefault) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1760,10 +1760,10 @@ func (s *CharacterReplyServerPacket) Serialize(writer data.EoWriter) (err error)
 }
 
 func (s *CharacterReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// ReplyCode : field : CharacterReply
 	s.ReplyCode = CharacterReply(reader.GetShort())
 	switch s.ReplyCode {
@@ -1803,7 +1803,7 @@ func (s *CharacterReplyServerPacket) Deserialize(reader data.EoReader) (err erro
 			return
 		}
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -1840,8 +1840,8 @@ func (s *CharacterPlayerServerPacket) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *CharacterPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : short
 	s.SessionId = reader.GetShort()
@@ -1877,8 +1877,8 @@ func (s *LoginReplyReplyCodeDataWrongUser) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *LoginReplyReplyCodeDataWrongUser) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1904,8 +1904,8 @@ func (s *LoginReplyReplyCodeDataWrongUserPassword) Serialize(writer data.EoWrite
 }
 
 func (s *LoginReplyReplyCodeDataWrongUserPassword) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -1948,8 +1948,8 @@ func (s *LoginReplyReplyCodeDataOk) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *LoginReplyReplyCodeDataOk) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// CharactersCount : length : char
 	s.CharactersCount = reader.GetChar()
@@ -1985,8 +1985,8 @@ func (s *LoginReplyReplyCodeDataBanned) Serialize(writer data.EoWriter) (err err
 }
 
 func (s *LoginReplyReplyCodeDataBanned) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -2012,8 +2012,8 @@ func (s *LoginReplyReplyCodeDataLoggedIn) Serialize(writer data.EoWriter) (err e
 }
 
 func (s *LoginReplyReplyCodeDataLoggedIn) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -2039,8 +2039,8 @@ func (s *LoginReplyReplyCodeDataBusy) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *LoginReplyReplyCodeDataBusy) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetString(); err != nil {
@@ -2135,10 +2135,10 @@ func (s *LoginReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *LoginReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// ReplyCode : field : LoginReply
 	s.ReplyCode = LoginReply(reader.GetShort())
 	switch s.ReplyCode {
@@ -2173,7 +2173,7 @@ func (s *LoginReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 			return
 		}
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -2384,8 +2384,8 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer data.EoWri
 }
 
 func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : short
 	s.SessionId = reader.GetShort()
@@ -2548,8 +2548,8 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Serialize(writer data.EoWriter) (
 }
 
 func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	if breakByte := reader.GetByte(); breakByte != 0xFF {
 		return fmt.Errorf("missing expected break byte")
@@ -2641,12 +2641,12 @@ func (s *WelcomeReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WelcomeReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// WelcomeCode : field : WelcomeCode
 	s.WelcomeCode = WelcomeCode(reader.GetShort())
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	switch s.WelcomeCode {
 	case WelcomeCode_SelectCharacter:
 		s.WelcomeCodeData = &WelcomeReplyWelcomeCodeDataSelectCharacter{}
@@ -2659,7 +2659,7 @@ func (s *WelcomeReplyServerPacket) Deserialize(reader data.EoReader) (err error)
 			return
 		}
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -2699,8 +2699,8 @@ func (s *AdminInteractReplyMessageTypeDataMessage) Serialize(writer data.EoWrite
 }
 
 func (s *AdminInteractReplyMessageTypeDataMessage) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
@@ -2754,8 +2754,8 @@ func (s *AdminInteractReplyMessageTypeDataReport) Serialize(writer data.EoWriter
 }
 
 func (s *AdminInteractReplyMessageTypeDataReport) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
@@ -2831,10 +2831,10 @@ func (s *AdminInteractReplyServerPacket) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *AdminInteractReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// MessageType : field : AdminMessageType
 	s.MessageType = AdminMessageType(reader.GetChar())
 	if err = reader.NextChunk(); err != nil {
@@ -2852,7 +2852,7 @@ func (s *AdminInteractReplyServerPacket) Deserialize(reader data.EoReader) (err 
 			return
 		}
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -2883,8 +2883,8 @@ func (s *AdminInteractRemoveServerPacket) Serialize(writer data.EoWriter) (err e
 }
 
 func (s *AdminInteractRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -2918,8 +2918,8 @@ func (s *AdminInteractAgreeServerPacket) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *AdminInteractAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -2987,10 +2987,10 @@ func (s *AdminInteractListServerPacket) Serialize(writer data.EoWriter) (err err
 }
 
 func (s *AdminInteractListServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
 		return
@@ -3028,7 +3028,7 @@ func (s *AdminInteractListServerPacket) Deserialize(reader data.EoReader) (err e
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3103,10 +3103,10 @@ func (s *AdminInteractTellServerPacket) Serialize(writer data.EoWriter) (err err
 }
 
 func (s *AdminInteractTellServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
 		return
@@ -3141,7 +3141,7 @@ func (s *AdminInteractTellServerPacket) Deserialize(reader data.EoReader) (err e
 	if err = s.Weight.Deserialize(reader); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3181,10 +3181,10 @@ func (s *TalkRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
 		return
@@ -3198,7 +3198,7 @@ func (s *TalkRequestServerPacket) Deserialize(reader data.EoReader) (err error) 
 		return
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3235,8 +3235,8 @@ func (s *TalkOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -3283,10 +3283,10 @@ func (s *TalkMsgServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkMsgServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
 		return
@@ -3300,7 +3300,7 @@ func (s *TalkMsgServerPacket) Deserialize(reader data.EoReader) (err error) {
 		return
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3340,10 +3340,10 @@ func (s *TalkTellServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkTellServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
 		return
@@ -3357,7 +3357,7 @@ func (s *TalkTellServerPacket) Deserialize(reader data.EoReader) (err error) {
 		return
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3394,8 +3394,8 @@ func (s *TalkPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -3439,8 +3439,8 @@ func (s *TalkReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : TalkReply
 	s.ReplyCode = TalkReply(reader.GetShort())
@@ -3487,10 +3487,10 @@ func (s *TalkAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkAdminServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
 		return
@@ -3504,7 +3504,7 @@ func (s *TalkAdminServerPacket) Deserialize(reader data.EoReader) (err error) {
 		return
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3544,10 +3544,10 @@ func (s *TalkAnnounceServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkAnnounceServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
 		return
@@ -3561,7 +3561,7 @@ func (s *TalkAnnounceServerPacket) Deserialize(reader data.EoReader) (err error)
 		return
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3592,8 +3592,8 @@ func (s *TalkServerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkServerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Message : field : string
 	if s.Message, err = reader.GetString(); err != nil {
@@ -3634,10 +3634,10 @@ func (s *TalkListServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkListServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Messages : array : GlobalBackfillMessage
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
 		s.Messages = append(s.Messages, GlobalBackfillMessage{})
@@ -3649,7 +3649,7 @@ func (s *TalkListServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3680,8 +3680,8 @@ func (s *MessageOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MessageOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Message : field : string
 	if s.Message, err = reader.GetString(); err != nil {
@@ -3716,8 +3716,8 @@ func (s *MessageCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MessageCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
@@ -3759,10 +3759,10 @@ func (s *MessageAcceptServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *MessageAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Messages : array : string
 	for ndx := 0; ndx < 4; ndx++ {
 		if s.Messages[ndx], err = reader.GetString(); err != nil {
@@ -3774,7 +3774,7 @@ func (s *MessageAcceptServerPacket) Deserialize(reader data.EoReader) (err error
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -3805,8 +3805,8 @@ func (s *TalkSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TalkSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// AdminName : field : string
 	if s.AdminName, err = reader.GetString(); err != nil {
@@ -3848,8 +3848,8 @@ func (s *AttackPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AttackPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -3884,8 +3884,8 @@ func (s *AttackErrorServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AttackErrorServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : byte
 	reader.GetByte()
@@ -3954,8 +3954,8 @@ func (s *AvatarReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AvatarReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4014,8 +4014,8 @@ func (s *ChairPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChairPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4066,8 +4066,8 @@ func (s *ChairReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChairReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4112,8 +4112,8 @@ func (s *ChairCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChairCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4156,8 +4156,8 @@ func (s *ChairRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChairRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4211,8 +4211,8 @@ func (s *SitPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SitPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4259,8 +4259,8 @@ func (s *SitCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SitCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4303,8 +4303,8 @@ func (s *SitRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SitRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4358,8 +4358,8 @@ func (s *SitReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SitReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4407,8 +4407,8 @@ func (s *EmotePlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EmotePlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4450,8 +4450,8 @@ func (s *EffectPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4493,8 +4493,8 @@ func (s *FacePlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *FacePlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4536,8 +4536,8 @@ func (s *AvatarRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AvatarRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4572,8 +4572,8 @@ func (s *PlayersAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PlayersAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Nearby : field : NearbyInfo
 	if err = s.Nearby.Deserialize(reader); err != nil {
@@ -4609,8 +4609,8 @@ func (s *PlayersRemoveServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *PlayersRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4643,8 +4643,8 @@ func (s *RangeReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *RangeReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Nearby : field : NearbyInfo
 	if err = s.Nearby.Deserialize(reader); err != nil {
@@ -4688,8 +4688,8 @@ func (s *NpcAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NpcsCount : length : short
 	s.NpcsCount = reader.GetShort()
@@ -4741,8 +4741,8 @@ func (s *WalkPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WalkPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -4806,10 +4806,10 @@ func (s *WalkReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WalkReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerIds : array : short
 	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
 		s.PlayerIds[ndx] = reader.GetShort()
@@ -4834,7 +4834,7 @@ func (s *WalkReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -4864,8 +4864,8 @@ func (s *WalkCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WalkCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
@@ -4900,8 +4900,8 @@ func (s *WalkOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WalkOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
@@ -4949,8 +4949,8 @@ func (s *BankOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BankOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldBank : field : int
 	s.GoldBank = reader.GetInt()
@@ -4994,8 +4994,8 @@ func (s *BankReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BankReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldInventory : field : int
 	s.GoldInventory = reader.GetInt()
@@ -5036,8 +5036,8 @@ func (s *BarberAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BarberAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -5075,8 +5075,8 @@ func (s *BarberOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BarberOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : int
 	s.SessionId = reader.GetInt()
@@ -5122,8 +5122,8 @@ func (s *LockerReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *LockerReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// DepositedItem : field : Item
 	if err = s.DepositedItem.Deserialize(reader); err != nil {
@@ -5182,8 +5182,8 @@ func (s *LockerGetServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *LockerGetServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TakenItem : field : ThreeItem
 	if err = s.TakenItem.Deserialize(reader); err != nil {
@@ -5237,8 +5237,8 @@ func (s *LockerOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *LockerOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// LockerCoords : field : Coords
 	if err = s.LockerCoords.Deserialize(reader); err != nil {
@@ -5287,8 +5287,8 @@ func (s *LockerBuyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *LockerBuyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -5324,8 +5324,8 @@ func (s *LockerSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *LockerSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// LockerMaxItems : field : char
 	s.LockerMaxItems = reader.GetChar()
@@ -5359,8 +5359,8 @@ func (s *CitizenReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *CitizenReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// QuestionsWrong : field : char
 	s.QuestionsWrong = reader.GetChar()
@@ -5394,8 +5394,8 @@ func (s *CitizenRemoveServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *CitizenRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : InnUnsubscribeReply
 	s.ReplyCode = InnUnsubscribeReply(reader.GetChar())
@@ -5457,10 +5457,10 @@ func (s *CitizenOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *CitizenOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// BehaviorId : field : three
 	s.BehaviorId = reader.GetThree()
 	// CurrentHomeId : field : char
@@ -5483,7 +5483,7 @@ func (s *CitizenOpenServerPacket) Deserialize(reader data.EoReader) (err error) 
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -5514,8 +5514,8 @@ func (s *CitizenRequestServerPacket) Serialize(writer data.EoWriter) (err error)
 }
 
 func (s *CitizenRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Cost : field : int
 	s.Cost = reader.GetInt()
@@ -5549,8 +5549,8 @@ func (s *CitizenAcceptServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *CitizenAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -5597,8 +5597,8 @@ func (s *ShopCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ShopCreateServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// CraftItemId : field : short
 	s.CraftItemId = reader.GetShort()
@@ -5653,8 +5653,8 @@ func (s *ShopBuyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ShopBuyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -5706,8 +5706,8 @@ func (s *ShopSellServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ShopSellServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SoldItem : field : ShopSoldItem
 	if err = s.SoldItem.Deserialize(reader); err != nil {
@@ -5776,10 +5776,10 @@ func (s *ShopOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ShopOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// SessionId : field : short
 	s.SessionId = reader.GetShort()
 	// ShopName : field : string
@@ -5812,7 +5812,7 @@ func (s *ShopOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -5860,10 +5860,10 @@ func (s *StatSkillOpenServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *StatSkillOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// SessionId : field : short
 	s.SessionId = reader.GetShort()
 	// ShopName : field : string
@@ -5882,7 +5882,7 @@ func (s *StatSkillOpenServerPacket) Deserialize(reader data.EoReader) (err error
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -5914,8 +5914,8 @@ func (s *StatSkillReplyReplyCodeDataWrongClass) Serialize(writer data.EoWriter) 
 }
 
 func (s *StatSkillReplyReplyCodeDataWrongClass) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ClassId : field : char
 	s.ClassId = reader.GetChar()
@@ -5956,8 +5956,8 @@ func (s *StatSkillReplyServerPacket) Serialize(writer data.EoWriter) (err error)
 }
 
 func (s *StatSkillReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : SkillMasterReply
 	s.ReplyCode = SkillMasterReply(reader.GetShort())
@@ -6004,8 +6004,8 @@ func (s *StatSkillTakeServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *StatSkillTakeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
@@ -6041,8 +6041,8 @@ func (s *StatSkillRemoveServerPacket) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *StatSkillRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
@@ -6081,8 +6081,8 @@ func (s *StatSkillPlayerServerPacket) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *StatSkillPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// StatPoints : field : short
 	s.StatPoints = reader.GetShort()
@@ -6125,8 +6125,8 @@ func (s *StatSkillAcceptServerPacket) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *StatSkillAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SkillPoints : field : short
 	s.SkillPoints = reader.GetShort()
@@ -6163,8 +6163,8 @@ func (s *StatSkillJunkServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *StatSkillJunkServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Stats : field : CharacterStatsReset
 	if err = s.Stats.Deserialize(reader); err != nil {
@@ -6215,8 +6215,8 @@ func (s *ItemReplyItemTypeDataHeal) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *ItemReplyItemTypeDataHeal) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// HpGain : field : int
 	s.HpGain = reader.GetInt()
@@ -6245,8 +6245,8 @@ func (s *ItemReplyItemTypeDataHairDye) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *ItemReplyItemTypeDataHairDye) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// HairColor : field : char
 	s.HairColor = reader.GetChar()
@@ -6271,8 +6271,8 @@ func (s *ItemReplyItemTypeDataEffectPotion) Serialize(writer data.EoWriter) (err
 }
 
 func (s *ItemReplyItemTypeDataEffectPotion) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// EffectId : field : short
 	s.EffectId = reader.GetShort()
@@ -6296,8 +6296,8 @@ func (s *ItemReplyItemTypeDataCureCurse) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *ItemReplyItemTypeDataCureCurse) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Stats : field : CharacterStatsEquipmentChange
 	if err = s.Stats.Deserialize(reader); err != nil {
@@ -6360,8 +6360,8 @@ func (s *ItemReplyItemTypeDataExpReward) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *ItemReplyItemTypeDataExpReward) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Experience : field : int
 	s.Experience = reader.GetInt()
@@ -6462,8 +6462,8 @@ func (s *ItemReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ItemType : field : ItemType
 	s.ItemType = pub.ItemType(reader.GetChar())
@@ -6553,8 +6553,8 @@ func (s *ItemDropServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemDropServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// DroppedItem : field : ThreeItem
 	if err = s.DroppedItem.Deserialize(reader); err != nil {
@@ -6619,8 +6619,8 @@ func (s *ItemAddServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemAddServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ItemId : field : short
 	s.ItemId = reader.GetShort()
@@ -6662,8 +6662,8 @@ func (s *ItemRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ItemIndex : field : short
 	s.ItemIndex = reader.GetShort()
@@ -6707,8 +6707,8 @@ func (s *ItemJunkServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemJunkServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// JunkedItem : field : ThreeItem
 	if err = s.JunkedItem.Deserialize(reader); err != nil {
@@ -6760,8 +6760,8 @@ func (s *ItemGetServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemGetServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TakenItemIndex : field : short
 	s.TakenItemIndex = reader.GetShort()
@@ -6808,8 +6808,8 @@ func (s *ItemObtainServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemObtainServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Item : field : ThreeItem
 	if err = s.Item.Deserialize(reader); err != nil {
@@ -6852,8 +6852,8 @@ func (s *ItemKickServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemKickServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Item : field : Item
 	if err = s.Item.Deserialize(reader); err != nil {
@@ -6891,8 +6891,8 @@ func (s *ItemAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ItemId : field : short
 	s.ItemId = reader.GetShort()
@@ -6925,8 +6925,8 @@ func (s *ItemSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : short
 	reader.GetShort()
@@ -6968,10 +6968,10 @@ func (s *BoardPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BoardPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PostId : field : short
 	s.PostId = reader.GetShort()
 	// PostBody : field : string
@@ -6979,7 +6979,7 @@ func (s *BoardPlayerServerPacket) Deserialize(reader data.EoReader) (err error) 
 		return
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -7027,10 +7027,10 @@ func (s *BoardOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BoardOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// BoardId : field : char
 	s.BoardId = reader.GetChar()
 	// PostsCount : length : char
@@ -7046,7 +7046,7 @@ func (s *BoardOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -7077,8 +7077,8 @@ func (s *JukeboxAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *JukeboxAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -7111,8 +7111,8 @@ func (s *JukeboxReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *JukeboxReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : short
 	reader.GetShort()
@@ -7152,8 +7152,8 @@ func (s *JukeboxOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *JukeboxOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapId : field : short
 	s.MapId = reader.GetShort()
@@ -7209,8 +7209,8 @@ func (s *JukeboxMsgServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *JukeboxMsgServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -7250,8 +7250,8 @@ func (s *JukeboxPlayerServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *JukeboxPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MfxId : field : char
 	s.MfxId = reader.GetChar()
@@ -7285,8 +7285,8 @@ func (s *JukeboxUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *JukeboxUseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TrackId : field : short
 	s.TrackId = reader.GetShort()
@@ -7332,8 +7332,8 @@ func (s *WarpRequestWarpTypeDataMapSwitch) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *WarpRequestWarpTypeDataMapSwitch) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
@@ -7389,8 +7389,8 @@ func (s *WarpRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WarpRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// WarpType : field : WarpType
 	s.WarpType = WarpType(reader.GetChar())
@@ -7443,8 +7443,8 @@ func (s *WarpAgreeWarpTypeDataMapSwitch) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *WarpAgreeWarpTypeDataMapSwitch) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapId : field : short
 	s.MapId = reader.GetShort()
@@ -7493,10 +7493,10 @@ func (s *WarpAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *WarpAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// WarpType : field : WarpType
 	s.WarpType = WarpType(reader.GetChar())
 	switch s.WarpType {
@@ -7510,7 +7510,7 @@ func (s *WarpAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
 	if err = s.Nearby.Deserialize(reader); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -7553,10 +7553,10 @@ func (s *PaperdollReplyServerPacket) Serialize(writer data.EoWriter) (err error)
 }
 
 func (s *PaperdollReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Details : field : CharacterDetails
 	if err = s.Details.Deserialize(reader); err != nil {
 		return
@@ -7567,7 +7567,7 @@ func (s *PaperdollReplyServerPacket) Deserialize(reader data.EoReader) (err erro
 	}
 	// Icon : field : CharacterIcon
 	s.Icon = CharacterIcon(reader.GetChar())
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -7598,8 +7598,8 @@ func (s *PaperdollPingServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *PaperdollPingServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ClassId : field : char
 	s.ClassId = reader.GetChar()
@@ -7649,8 +7649,8 @@ func (s *PaperdollRemoveServerPacket) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *PaperdollRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Change : field : AvatarChange
 	if err = s.Change.Deserialize(reader); err != nil {
@@ -7716,8 +7716,8 @@ func (s *PaperdollAgreeServerPacket) Serialize(writer data.EoWriter) (err error)
 }
 
 func (s *PaperdollAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Change : field : AvatarChange
 	if err = s.Change.Deserialize(reader); err != nil {
@@ -7762,8 +7762,8 @@ func (s *AvatarAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AvatarAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Change : field : AvatarChange
 	if err = s.Change.Deserialize(reader); err != nil {
@@ -7817,10 +7817,10 @@ func (s *BookReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *BookReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Details : field : CharacterDetails
 	if err = s.Details.Deserialize(reader); err != nil {
 		return
@@ -7841,7 +7841,7 @@ func (s *BookReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -7871,8 +7871,8 @@ func (s *MessagePongServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MessagePongServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : short
 	reader.GetShort()
@@ -7906,8 +7906,8 @@ func (s *PlayersPingServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PlayersPingServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
@@ -7943,8 +7943,8 @@ func (s *PlayersPongServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PlayersPongServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
@@ -7980,8 +7980,8 @@ func (s *PlayersNet242ServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *PlayersNet242ServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
@@ -8021,8 +8021,8 @@ func (s *DoorOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *DoorOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -8060,8 +8060,8 @@ func (s *DoorCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *DoorCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Key : field : char
 	s.Key = reader.GetChar()
@@ -8102,8 +8102,8 @@ func (s *ChestOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChestOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -8165,8 +8165,8 @@ func (s *ChestReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChestReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// AddedItemId : field : short
 	s.AddedItemId = reader.GetShort()
@@ -8225,8 +8225,8 @@ func (s *ChestGetServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChestGetServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TakenItem : field : ThreeItem
 	if err = s.TakenItem.Deserialize(reader); err != nil {
@@ -8275,8 +8275,8 @@ func (s *ChestAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChestAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Items : array : ThreeItem
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
@@ -8314,8 +8314,8 @@ func (s *ChestSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChestSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : byte
 	reader.GetByte()
@@ -8355,8 +8355,8 @@ func (s *ChestCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ChestCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Key : field : short
 	s.Key = reader.GetShort()
@@ -8393,8 +8393,8 @@ func (s *RefreshReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *RefreshReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Nearby : field : NearbyInfo
 	if err = s.Nearby.Deserialize(reader); err != nil {
@@ -8442,8 +8442,8 @@ func (s *PartyRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// RequestType : field : PartyRequestType
 	s.RequestType = net.PartyRequestType(reader.GetChar())
@@ -8484,8 +8484,8 @@ func (s *PartyReplyReplyCodeDataAlreadyInAnotherParty) Serialize(writer data.EoW
 }
 
 func (s *PartyReplyReplyCodeDataAlreadyInAnotherParty) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
@@ -8512,8 +8512,8 @@ func (s *PartyReplyReplyCodeDataAlreadyInYourParty) Serialize(writer data.EoWrit
 }
 
 func (s *PartyReplyReplyCodeDataAlreadyInYourParty) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerName : field : string
 	if s.PlayerName, err = reader.GetString(); err != nil {
@@ -8566,8 +8566,8 @@ func (s *PartyReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : PartyReplyCode
 	s.ReplyCode = PartyReplyCode(reader.GetChar())
@@ -8618,10 +8618,10 @@ func (s *PartyCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyCreateServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Members : array : PartyMember
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
 		s.Members = append(s.Members, PartyMember{})
@@ -8633,7 +8633,7 @@ func (s *PartyCreateServerPacket) Deserialize(reader data.EoReader) (err error) 
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -8663,8 +8663,8 @@ func (s *PartyAddServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyAddServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Member : field : PartyMember
 	if err = s.Member.Deserialize(reader); err != nil {
@@ -8700,8 +8700,8 @@ func (s *PartyRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyRemoveServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -8734,8 +8734,8 @@ func (s *PartyCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : byte
 	reader.GetByte()
@@ -8774,10 +8774,10 @@ func (s *PartyListServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyListServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Members : array : PartyMember
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
 		s.Members = append(s.Members, PartyMember{})
@@ -8789,7 +8789,7 @@ func (s *PartyListServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -8826,8 +8826,8 @@ func (s *PartyAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PartyAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -8865,8 +8865,8 @@ func (s *PartyTargetGroupServerPacket) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *PartyTargetGroupServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Gains : array : PartyExpShare
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
@@ -8906,8 +8906,8 @@ func (s *GuildReplyReplyCodeDataCreateAdd) Serialize(writer data.EoWriter) (err 
 }
 
 func (s *GuildReplyReplyCodeDataCreateAdd) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
@@ -8934,8 +8934,8 @@ func (s *GuildReplyReplyCodeDataCreateAddConfirm) Serialize(writer data.EoWriter
 }
 
 func (s *GuildReplyReplyCodeDataCreateAddConfirm) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
@@ -8968,8 +8968,8 @@ func (s *GuildReplyReplyCodeDataJoinRequest) Serialize(writer data.EoWriter) (er
 }
 
 func (s *GuildReplyReplyCodeDataJoinRequest) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -9034,8 +9034,8 @@ func (s *GuildReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : GuildReply
 	s.ReplyCode = GuildReply(reader.GetShort())
@@ -9092,8 +9092,8 @@ func (s *GuildRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -9161,10 +9161,10 @@ func (s *GuildCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildCreateServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// LeaderPlayerId : field : short
 	s.LeaderPlayerId = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
@@ -9196,7 +9196,7 @@ func (s *GuildCreateServerPacket) Deserialize(reader data.EoReader) (err error) 
 	}
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -9227,8 +9227,8 @@ func (s *GuildTakeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildTakeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Description : field : string
 	if s.Description, err = reader.GetString(); err != nil {
@@ -9270,10 +9270,10 @@ func (s *GuildRankServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildRankServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
 		if s.Ranks[ndx], err = reader.GetString(); err != nil {
@@ -9285,7 +9285,7 @@ func (s *GuildRankServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -9316,8 +9316,8 @@ func (s *GuildSellServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildSellServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -9351,8 +9351,8 @@ func (s *GuildBuyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildBuyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -9386,8 +9386,8 @@ func (s *GuildOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : three
 	s.SessionId = reader.GetThree()
@@ -9433,10 +9433,10 @@ func (s *GuildTellServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildTellServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// MembersCount : length : short
 	s.MembersCount = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
@@ -9453,7 +9453,7 @@ func (s *GuildTellServerPacket) Deserialize(reader data.EoReader) (err error) {
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -9541,10 +9541,10 @@ func (s *GuildReportServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildReportServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
 		return
@@ -9612,7 +9612,7 @@ func (s *GuildReportServerPacket) Deserialize(reader data.EoReader) (err error) 
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -9667,10 +9667,10 @@ func (s *GuildAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// RecruiterId : field : short
 	s.RecruiterId = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
@@ -9700,7 +9700,7 @@ func (s *GuildAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -9731,8 +9731,8 @@ func (s *GuildAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Rank : field : char
 	s.Rank = reader.GetChar()
@@ -9765,8 +9765,8 @@ func (s *GuildKickServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *GuildKickServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : byte
 	reader.GetByte()
@@ -9806,8 +9806,8 @@ func (s *SpellRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SpellRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -9873,8 +9873,8 @@ func (s *SpellTargetSelfServerPacket) Serialize(writer data.EoWriter) (err error
 }
 
 func (s *SpellTargetSelfServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -9924,8 +9924,8 @@ func (s *SpellPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SpellPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -9960,8 +9960,8 @@ func (s *SpellErrorServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *SpellErrorServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : byte
 	reader.GetByte()
@@ -10036,8 +10036,8 @@ func (s *AvatarAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *AvatarAdminServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// CasterId : field : short
 	s.CasterId = reader.GetShort()
@@ -10113,8 +10113,8 @@ func (s *SpellTargetGroupServerPacket) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *SpellTargetGroupServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
@@ -10197,8 +10197,8 @@ func (s *SpellTargetOtherServerPacket) Serialize(writer data.EoWriter) (err erro
 }
 
 func (s *SpellTargetOtherServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// VictimId : field : short
 	s.VictimId = reader.GetShort()
@@ -10255,8 +10255,8 @@ func (s *TradeRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : char
 	reader.GetChar()
@@ -10318,10 +10318,10 @@ func (s *TradeOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PartnerPlayerId : field : short
 	s.PartnerPlayerId = reader.GetShort()
 	// PartnerPlayerName : field : string
@@ -10342,7 +10342,7 @@ func (s *TradeOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -10372,8 +10372,8 @@ func (s *TradeReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TradeData : field : TradeItemData
 	if err = s.TradeData.Deserialize(reader); err != nil {
@@ -10408,8 +10408,8 @@ func (s *TradeAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeAdminServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TradeData : field : TradeItemData
 	if err = s.TradeData.Deserialize(reader); err != nil {
@@ -10444,8 +10444,8 @@ func (s *TradeUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeUseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TradeData : field : TradeItemData
 	if err = s.TradeData.Deserialize(reader); err != nil {
@@ -10486,8 +10486,8 @@ func (s *TradeSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Agree : field : bool
 	if boolVal := reader.GetChar(); boolVal > 0 {
@@ -10536,8 +10536,8 @@ func (s *TradeAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PartnerPlayerId : field : short
 	s.PartnerPlayerId = reader.GetShort()
@@ -10577,8 +10577,8 @@ func (s *TradeCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *TradeCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PartnerPlayerId : field : short
 	s.PartnerPlayerId = reader.GetShort()
@@ -10642,8 +10642,8 @@ func (s *NpcReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -10729,8 +10729,8 @@ func (s *CastReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *CastReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
@@ -10783,8 +10783,8 @@ func (s *NpcSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NpcKilledData : field : NpcKilledData
 	if err = s.NpcKilledData.Deserialize(reader); err != nil {
@@ -10832,8 +10832,8 @@ func (s *NpcAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NpcKilledData : field : NpcKilledData
 	if err = s.NpcKilledData.Deserialize(reader); err != nil {
@@ -10892,8 +10892,8 @@ func (s *CastSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *CastSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
@@ -10957,8 +10957,8 @@ func (s *CastAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *CastAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
@@ -11004,8 +11004,8 @@ func (s *NpcJunkServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcJunkServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NpcId : field : short
 	s.NpcId = reader.GetShort()
@@ -11074,10 +11074,10 @@ func (s *NpcPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Positions : array : NpcUpdatePosition
 	for ndx := 0; ndx < reader.Remaining()/4; ndx++ {
 		s.Positions = append(s.Positions, NpcUpdatePosition{})
@@ -11115,7 +11115,7 @@ func (s *NpcPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
 	s.Hp = reader.GetShort()
 	// Tp : field : short
 	s.Tp = reader.GetShort()
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -11152,8 +11152,8 @@ func (s *NpcDialogServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *NpcDialogServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NpcIndex : field : short
 	s.NpcIndex = reader.GetShort()
@@ -11204,10 +11204,10 @@ func (s *QuestReportServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *QuestReportServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// NpcId : field : short
 	s.NpcId = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
@@ -11224,7 +11224,7 @@ func (s *QuestReportServerPacket) Deserialize(reader data.EoReader) (err error) 
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -11300,10 +11300,10 @@ func (s *QuestDialogServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *QuestDialogServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// QuestCount : length : char
 	s.QuestCount = reader.GetChar()
 	// BehaviorId : field : short
@@ -11339,7 +11339,7 @@ func (s *QuestDialogServerPacket) Deserialize(reader data.EoReader) (err error) 
 		}
 	}
 
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -11375,8 +11375,8 @@ func (s *QuestListPageDataProgress) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *QuestListPageDataProgress) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// QuestProgressEntries : array : QuestProgressEntry
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
@@ -11410,8 +11410,8 @@ func (s *QuestListPageDataHistory) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *QuestListPageDataHistory) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// CompletedQuests : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
@@ -11474,10 +11474,10 @@ func (s *QuestListServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *QuestListServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// Page : field : QuestPage
 	s.Page = net.QuestPage(reader.GetChar())
 	// QuestsCount : field : short
@@ -11494,7 +11494,7 @@ func (s *QuestListServerPacket) Deserialize(reader data.EoReader) (err error) {
 			return
 		}
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -11525,8 +11525,8 @@ func (s *ItemAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ItemAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -11559,8 +11559,8 @@ func (s *ArenaDropServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ArenaDropServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
@@ -11596,8 +11596,8 @@ func (s *ArenaUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ArenaUseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayersCount : field : char
 	s.PlayersCount = reader.GetChar()
@@ -11662,10 +11662,10 @@ func (s *ArenaSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ArenaSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
@@ -11697,7 +11697,7 @@ func (s *ArenaSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -11752,10 +11752,10 @@ func (s *ArenaAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *ArenaAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	// WinnerName : field : string
 	if s.WinnerName, err = reader.GetString(); err != nil {
 		return
@@ -11785,7 +11785,7 @@ func (s *ArenaAcceptServerPacket) Deserialize(reader data.EoReader) (err error) 
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 
 	return
 }
@@ -11816,8 +11816,8 @@ func (s *MarriageOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MarriageOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : three
 	s.SessionId = reader.GetThree()
@@ -11852,8 +11852,8 @@ func (s *MarriageReplyReplyCodeDataSuccess) Serialize(writer data.EoWriter) (err
 }
 
 func (s *MarriageReplyReplyCodeDataSuccess) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GoldAmount : field : int
 	s.GoldAmount = reader.GetInt()
@@ -11894,8 +11894,8 @@ func (s *MarriageReplyServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *MarriageReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : MarriageReply
 	s.ReplyCode = MarriageReply(reader.GetShort())
@@ -11936,8 +11936,8 @@ func (s *PriestOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PriestOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : int
 	s.SessionId = reader.GetInt()
@@ -11971,8 +11971,8 @@ func (s *PriestReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *PriestReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ReplyCode : field : PriestReply
 	s.ReplyCode = PriestReply(reader.GetShort())
@@ -12012,8 +12012,8 @@ func (s *PriestRequestServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *PriestRequestServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SessionId : field : short
 	s.SessionId = reader.GetShort()
@@ -12057,8 +12057,8 @@ func (s *RecoverPlayerServerPacket) Serialize(writer data.EoWriter) (err error) 
 }
 
 func (s *RecoverPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Hp : field : short
 	s.Hp = reader.GetShort()
@@ -12106,8 +12106,8 @@ func (s *RecoverAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *RecoverAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -12150,8 +12150,8 @@ func (s *RecoverListServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *RecoverListServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// ClassId : field : short
 	s.ClassId = reader.GetShort()
@@ -12213,8 +12213,8 @@ func (s *RecoverReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *RecoverReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Experience : field : int
 	s.Experience = reader.GetInt()
@@ -12280,8 +12280,8 @@ func (s *RecoverTargetGroupServerPacket) Serialize(writer data.EoWriter) (err er
 }
 
 func (s *RecoverTargetGroupServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// StatPoints : field : short
 	s.StatPoints = reader.GetShort()
@@ -12324,8 +12324,8 @@ func (s *EffectUseEffectDataQuake) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectUseEffectDataQuake) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// QuakeStrength : field : char
 	s.QuakeStrength = reader.GetChar()
@@ -12366,8 +12366,8 @@ func (s *EffectUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectUseServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Effect : field : MapEffect
 	s.Effect = MapEffect(reader.GetChar())
@@ -12413,8 +12413,8 @@ func (s *EffectAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -12472,8 +12472,8 @@ func (s *EffectTargetOtherServerPacket) Serialize(writer data.EoWriter) (err err
 }
 
 func (s *EffectTargetOtherServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Damage : field : short
 	s.Damage = reader.GetShort()
@@ -12517,8 +12517,8 @@ func (s *EffectReportServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectReportServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
@@ -12567,8 +12567,8 @@ func (s *EffectSpecMapDamageTypeDataTpDrain) Serialize(writer data.EoWriter) (er
 }
 
 func (s *EffectSpecMapDamageTypeDataTpDrain) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// TpDamage : field : short
 	s.TpDamage = reader.GetShort()
@@ -12609,8 +12609,8 @@ func (s *EffectSpecMapDamageTypeDataSpikes) Serialize(writer data.EoWriter) (err
 }
 
 func (s *EffectSpecMapDamageTypeDataSpikes) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// HpDamage : field : short
 	s.HpDamage = reader.GetShort()
@@ -12665,8 +12665,8 @@ func (s *EffectSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// MapDamageType : field : MapDamageType
 	s.MapDamageType = MapDamageType(reader.GetChar())
@@ -12735,8 +12735,8 @@ func (s *EffectAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EffectAdminServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -12780,8 +12780,8 @@ func (s *MusicPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MusicPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// SoundId : field : char
 	s.SoundId = reader.GetChar()

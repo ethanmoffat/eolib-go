@@ -50,8 +50,8 @@ func (s *MapNpc) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapNpc) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -92,8 +92,8 @@ func (s *MapLegacyDoorKey) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapLegacyDoorKey) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -152,8 +152,8 @@ func (s *MapItem) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapItem) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -208,8 +208,8 @@ func (s *MapWarp) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapWarp) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// DestinationMap : field : short
 	s.DestinationMap = reader.GetShort()
@@ -260,8 +260,8 @@ func (s *MapSign) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapSign) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Coords : field : Coords
 	if err = s.Coords.Deserialize(reader); err != nil {
@@ -304,8 +304,8 @@ func (s *MapTileSpecRowTile) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapTileSpecRowTile) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// X : field : char
 	s.X = reader.GetChar()
@@ -347,8 +347,8 @@ func (s *MapTileSpecRow) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapTileSpecRow) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Y : field : char
 	s.Y = reader.GetChar()
@@ -388,8 +388,8 @@ func (s *MapWarpRowTile) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapWarpRowTile) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// X : field : char
 	s.X = reader.GetChar()
@@ -433,8 +433,8 @@ func (s *MapWarpRow) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapWarpRow) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Y : field : char
 	s.Y = reader.GetChar()
@@ -475,8 +475,8 @@ func (s *MapGraphicRowTile) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapGraphicRowTile) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// X : field : char
 	s.X = reader.GetChar()
@@ -518,8 +518,8 @@ func (s *MapGraphicRow) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapGraphicRow) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Y : field : char
 	s.Y = reader.GetChar()
@@ -562,8 +562,8 @@ func (s *MapGraphicLayer) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *MapGraphicLayer) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// GraphicRowsCount : length : char
 	s.GraphicRowsCount = reader.GetChar()
@@ -790,8 +790,8 @@ func (s *Emf) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Emf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {

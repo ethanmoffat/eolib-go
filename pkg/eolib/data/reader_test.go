@@ -132,7 +132,7 @@ func TestReaderGetPaddedString(t *testing.T) {
 func TestReaderGetStringChunked(t *testing.T) {
 	const input = "Hello,ÿWorld!"
 	reader := data.NewEoReader(toBytes(input))
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 
 	actual1, _ := reader.GetString()
 	assert.Equal(t, "Hello,", actual1)
@@ -184,7 +184,7 @@ func TestReaderGetPaddedEncodedString(t *testing.T) {
 func TestReaderGetEncodedStringChunked(t *testing.T) {
 	const input = "E0a3hWÿ!;a-^H"
 	reader := data.NewEoReader(toBytes(input))
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 
 	actual1, _ := reader.GetEncodedString()
 	assert.Equal(t, "Hello,", actual1)
@@ -238,7 +238,7 @@ func TestReaderRemainingChunked(t *testing.T) {
 		0x05, 0xFE, 0xFE, 0x06, 0xFE, 0xFE, 0xFE}
 
 	reader := data.NewEoReader(bytes)
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 
 	assert.Equal(t, 3, reader.Remaining())
 
@@ -262,7 +262,7 @@ func TestReaderNextChunk(t *testing.T) {
 		0x06}
 
 	reader := data.NewEoReader(bytes)
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 
 	assert.Equal(t, 0, reader.Position())
 
@@ -297,31 +297,31 @@ func TestReaderNextChunkWithChunkedModeToggledInBetween(t *testing.T) {
 
 	assert.Equal(t, 0, reader.Position())
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	reader.NextChunk()
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 	assert.Equal(t, 3, reader.Position())
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	reader.NextChunk()
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 	assert.Equal(t, 7, reader.Position())
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	reader.NextChunk()
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 	assert.Equal(t, 8, reader.Position())
 
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	reader.NextChunk()
-	reader.SetChunkedReadingMode(false)
+	reader.SetIsChunked(false)
 	assert.Equal(t, 8, reader.Position())
 }
 
 func TestReaderUnderRead(t *testing.T) {
 	// See: https://github.com/Cirras/eo-protocol/blob/master/docs/chunks.md#1-under-read
 	reader := data.NewEoReader([]byte{0x7C, 0x67, 0x61, 0x72, 0x62, 0x61, 0x67, 0x65, 0xFF, 0xCA, 0x31})
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 
 	assert.Equal(t, 123, reader.GetChar()) // byte representation: 123 = 0x7C
 
@@ -332,7 +332,7 @@ func TestReaderUnderRead(t *testing.T) {
 func TestOverRead(t *testing.T) {
 	// See: https://github.com/Cirras/eo-protocol/blob/master/docs/chunks.md#2-over-read
 	reader := data.NewEoReader([]byte{0xFF, 0x7C})
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 
 	assert.Equal(t, 0, reader.GetInt())
 
@@ -349,7 +349,7 @@ func TestDoubleRead(t *testing.T) {
 
 	// Activating chunked mode and seeking to the first break byte with nextChunk(), which actually
 	// takes our reader position backwards.
-	reader.SetChunkedReadingMode(true)
+	reader.SetIsChunked(true)
 	reader.NextChunk()
 
 	assert.Equal(t, 123, reader.GetChar())

@@ -171,16 +171,16 @@ func (r *EoReader) GetPaddedEncodedString(length int) (string, error) {
 	return string(bytes), nil
 }
 
-// GetChunkedReadingMode gets whether chunked reading is enabled for the reader.
-func (r *EoReader) GetChunkedReadingMode() bool {
+// IsChunked gets whether chunked reading is enabled for the reader.
+func (r *EoReader) IsChunked() bool {
 	return r.chunkInfo.isChunked
 }
 
-// SetChunkedReadingMode sets whether chunked reading is enabled for the reader.
+// SetIsChunked sets whether chunked reading is enabled for the reader.
 // In chunked reading mode:
 // - The reader will treat 0xFF bytes as the end of the current chunk.
 // - [EoReader.NextChunk] can be called to move to the next chunk.
-func (r *EoReader) SetChunkedReadingMode(value bool) {
+func (r *EoReader) SetIsChunked(value bool) {
 	r.chunkInfo.isChunked = value
 	if r.chunkInfo.nextBreak == -1 {
 		r.chunkInfo.nextBreak = r.findNextBreakIndex()

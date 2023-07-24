@@ -272,8 +272,8 @@ func (s *EifRecord) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EifRecord) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NameLength : length : char
 	s.NameLength = reader.GetChar()
@@ -412,8 +412,8 @@ func (s *Eif) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Eif) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
@@ -593,8 +593,8 @@ func (s *EnfRecord) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EnfRecord) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NameLength : length : char
 	s.NameLength = reader.GetChar()
@@ -701,8 +701,8 @@ func (s *Enf) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Enf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
@@ -800,8 +800,8 @@ func (s *EcfRecord) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EcfRecord) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NameLength : length : char
 	s.NameLength = reader.GetChar()
@@ -876,8 +876,8 @@ func (s *Ecf) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Ecf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
@@ -1119,8 +1119,8 @@ func (s *EsfRecord) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *EsfRecord) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// NameLength : length : char
 	s.NameLength = reader.GetChar()
@@ -1246,8 +1246,8 @@ func (s *Esf) Serialize(writer data.EoWriter) (err error) {
 }
 
 func (s *Esf) Deserialize(reader data.EoReader) (err error) {
-	oldChunkedReadingMode := reader.GetChunkedReadingMode()
-	defer func() { reader.SetChunkedReadingMode(oldChunkedReadingMode) }()
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
