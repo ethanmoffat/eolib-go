@@ -483,6 +483,14 @@ func (s *InitInitReplyCodeDataPlayersListFriends) Deserialize(reader data.EoRead
 	return
 }
 
+func (s InitInitServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Init
+}
+
+func (s InitInitServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Init
+}
+
 func (s *InitInitServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -694,6 +702,14 @@ type WarpPlayerServerPacket struct {
 	MapFile MapFile
 }
 
+func (s WarpPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Warp
+}
+
+func (s WarpPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *WarpPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -720,6 +736,14 @@ func (s *WarpPlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
 // WelcomePingServerPacket :: Equivalent to INIT_INIT with InitReply.FileMap.
 type WelcomePingServerPacket struct {
 	MapFile MapFile
+}
+
+func (s WelcomePingServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Welcome
+}
+
+func (s WelcomePingServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Ping
 }
 
 func (s *WelcomePingServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -750,6 +774,14 @@ type WelcomePongServerPacket struct {
 	PubFile PubFile
 }
 
+func (s WelcomePongServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Welcome
+}
+
+func (s WelcomePongServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Pong
+}
+
 func (s *WelcomePongServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -776,6 +808,14 @@ func (s *WelcomePongServerPacket) Deserialize(reader data.EoReader) (err error) 
 // WelcomeNet242ServerPacket :: Equivalent to INIT_INIT with InitReply.FileEnf.
 type WelcomeNet242ServerPacket struct {
 	PubFile PubFile
+}
+
+func (s WelcomeNet242ServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Welcome
+}
+
+func (s WelcomeNet242ServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Net242
 }
 
 func (s *WelcomeNet242ServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -806,6 +846,14 @@ type WelcomeNet243ServerPacket struct {
 	PubFile PubFile
 }
 
+func (s WelcomeNet243ServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Welcome
+}
+
+func (s WelcomeNet243ServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Net243
+}
+
 func (s *WelcomeNet243ServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -832,6 +880,14 @@ func (s *WelcomeNet243ServerPacket) Deserialize(reader data.EoReader) (err error
 // PlayersListServerPacket :: Equivalent to INIT_INIT with InitReply.PlayersList.
 type PlayersListServerPacket struct {
 	PlayersList PlayersList
+}
+
+func (s PlayersListServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersListServerPacket) Action() net.PacketAction {
+	return net.PacketAction_List
 }
 
 func (s *PlayersListServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -866,6 +922,14 @@ type WarpCreateServerPacket struct {
 	MapFile MapFile
 }
 
+func (s WarpCreateServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Warp
+}
+
+func (s WarpCreateServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Create
+}
+
 func (s *WarpCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -892,6 +956,14 @@ func (s *WarpCreateServerPacket) Deserialize(reader data.EoReader) (err error) {
 // PlayersReplyServerPacket :: Equivalent to INIT_INIT with InitReply.PlayersListFriends.
 type PlayersReplyServerPacket struct {
 	PlayersList PlayersListFriends
+}
+
+func (s PlayersReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *PlayersReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -926,6 +998,14 @@ type WelcomeNet244ServerPacket struct {
 	PubFile PubFile
 }
 
+func (s WelcomeNet244ServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Welcome
+}
+
+func (s WelcomeNet244ServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Net244
+}
+
 func (s *WelcomeNet244ServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -953,6 +1033,14 @@ func (s *WelcomeNet244ServerPacket) Deserialize(reader data.EoReader) (err error
 type ConnectionPlayerServerPacket struct {
 	Seq1 int
 	Seq2 int
+}
+
+func (s ConnectionPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Connection
+}
+
+func (s ConnectionPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *ConnectionPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -1190,6 +1278,14 @@ func (s *AccountReplyReplyCodeDataDefault) Deserialize(reader data.EoReader) (er
 	}
 
 	return
+}
+
+func (s AccountReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Account
+}
+
+func (s AccountReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *AccountReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -1569,6 +1665,14 @@ func (s *CharacterReplyReplyCodeDataDefault) Deserialize(reader data.EoReader) (
 	return
 }
 
+func (s CharacterReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Character
+}
+
+func (s CharacterReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *CharacterReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -1708,6 +1812,14 @@ func (s *CharacterReplyServerPacket) Deserialize(reader data.EoReader) (err erro
 type CharacterPlayerServerPacket struct {
 	SessionId   int
 	CharacterId int
+}
+
+func (s CharacterPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Character
+}
+
+func (s CharacterPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *CharacterPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -1936,6 +2048,14 @@ func (s *LoginReplyReplyCodeDataBusy) Deserialize(reader data.EoReader) (err err
 	}
 
 	return
+}
+
+func (s LoginReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Login
+}
+
+func (s LoginReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *LoginReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -2476,6 +2596,14 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader data.EoReader)
 	return
 }
 
+func (s WelcomeReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Welcome
+}
+
+func (s WelcomeReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *WelcomeReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -2657,6 +2785,14 @@ func (s *AdminInteractReplyMessageTypeDataReport) Deserialize(reader data.EoRead
 	return
 }
 
+func (s AdminInteractReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_AdminInteract
+}
+
+func (s AdminInteractReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *AdminInteractReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -2726,6 +2862,14 @@ type AdminInteractRemoveServerPacket struct {
 	PlayerId int
 }
 
+func (s AdminInteractRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_AdminInteract
+}
+
+func (s AdminInteractRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
+}
+
 func (s *AdminInteractRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -2751,6 +2895,14 @@ func (s *AdminInteractRemoveServerPacket) Deserialize(reader data.EoReader) (err
 // AdminInteractAgreeServerPacket :: Nearby player appearing (admin un-hide).
 type AdminInteractAgreeServerPacket struct {
 	PlayerId int
+}
+
+func (s AdminInteractAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_AdminInteract
+}
+
+func (s AdminInteractAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
 }
 
 func (s *AdminInteractAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -2782,6 +2934,14 @@ type AdminInteractListServerPacket struct {
 	GoldBank  int
 	Inventory []net.Item
 	Bank      []net.ThreeItem
+}
+
+func (s AdminInteractListServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_AdminInteract
+}
+
+func (s AdminInteractListServerPacket) Action() net.PacketAction {
+	return net.PacketAction_List
 }
 
 func (s *AdminInteractListServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -2885,6 +3045,14 @@ type AdminInteractTellServerPacket struct {
 	Weight    net.Weight
 }
 
+func (s AdminInteractTellServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_AdminInteract
+}
+
+func (s AdminInteractTellServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Tell
+}
+
 func (s *AdminInteractTellServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -2984,6 +3152,14 @@ type TalkRequestServerPacket struct {
 	Message    string
 }
 
+func (s TalkRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
+}
+
 func (s *TalkRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3033,6 +3209,14 @@ type TalkOpenServerPacket struct {
 	Message  string
 }
 
+func (s TalkOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *TalkOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3068,6 +3252,14 @@ func (s *TalkOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
 type TalkMsgServerPacket struct {
 	PlayerName string
 	Message    string
+}
+
+func (s TalkMsgServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkMsgServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Msg
 }
 
 func (s *TalkMsgServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3119,6 +3311,14 @@ type TalkTellServerPacket struct {
 	Message    string
 }
 
+func (s TalkTellServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkTellServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Tell
+}
+
 func (s *TalkTellServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3168,6 +3368,14 @@ type TalkPlayerServerPacket struct {
 	Message  string
 }
 
+func (s TalkPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *TalkPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3205,6 +3413,14 @@ type TalkReplyServerPacket struct {
 	Name      string
 }
 
+func (s TalkReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *TalkReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3240,6 +3456,14 @@ func (s *TalkReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 type TalkAdminServerPacket struct {
 	PlayerName string
 	Message    string
+}
+
+func (s TalkAdminServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkAdminServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Admin
 }
 
 func (s *TalkAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3291,6 +3515,14 @@ type TalkAnnounceServerPacket struct {
 	Message    string
 }
 
+func (s TalkAnnounceServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkAnnounceServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Announce
+}
+
 func (s *TalkAnnounceServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3339,6 +3571,14 @@ type TalkServerServerPacket struct {
 	Message string
 }
 
+func (s TalkServerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkServerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Server
+}
+
 func (s *TalkServerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3366,6 +3606,14 @@ func (s *TalkServerServerPacket) Deserialize(reader data.EoReader) (err error) {
 // TalkListServerPacket ::  Global chat backfill. Sent by the official game server when a player opens the global chat tab.
 type TalkListServerPacket struct {
 	Messages []GlobalBackfillMessage
+}
+
+func (s TalkListServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkListServerPacket) Action() net.PacketAction {
+	return net.PacketAction_List
 }
 
 func (s *TalkListServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3411,6 +3659,14 @@ type MessageOpenServerPacket struct {
 	Message string
 }
 
+func (s MessageOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Message
+}
+
+func (s MessageOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *MessageOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3437,6 +3693,14 @@ func (s *MessageOpenServerPacket) Deserialize(reader data.EoReader) (err error) 
 
 // MessageCloseServerPacket :: Server is rebooting.
 type MessageCloseServerPacket struct {
+}
+
+func (s MessageCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Message
+}
+
+func (s MessageCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
 }
 
 func (s *MessageCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3466,6 +3730,14 @@ func (s *MessageCloseServerPacket) Deserialize(reader data.EoReader) (err error)
 // MessageAcceptServerPacket :: Large message box.
 type MessageAcceptServerPacket struct {
 	Messages []string
+}
+
+func (s MessageAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Message
+}
+
+func (s MessageAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
 }
 
 func (s *MessageAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3512,6 +3784,14 @@ type TalkSpecServerPacket struct {
 	AdminName string
 }
 
+func (s TalkSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Talk
+}
+
+func (s TalkSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
+}
+
 func (s *TalkSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3540,6 +3820,14 @@ func (s *TalkSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
 type AttackPlayerServerPacket struct {
 	PlayerId  int
 	Direction protocol.Direction
+}
+
+func (s AttackPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Attack
+}
+
+func (s AttackPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *AttackPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3575,6 +3863,14 @@ func (s *AttackPlayerServerPacket) Deserialize(reader data.EoReader) (err error)
 type AttackErrorServerPacket struct {
 }
 
+func (s AttackErrorServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Attack
+}
+
+func (s AttackErrorServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Error
+}
+
 func (s *AttackErrorServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3605,6 +3901,14 @@ type AvatarReplyServerPacket struct {
 	Direction    protocol.Direction
 	HpPercentage int
 	Dead         bool
+}
+
+func (s AvatarReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Avatar
+}
+
+func (s AvatarReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *AvatarReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3680,6 +3984,14 @@ type ChairPlayerServerPacket struct {
 	Direction protocol.Direction
 }
 
+func (s ChairPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chair
+}
+
+func (s ChairPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *ChairPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3722,6 +4034,14 @@ type ChairReplyServerPacket struct {
 	PlayerId  int
 	Coords    protocol.Coords
 	Direction protocol.Direction
+}
+
+func (s ChairReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chair
+}
+
+func (s ChairReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *ChairReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3767,6 +4087,14 @@ type ChairCloseServerPacket struct {
 	Coords   protocol.Coords
 }
 
+func (s ChairCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chair
+}
+
+func (s ChairCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
+}
+
 func (s *ChairCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3801,6 +4129,14 @@ func (s *ChairCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
 type ChairRemoveServerPacket struct {
 	PlayerId int
 	Coords   protocol.Coords
+}
+
+func (s ChairRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chair
+}
+
+func (s ChairRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
 }
 
 func (s *ChairRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3838,6 +4174,14 @@ type SitPlayerServerPacket struct {
 	PlayerId  int
 	Coords    protocol.Coords
 	Direction protocol.Direction
+}
+
+func (s SitPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Sit
+}
+
+func (s SitPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *SitPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3890,6 +4234,14 @@ type SitCloseServerPacket struct {
 	Coords   protocol.Coords
 }
 
+func (s SitCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Sit
+}
+
+func (s SitCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
+}
+
 func (s *SitCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -3924,6 +4276,14 @@ func (s *SitCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
 type SitRemoveServerPacket struct {
 	PlayerId int
 	Coords   protocol.Coords
+}
+
+func (s SitRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Sit
+}
+
+func (s SitRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
 }
 
 func (s *SitRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -3961,6 +4321,14 @@ type SitReplyServerPacket struct {
 	PlayerId  int
 	Coords    protocol.Coords
 	Direction protocol.Direction
+}
+
+func (s SitReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Sit
+}
+
+func (s SitReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *SitReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4013,6 +4381,14 @@ type EmotePlayerServerPacket struct {
 	Emote    protocol.Emote
 }
 
+func (s EmotePlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Emote
+}
+
+func (s EmotePlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *EmotePlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4046,6 +4422,14 @@ func (s *EmotePlayerServerPacket) Deserialize(reader data.EoReader) (err error) 
 type EffectPlayerServerPacket struct {
 	PlayerId int
 	EffectId int
+}
+
+func (s EffectPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *EffectPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4083,6 +4467,14 @@ type FacePlayerServerPacket struct {
 	Direction protocol.Direction
 }
 
+func (s FacePlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Face
+}
+
+func (s FacePlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *FacePlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4116,6 +4508,14 @@ func (s *FacePlayerServerPacket) Deserialize(reader data.EoReader) (err error) {
 type AvatarRemoveServerPacket struct {
 	PlayerId   int
 	WarpEffect WarpEffect
+}
+
+func (s AvatarRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Avatar
+}
+
+func (s AvatarRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
 }
 
 func (s *AvatarRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4152,6 +4552,14 @@ type PlayersAgreeServerPacket struct {
 	Nearby NearbyInfo
 }
 
+func (s PlayersAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *PlayersAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4178,6 +4586,14 @@ func (s *PlayersAgreeServerPacket) Deserialize(reader data.EoReader) (err error)
 // PlayersRemoveServerPacket :: Nearby player has logged out.
 type PlayersRemoveServerPacket struct {
 	PlayerId int
+}
+
+func (s PlayersRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
 }
 
 func (s *PlayersRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4207,6 +4623,14 @@ type RangeReplyServerPacket struct {
 	Nearby NearbyInfo
 }
 
+func (s RangeReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Range
+}
+
+func (s RangeReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *RangeReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4234,6 +4658,14 @@ func (s *RangeReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 type NpcAgreeServerPacket struct {
 	NpcsCount int
 	Npcs      []NpcMapInfo
+}
+
+func (s NpcAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
 }
 
 func (s *NpcAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4279,6 +4711,14 @@ type WalkPlayerServerPacket struct {
 	Coords    protocol.Coords
 }
 
+func (s WalkPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Walk
+}
+
+func (s WalkPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *WalkPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4321,6 +4761,14 @@ type WalkReplyServerPacket struct {
 	PlayerIds  []int
 	NpcIndexes []int
 	Items      []ItemMapInfo
+}
+
+func (s WalkReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Walk
+}
+
+func (s WalkReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *WalkReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4395,6 +4843,14 @@ func (s *WalkReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 type WalkCloseServerPacket struct {
 }
 
+func (s WalkCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Walk
+}
+
+func (s WalkCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
+}
+
 func (s *WalkCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4421,6 +4877,14 @@ func (s *WalkCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
 
 // WalkOpenServerPacket :: Your character has been unfrozen.
 type WalkOpenServerPacket struct {
+}
+
+func (s WalkOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Walk
+}
+
+func (s WalkOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *WalkOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4452,6 +4916,14 @@ type BankOpenServerPacket struct {
 	GoldBank       int
 	SessionId      int
 	LockerUpgrades int
+}
+
+func (s BankOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Bank
+}
+
+func (s BankOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *BankOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4496,6 +4968,14 @@ type BankReplyServerPacket struct {
 	GoldBank      int
 }
 
+func (s BankReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Bank
+}
+
+func (s BankReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *BankReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4529,6 +5009,14 @@ func (s *BankReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 type BarberAgreeServerPacket struct {
 	GoldAmount int
 	Change     AvatarChange
+}
+
+func (s BarberAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Barber
+}
+
+func (s BarberAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
 }
 
 func (s *BarberAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4566,6 +5054,14 @@ type BarberOpenServerPacket struct {
 	SessionId int
 }
 
+func (s BarberOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Barber
+}
+
+func (s BarberOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *BarberOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4593,6 +5089,14 @@ type LockerReplyServerPacket struct {
 	DepositedItem net.Item
 	Weight        net.Weight
 	LockerItems   []net.ThreeItem
+}
+
+func (s LockerReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Locker
+}
+
+func (s LockerReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *LockerReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4647,6 +5151,14 @@ type LockerGetServerPacket struct {
 	LockerItems []net.ThreeItem
 }
 
+func (s LockerGetServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Locker
+}
+
+func (s LockerGetServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Get
+}
+
 func (s *LockerGetServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4698,6 +5210,14 @@ type LockerOpenServerPacket struct {
 	LockerItems  []net.ThreeItem
 }
 
+func (s LockerOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Locker
+}
+
+func (s LockerOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *LockerOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4741,6 +5261,14 @@ type LockerBuyServerPacket struct {
 	LockerUpgrades int
 }
 
+func (s LockerBuyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Locker
+}
+
+func (s LockerBuyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Buy
+}
+
 func (s *LockerBuyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4775,6 +5303,14 @@ type LockerSpecServerPacket struct {
 	LockerMaxItems int
 }
 
+func (s LockerSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Locker
+}
+
+func (s LockerSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
+}
+
 func (s *LockerSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4802,6 +5338,14 @@ type CitizenReplyServerPacket struct {
 	QuestionsWrong int
 }
 
+func (s CitizenReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Citizen
+}
+
+func (s CitizenReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *CitizenReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4827,6 +5371,14 @@ func (s *CitizenReplyServerPacket) Deserialize(reader data.EoReader) (err error)
 // CitizenRemoveServerPacket :: Response to giving up citizenship of a town.
 type CitizenRemoveServerPacket struct {
 	ReplyCode InnUnsubscribeReply
+}
+
+func (s CitizenRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Citizen
+}
+
+func (s CitizenRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
 }
 
 func (s *CitizenRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4857,6 +5409,14 @@ type CitizenOpenServerPacket struct {
 	CurrentHomeId int
 	SessionId     int
 	Questions     []string
+}
+
+func (s CitizenOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Citizen
+}
+
+func (s CitizenOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *CitizenOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4933,6 +5493,14 @@ type CitizenRequestServerPacket struct {
 	Cost int
 }
 
+func (s CitizenRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Citizen
+}
+
+func (s CitizenRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
+}
+
 func (s *CitizenRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -4958,6 +5526,14 @@ func (s *CitizenRequestServerPacket) Deserialize(reader data.EoReader) (err erro
 // CitizenAcceptServerPacket :: Sleeping at an inn.
 type CitizenAcceptServerPacket struct {
 	GoldAmount int
+}
+
+func (s CitizenAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Citizen
+}
+
+func (s CitizenAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
 }
 
 func (s *CitizenAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -4987,6 +5563,14 @@ type ShopCreateServerPacket struct {
 	CraftItemId int
 	Weight      net.Weight
 	Ingredients []net.Item
+}
+
+func (s ShopCreateServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Shop
+}
+
+func (s ShopCreateServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Create
 }
 
 func (s *ShopCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -5040,6 +5624,14 @@ type ShopBuyServerPacket struct {
 	Weight     net.Weight
 }
 
+func (s ShopBuyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Shop
+}
+
+func (s ShopBuyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Buy
+}
+
 func (s *ShopBuyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5083,6 +5675,14 @@ type ShopSellServerPacket struct {
 	SoldItem   ShopSoldItem
 	GoldAmount int
 	Weight     net.Weight
+}
+
+func (s ShopSellServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Shop
+}
+
+func (s ShopSellServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Sell
 }
 
 func (s *ShopSellServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -5129,6 +5729,14 @@ type ShopOpenServerPacket struct {
 	ShopName   string
 	TradeItems []ShopTradeItem
 	CraftItems []ShopCraftItem
+}
+
+func (s ShopOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Shop
+}
+
+func (s ShopOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *ShopOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -5214,6 +5822,14 @@ type StatSkillOpenServerPacket struct {
 	SessionId int
 	ShopName  string
 	Skills    []SkillLearn
+}
+
+func (s StatSkillOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *StatSkillOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -5307,6 +5923,14 @@ func (s *StatSkillReplyReplyCodeDataWrongClass) Deserialize(reader data.EoReader
 	return
 }
 
+func (s StatSkillReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *StatSkillReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5354,6 +5978,14 @@ type StatSkillTakeServerPacket struct {
 	GoldAmount int
 }
 
+func (s StatSkillTakeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillTakeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Take
+}
+
 func (s *StatSkillTakeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5388,6 +6020,14 @@ type StatSkillRemoveServerPacket struct {
 	SpellId int
 }
 
+func (s StatSkillRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
+}
+
 func (s *StatSkillRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5414,6 +6054,14 @@ func (s *StatSkillRemoveServerPacket) Deserialize(reader data.EoReader) (err err
 type StatSkillPlayerServerPacket struct {
 	StatPoints int
 	Stats      CharacterStatsUpdate
+}
+
+func (s StatSkillPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *StatSkillPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -5452,6 +6100,14 @@ type StatSkillAcceptServerPacket struct {
 	Spell       net.Spell
 }
 
+func (s StatSkillAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
+}
+
 func (s *StatSkillAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5485,6 +6141,14 @@ func (s *StatSkillAcceptServerPacket) Deserialize(reader data.EoReader) (err err
 // StatSkillJunkServerPacket :: Response to resetting stats and skills at a skill master.
 type StatSkillJunkServerPacket struct {
 	Stats CharacterStatsReset
+}
+
+func (s StatSkillJunkServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_StatSkill
+}
+
+func (s StatSkillJunkServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Junk
 }
 
 func (s *StatSkillJunkServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -5717,6 +6381,14 @@ func (s *ItemReplyItemTypeDataExpReward) Deserialize(reader data.EoReader) (err 
 	return
 }
 
+func (s ItemReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *ItemReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5843,6 +6515,14 @@ type ItemDropServerPacket struct {
 	Weight          net.Weight
 }
 
+func (s ItemDropServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemDropServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Drop
+}
+
 func (s *ItemDropServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5904,6 +6584,14 @@ type ItemAddServerPacket struct {
 	Coords     protocol.Coords
 }
 
+func (s ItemAddServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemAddServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Add
+}
+
 func (s *ItemAddServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5953,6 +6641,14 @@ type ItemRemoveServerPacket struct {
 	ItemIndex int
 }
 
+func (s ItemRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
+}
+
 func (s *ItemRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -5980,6 +6676,14 @@ type ItemJunkServerPacket struct {
 	JunkedItem      net.ThreeItem
 	RemainingAmount int
 	Weight          net.Weight
+}
+
+func (s ItemJunkServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemJunkServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Junk
 }
 
 func (s *ItemJunkServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6027,6 +6731,14 @@ type ItemGetServerPacket struct {
 	Weight         net.Weight
 }
 
+func (s ItemGetServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemGetServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Get
+}
+
 func (s *ItemGetServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6071,6 +6783,14 @@ type ItemObtainServerPacket struct {
 	CurrentWeight int
 }
 
+func (s ItemObtainServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemObtainServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Obtain
+}
+
 func (s *ItemObtainServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6105,6 +6825,14 @@ func (s *ItemObtainServerPacket) Deserialize(reader data.EoReader) (err error) {
 type ItemKickServerPacket struct {
 	Item          net.Item
 	CurrentWeight int
+}
+
+func (s ItemKickServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemKickServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Kick
 }
 
 func (s *ItemKickServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6142,6 +6870,14 @@ type ItemAgreeServerPacket struct {
 	ItemId int
 }
 
+func (s ItemAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *ItemAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6166,6 +6902,14 @@ func (s *ItemAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
 
 // ItemSpecServerPacket :: Reply to trying to take a protected item from the ground.
 type ItemSpecServerPacket struct {
+}
+
+func (s ItemSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
 }
 
 func (s *ItemSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6194,6 +6938,14 @@ func (s *ItemSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
 type BoardPlayerServerPacket struct {
 	PostId   int
 	PostBody string
+}
+
+func (s BoardPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Board
+}
+
+func (s BoardPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *BoardPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6237,6 +6989,14 @@ type BoardOpenServerPacket struct {
 	BoardId    int
 	PostsCount int
 	Posts      []BoardPostListing
+}
+
+func (s BoardOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Board
+}
+
+func (s BoardOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *BoardOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6296,6 +7056,14 @@ type JukeboxAgreeServerPacket struct {
 	GoldAmount int
 }
 
+func (s JukeboxAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Jukebox
+}
+
+func (s JukeboxAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *JukeboxAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6320,6 +7088,14 @@ func (s *JukeboxAgreeServerPacket) Deserialize(reader data.EoReader) (err error)
 
 // JukeboxReplyServerPacket :: Reply to unsuccessfully requesting a song.
 type JukeboxReplyServerPacket struct {
+}
+
+func (s JukeboxReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Jukebox
+}
+
+func (s JukeboxReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *JukeboxReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6348,6 +7124,14 @@ func (s *JukeboxReplyServerPacket) Deserialize(reader data.EoReader) (err error)
 type JukeboxOpenServerPacket struct {
 	MapId         int
 	JukeboxPlayer string
+}
+
+func (s JukeboxOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Jukebox
+}
+
+func (s JukeboxOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *JukeboxOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6387,6 +7171,14 @@ type JukeboxMsgServerPacket struct {
 	Direction    protocol.Direction
 	InstrumentId int
 	NoteId       int
+}
+
+func (s JukeboxMsgServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Jukebox
+}
+
+func (s JukeboxMsgServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Msg
 }
 
 func (s *JukeboxMsgServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6437,6 +7229,14 @@ type JukeboxPlayerServerPacket struct {
 	MfxId int
 }
 
+func (s JukeboxPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Jukebox
+}
+
+func (s JukeboxPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *JukeboxPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6462,6 +7262,14 @@ func (s *JukeboxPlayerServerPacket) Deserialize(reader data.EoReader) (err error
 // JukeboxUseServerPacket :: Play jukebox music.
 type JukeboxUseServerPacket struct {
 	TrackId int
+}
+
+func (s JukeboxUseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Jukebox
+}
+
+func (s JukeboxUseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Use
 }
 
 func (s *JukeboxUseServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6536,6 +7344,14 @@ func (s *WarpRequestWarpTypeDataMapSwitch) Deserialize(reader data.EoReader) (er
 	s.MapFileSize = reader.GetThree()
 
 	return
+}
+
+func (s WarpRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Warp
+}
+
+func (s WarpRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
 }
 
 func (s *WarpRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6638,6 +7454,14 @@ func (s *WarpAgreeWarpTypeDataMapSwitch) Deserialize(reader data.EoReader) (err 
 	return
 }
 
+func (s WarpAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Warp
+}
+
+func (s WarpAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *WarpAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6698,6 +7522,14 @@ type PaperdollReplyServerPacket struct {
 	Icon      CharacterIcon
 }
 
+func (s PaperdollReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Paperdoll
+}
+
+func (s PaperdollReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *PaperdollReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6745,6 +7577,14 @@ type PaperdollPingServerPacket struct {
 	ClassId int // The player's current class ID (not the item's required class ID).
 }
 
+func (s PaperdollPingServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Paperdoll
+}
+
+func (s PaperdollPingServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Ping
+}
+
 func (s *PaperdollPingServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6773,6 +7613,14 @@ type PaperdollRemoveServerPacket struct {
 	ItemId int
 	SubLoc int
 	Stats  CharacterStatsEquipmentChange
+}
+
+func (s PaperdollRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Paperdoll
+}
+
+func (s PaperdollRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
 }
 
 func (s *PaperdollRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6827,6 +7675,14 @@ type PaperdollAgreeServerPacket struct {
 	RemainingAmount int
 	SubLoc          int
 	Stats           CharacterStatsEquipmentChange
+}
+
+func (s PaperdollAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Paperdoll
+}
+
+func (s PaperdollAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
 }
 
 func (s *PaperdollAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6886,6 +7742,14 @@ type AvatarAgreeServerPacket struct {
 	Change AvatarChange
 }
 
+func (s AvatarAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Avatar
+}
+
+func (s AvatarAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *AvatarAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -6914,6 +7778,14 @@ type BookReplyServerPacket struct {
 	Details    CharacterDetails
 	Icon       CharacterIcon
 	QuestNames []string
+}
+
+func (s BookReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Book
+}
+
+func (s BookReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *BookReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -6978,6 +7850,14 @@ func (s *BookReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 type MessagePongServerPacket struct {
 }
 
+func (s MessagePongServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Message
+}
+
+func (s MessagePongServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Pong
+}
+
 func (s *MessagePongServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7003,6 +7883,14 @@ func (s *MessagePongServerPacket) Deserialize(reader data.EoReader) (err error) 
 // PlayersPingServerPacket :: #find command reply - offline.
 type PlayersPingServerPacket struct {
 	Name string
+}
+
+func (s PlayersPingServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersPingServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Ping
 }
 
 func (s *PlayersPingServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7034,6 +7922,14 @@ type PlayersPongServerPacket struct {
 	Name string
 }
 
+func (s PlayersPongServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersPongServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Pong
+}
+
 func (s *PlayersPongServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7063,6 +7959,14 @@ type PlayersNet242ServerPacket struct {
 	Name string
 }
 
+func (s PlayersNet242ServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Players
+}
+
+func (s PlayersNet242ServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Net242
+}
+
 func (s *PlayersNet242ServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7090,6 +7994,14 @@ func (s *PlayersNet242ServerPacket) Deserialize(reader data.EoReader) (err error
 // DoorOpenServerPacket :: Nearby door opening.
 type DoorOpenServerPacket struct {
 	Coords protocol.Coords
+}
+
+func (s DoorOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Door
+}
+
+func (s DoorOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *DoorOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7127,6 +8039,14 @@ type DoorCloseServerPacket struct {
 	Key int
 }
 
+func (s DoorCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Door
+}
+
+func (s DoorCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
+}
+
 func (s *DoorCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7153,6 +8073,14 @@ func (s *DoorCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
 type ChestOpenServerPacket struct {
 	Coords protocol.Coords
 	Items  []net.ThreeItem
+}
+
+func (s ChestOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chest
+}
+
+func (s ChestOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *ChestOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7198,6 +8126,14 @@ type ChestReplyServerPacket struct {
 	RemainingAmount int
 	Weight          net.Weight
 	Items           []net.ThreeItem
+}
+
+func (s ChestReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chest
+}
+
+func (s ChestReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *ChestReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7258,6 +8194,14 @@ type ChestGetServerPacket struct {
 	Items     []net.ThreeItem
 }
 
+func (s ChestGetServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chest
+}
+
+func (s ChestGetServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Get
+}
+
 func (s *ChestGetServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7308,6 +8252,14 @@ type ChestAgreeServerPacket struct {
 	Items []net.ThreeItem
 }
 
+func (s ChestAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chest
+}
+
+func (s ChestAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *ChestAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7341,6 +8293,14 @@ func (s *ChestAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
 type ChestSpecServerPacket struct {
 }
 
+func (s ChestSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chest
+}
+
+func (s ChestSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
+}
+
 func (s *ChestSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7367,6 +8327,14 @@ func (s *ChestSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
 type ChestCloseServerPacket struct {
 	Key int // Sent if the player is trying to interact with a locked chest.
 
+}
+
+func (s ChestCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Chest
+}
+
+func (s ChestCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
 }
 
 func (s *ChestCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7405,6 +8373,14 @@ type RefreshReplyServerPacket struct {
 	Nearby NearbyInfo
 }
 
+func (s RefreshReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Refresh
+}
+
+func (s RefreshReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *RefreshReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7433,6 +8409,14 @@ type PartyRequestServerPacket struct {
 	RequestType     net.PartyRequestType
 	InviterPlayerId int
 	PlayerName      string
+}
+
+func (s PartyRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
 }
 
 func (s *PartyRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7539,6 +8523,14 @@ func (s *PartyReplyReplyCodeDataAlreadyInYourParty) Deserialize(reader data.EoRe
 	return
 }
 
+func (s PartyReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *PartyReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7600,6 +8592,14 @@ type PartyCreateServerPacket struct {
 	Members []PartyMember
 }
 
+func (s PartyCreateServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyCreateServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Create
+}
+
 func (s *PartyCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7643,6 +8643,14 @@ type PartyAddServerPacket struct {
 	Member PartyMember
 }
 
+func (s PartyAddServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyAddServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Add
+}
+
 func (s *PartyAddServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7671,6 +8679,14 @@ type PartyRemoveServerPacket struct {
 	PlayerId int
 }
 
+func (s PartyRemoveServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyRemoveServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Remove
+}
+
 func (s *PartyRemoveServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7695,6 +8711,14 @@ func (s *PartyRemoveServerPacket) Deserialize(reader data.EoReader) (err error) 
 
 // PartyCloseServerPacket :: Left / disbanded a party.
 type PartyCloseServerPacket struct {
+}
+
+func (s PartyCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
 }
 
 func (s *PartyCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7722,6 +8746,14 @@ func (s *PartyCloseServerPacket) Deserialize(reader data.EoReader) (err error) {
 // PartyListServerPacket :: Party member list update.
 type PartyListServerPacket struct {
 	Members []PartyMember
+}
+
+func (s PartyListServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyListServerPacket) Action() net.PacketAction {
+	return net.PacketAction_List
 }
 
 func (s *PartyListServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7768,6 +8800,14 @@ type PartyAgreeServerPacket struct {
 	HpPercentage int
 }
 
+func (s PartyAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *PartyAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -7800,6 +8840,14 @@ func (s *PartyAgreeServerPacket) Deserialize(reader data.EoReader) (err error) {
 // PartyTargetGroupServerPacket :: Updated experience and level-ups from party experience.
 type PartyTargetGroupServerPacket struct {
 	Gains []PartyExpShare
+}
+
+func (s PartyTargetGroupServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Party
+}
+
+func (s PartyTargetGroupServerPacket) Action() net.PacketAction {
+	return net.PacketAction_TargetGroup
 }
 
 func (s *PartyTargetGroupServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -7933,6 +8981,14 @@ func (s *GuildReplyReplyCodeDataJoinRequest) Deserialize(reader data.EoReader) (
 	return
 }
 
+func (s GuildReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *GuildReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8010,6 +9066,14 @@ type GuildRequestServerPacket struct {
 	GuildIdentity string
 }
 
+func (s GuildRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
+}
+
 func (s *GuildRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8048,6 +9112,14 @@ type GuildCreateServerPacket struct {
 	GuildName      string
 	RankName       string
 	GoldAmount     int
+}
+
+func (s GuildCreateServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildCreateServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Create
 }
 
 func (s *GuildCreateServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8134,6 +9206,14 @@ type GuildTakeServerPacket struct {
 	Description string
 }
 
+func (s GuildTakeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildTakeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Take
+}
+
 func (s *GuildTakeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8161,6 +9241,14 @@ func (s *GuildTakeServerPacket) Deserialize(reader data.EoReader) (err error) {
 // GuildRankServerPacket :: Get guild rank list reply.
 type GuildRankServerPacket struct {
 	Ranks []string
+}
+
+func (s GuildRankServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildRankServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Rank
 }
 
 func (s *GuildRankServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8207,6 +9295,14 @@ type GuildSellServerPacket struct {
 	GoldAmount int
 }
 
+func (s GuildSellServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildSellServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Sell
+}
+
 func (s *GuildSellServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8232,6 +9328,14 @@ func (s *GuildSellServerPacket) Deserialize(reader data.EoReader) (err error) {
 // GuildBuyServerPacket :: Deposit guild bank list reply.
 type GuildBuyServerPacket struct {
 	GoldAmount int
+}
+
+func (s GuildBuyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildBuyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Buy
 }
 
 func (s *GuildBuyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8261,6 +9365,14 @@ type GuildOpenServerPacket struct {
 	SessionId int
 }
 
+func (s GuildOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *GuildOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8287,6 +9399,14 @@ func (s *GuildOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
 type GuildTellServerPacket struct {
 	MembersCount int
 	Members      []GuildMember
+}
+
+func (s GuildTellServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildTellServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Tell
 }
 
 func (s *GuildTellServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8348,6 +9468,14 @@ type GuildReportServerPacket struct {
 	Ranks       []string
 	StaffCount  int
 	Staff       []GuildStaff
+}
+
+func (s GuildReportServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildReportServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Report
 }
 
 func (s *GuildReportServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8497,6 +9625,14 @@ type GuildAgreeServerPacket struct {
 	RankName    string
 }
 
+func (s GuildAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *GuildAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8574,6 +9710,14 @@ type GuildAcceptServerPacket struct {
 	Rank int
 }
 
+func (s GuildAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
+}
+
 func (s *GuildAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8598,6 +9742,14 @@ func (s *GuildAcceptServerPacket) Deserialize(reader data.EoReader) (err error) 
 
 // GuildKickServerPacket :: Left the guild.
 type GuildKickServerPacket struct {
+}
+
+func (s GuildKickServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Guild
+}
+
+func (s GuildKickServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Kick
 }
 
 func (s *GuildKickServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8626,6 +9778,14 @@ func (s *GuildKickServerPacket) Deserialize(reader data.EoReader) (err error) {
 type SpellRequestServerPacket struct {
 	PlayerId int
 	SpellId  int
+}
+
+func (s SpellRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
 }
 
 func (s *SpellRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8665,6 +9825,14 @@ type SpellTargetSelfServerPacket struct {
 	HpPercentage int
 	Hp           int // The official client reads this if the packet is larger than 12 bytes.
 	Tp           int // The official client reads this if the packet is larger than 12 bytes.
+}
+
+func (s SpellTargetSelfServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellTargetSelfServerPacket) Action() net.PacketAction {
+	return net.PacketAction_TargetSelf
 }
 
 func (s *SpellTargetSelfServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8730,6 +9898,14 @@ type SpellPlayerServerPacket struct {
 	Direction protocol.Direction
 }
 
+func (s SpellPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *SpellPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8763,6 +9939,14 @@ func (s *SpellPlayerServerPacket) Deserialize(reader data.EoReader) (err error) 
 type SpellErrorServerPacket struct {
 }
 
+func (s SpellErrorServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellErrorServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Error
+}
+
 func (s *SpellErrorServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8794,6 +9978,14 @@ type AvatarAdminServerPacket struct {
 	HpPercentage    int
 	VictimDied      bool
 	SpellId         int
+}
+
+func (s AvatarAdminServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Avatar
+}
+
+func (s AvatarAdminServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Admin
 }
 
 func (s *AvatarAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -8878,6 +10070,14 @@ type SpellTargetGroupServerPacket struct {
 	Players     []GroupHealTargetPlayer
 }
 
+func (s SpellTargetGroupServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellTargetGroupServerPacket) Action() net.PacketAction {
+	return net.PacketAction_TargetGroup
+}
+
 func (s *SpellTargetGroupServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -8944,6 +10144,14 @@ type SpellTargetOtherServerPacket struct {
 	SpellHealHp     int
 	HpPercentage    int
 	Hp              int
+}
+
+func (s SpellTargetOtherServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellTargetOtherServerPacket) Action() net.PacketAction {
+	return net.PacketAction_TargetOther
 }
 
 func (s *SpellTargetOtherServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9016,6 +10224,14 @@ type TradeRequestServerPacket struct {
 	PartnerPlayerName string
 }
 
+func (s TradeRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
+}
+
 func (s *TradeRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9060,6 +10276,14 @@ type TradeOpenServerPacket struct {
 	PartnerPlayerName string
 	YourPlayerId      int
 	YourPlayerName    string
+}
+
+func (s TradeOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
 }
 
 func (s *TradeOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9128,6 +10352,14 @@ type TradeReplyServerPacket struct {
 	TradeData TradeItemData
 }
 
+func (s TradeReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *TradeReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9154,6 +10386,14 @@ func (s *TradeReplyServerPacket) Deserialize(reader data.EoReader) (err error) {
 // TradeAdminServerPacket :: Trade updated (items changed while trade was accepted).
 type TradeAdminServerPacket struct {
 	TradeData TradeItemData
+}
+
+func (s TradeAdminServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeAdminServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Admin
 }
 
 func (s *TradeAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9184,6 +10424,14 @@ type TradeUseServerPacket struct {
 	TradeData TradeItemData
 }
 
+func (s TradeUseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeUseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Use
+}
+
 func (s *TradeUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9210,6 +10458,14 @@ func (s *TradeUseServerPacket) Deserialize(reader data.EoReader) (err error) {
 // TradeSpecServerPacket :: Own agree state updated.
 type TradeSpecServerPacket struct {
 	Agree bool
+}
+
+func (s TradeSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
 }
 
 func (s *TradeSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9247,6 +10503,14 @@ func (s *TradeSpecServerPacket) Deserialize(reader data.EoReader) (err error) {
 type TradeAgreeServerPacket struct {
 	PartnerPlayerId int
 	Agree           bool
+}
+
+func (s TradeAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
 }
 
 func (s *TradeAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9292,6 +10556,14 @@ type TradeCloseServerPacket struct {
 	PartnerPlayerId int
 }
 
+func (s TradeCloseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Trade
+}
+
+func (s TradeCloseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Close
+}
+
 func (s *TradeCloseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9322,6 +10594,14 @@ type NpcReplyServerPacket struct {
 	Damage              int
 	HpPercentage        int
 	KillStealProtection NpcKillStealProtectionState
+}
+
+func (s NpcReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *NpcReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9391,6 +10671,14 @@ type CastReplyServerPacket struct {
 	HpPercentage        int
 	CasterTp            int
 	KillStealProtection NpcKillStealProtectionState
+}
+
+func (s CastReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Cast
+}
+
+func (s CastReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *CastReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9470,6 +10758,14 @@ type NpcSpecServerPacket struct {
 	Experience    int
 }
 
+func (s NpcSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
+}
+
 func (s *NpcSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9505,6 +10801,14 @@ type NpcAcceptServerPacket struct {
 	NpcKilledData NpcKilledData
 	Experience    int
 	LevelUp       LevelUpStats
+}
+
+func (s NpcAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
 }
 
 func (s *NpcAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9551,6 +10855,14 @@ type CastSpecServerPacket struct {
 	NpcKilledData NpcKilledData
 	CasterTp      int
 	Experience    int
+}
+
+func (s CastSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Cast
+}
+
+func (s CastSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
 }
 
 func (s *CastSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9604,6 +10916,14 @@ type CastAcceptServerPacket struct {
 	CasterTp      int
 	Experience    int
 	LevelUp       LevelUpStats
+}
+
+func (s CastAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Cast
+}
+
+func (s CastAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
 }
 
 func (s *CastAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9663,6 +10983,14 @@ type NpcJunkServerPacket struct {
 	NpcId int
 }
 
+func (s NpcJunkServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcJunkServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Junk
+}
+
 func (s *NpcJunkServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9692,6 +11020,14 @@ type NpcPlayerServerPacket struct {
 	Chats     []NpcUpdateChat
 	Hp        int
 	Tp        int
+}
+
+func (s NpcPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *NpcPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9790,6 +11126,14 @@ type NpcDialogServerPacket struct {
 	Message  string
 }
 
+func (s NpcDialogServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Npc
+}
+
+func (s NpcDialogServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Dialog
+}
+
 func (s *NpcDialogServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -9825,6 +11169,14 @@ func (s *NpcDialogServerPacket) Deserialize(reader data.EoReader) (err error) {
 type QuestReportServerPacket struct {
 	NpcId    int
 	Messages []string
+}
+
+func (s QuestReportServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Quest
+}
+
+func (s QuestReportServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Report
 }
 
 func (s *QuestReportServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -9886,6 +11238,14 @@ type QuestDialogServerPacket struct {
 	DialogId      int
 	QuestEntries  []DialogQuestEntry
 	DialogEntries []DialogEntry
+}
+
+func (s QuestDialogServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Quest
+}
+
+func (s QuestDialogServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Dialog
 }
 
 func (s *QuestDialogServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10064,6 +11424,14 @@ func (s *QuestListPageDataHistory) Deserialize(reader data.EoReader) (err error)
 	return
 }
 
+func (s QuestListServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Quest
+}
+
+func (s QuestListServerPacket) Action() net.PacketAction {
+	return net.PacketAction_List
+}
+
 func (s *QuestListServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10136,6 +11504,14 @@ type ItemAcceptServerPacket struct {
 	PlayerId int
 }
 
+func (s ItemAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Item
+}
+
+func (s ItemAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
+}
+
 func (s *ItemAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10160,6 +11536,14 @@ func (s *ItemAcceptServerPacket) Deserialize(reader data.EoReader) (err error) {
 
 // ArenaDropServerPacket :: "Arena is blocked" message.
 type ArenaDropServerPacket struct {
+}
+
+func (s ArenaDropServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Arena
+}
+
+func (s ArenaDropServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Drop
 }
 
 func (s *ArenaDropServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10191,6 +11575,14 @@ type ArenaUseServerPacket struct {
 	PlayersCount int
 }
 
+func (s ArenaUseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Arena
+}
+
+func (s ArenaUseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Use
+}
+
 func (s *ArenaUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10220,6 +11612,14 @@ type ArenaSpecServerPacket struct {
 	KillsCount int
 	KillerName string
 	VictimName string
+}
+
+func (s ArenaSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Arena
+}
+
+func (s ArenaSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
 }
 
 func (s *ArenaSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10310,6 +11710,14 @@ type ArenaAcceptServerPacket struct {
 	VictimName string
 }
 
+func (s ArenaAcceptServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Arena
+}
+
+func (s ArenaAcceptServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Accept
+}
+
 func (s *ArenaAcceptServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10387,6 +11795,14 @@ type MarriageOpenServerPacket struct {
 	SessionId int
 }
 
+func (s MarriageOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Marriage
+}
+
+func (s MarriageOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *MarriageOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10445,6 +11861,14 @@ func (s *MarriageReplyReplyCodeDataSuccess) Deserialize(reader data.EoReader) (e
 	return
 }
 
+func (s MarriageReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Marriage
+}
+
+func (s MarriageReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
 func (s *MarriageReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10491,6 +11915,14 @@ type PriestOpenServerPacket struct {
 	SessionId int
 }
 
+func (s PriestOpenServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Priest
+}
+
+func (s PriestOpenServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Open
+}
+
 func (s *PriestOpenServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10516,6 +11948,14 @@ func (s *PriestOpenServerPacket) Deserialize(reader data.EoReader) (err error) {
 // PriestReplyServerPacket :: Reply to client Priest-family packets.
 type PriestReplyServerPacket struct {
 	ReplyCode PriestReply
+}
+
+func (s PriestReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Priest
+}
+
+func (s PriestReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *PriestReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10544,6 +11984,14 @@ func (s *PriestReplyServerPacket) Deserialize(reader data.EoReader) (err error) 
 type PriestRequestServerPacket struct {
 	SessionId   int
 	PartnerName string
+}
+
+func (s PriestRequestServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Priest
+}
+
+func (s PriestRequestServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Request
 }
 
 func (s *PriestRequestServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10583,6 +12031,14 @@ type RecoverPlayerServerPacket struct {
 	Tp int
 }
 
+func (s RecoverPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Recover
+}
+
+func (s RecoverPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
+}
+
 func (s *RecoverPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10617,6 +12073,14 @@ type RecoverAgreeServerPacket struct {
 	PlayerId     int
 	HealHp       int
 	HpPercentage int
+}
+
+func (s RecoverAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Recover
+}
+
+func (s RecoverAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
 }
 
 func (s *RecoverAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10661,6 +12125,14 @@ type RecoverListServerPacket struct {
 	Stats   CharacterStatsUpdate
 }
 
+func (s RecoverListServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Recover
+}
+
+func (s RecoverListServerPacket) Action() net.PacketAction {
+	return net.PacketAction_List
+}
+
 func (s *RecoverListServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10698,6 +12170,14 @@ type RecoverReplyServerPacket struct {
 	LevelUp     int //  A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
 	StatPoints  int // The official client reads this if the player leveled up.
 	SkillPoints int // The official client reads this if the player leveled up.
+}
+
+func (s RecoverReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Recover
+}
+
+func (s RecoverReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
 }
 
 func (s *RecoverReplyServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10757,6 +12237,14 @@ type RecoverTargetGroupServerPacket struct {
 	MaxHp       int
 	MaxTp       int
 	MaxSp       int
+}
+
+func (s RecoverTargetGroupServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Recover
+}
+
+func (s RecoverTargetGroupServerPacket) Action() net.PacketAction {
+	return net.PacketAction_TargetGroup
 }
 
 func (s *RecoverTargetGroupServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10845,6 +12333,14 @@ func (s *EffectUseEffectDataQuake) Deserialize(reader data.EoReader) (err error)
 	return
 }
 
+func (s EffectUseServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectUseServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Use
+}
+
 func (s *EffectUseServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10892,6 +12388,14 @@ type EffectAgreeServerPacket struct {
 	EffectId int
 }
 
+func (s EffectAgreeServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectAgreeServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Agree
+}
+
 func (s *EffectAgreeServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -10928,6 +12432,14 @@ type EffectTargetOtherServerPacket struct {
 	Hp     int
 	MaxHp  int
 	Others []MapDrainDamageOther
+}
+
+func (s EffectTargetOtherServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectTargetOtherServerPacket) Action() net.PacketAction {
+	return net.PacketAction_TargetOther
 }
 
 func (s *EffectTargetOtherServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -10982,6 +12494,14 @@ func (s *EffectTargetOtherServerPacket) Deserialize(reader data.EoReader) (err e
 
 // EffectReportServerPacket :: Map spike timer.
 type EffectReportServerPacket struct {
+}
+
+func (s EffectReportServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectReportServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Report
 }
 
 func (s *EffectReportServerPacket) Serialize(writer data.EoWriter) (err error) {
@@ -11102,6 +12622,14 @@ func (s *EffectSpecMapDamageTypeDataSpikes) Deserialize(reader data.EoReader) (e
 	return
 }
 
+func (s EffectSpecServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectSpecServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Spec
+}
+
 func (s *EffectSpecServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -11166,6 +12694,14 @@ type EffectAdminServerPacket struct {
 	Damage       int
 }
 
+func (s EffectAdminServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Effect
+}
+
+func (s EffectAdminServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Admin
+}
+
 func (s *EffectAdminServerPacket) Serialize(writer data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
@@ -11221,6 +12757,14 @@ func (s *EffectAdminServerPacket) Deserialize(reader data.EoReader) (err error) 
 // MusicPlayerServerPacket :: Sound effect.
 type MusicPlayerServerPacket struct {
 	SoundId int
+}
+
+func (s MusicPlayerServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Music
+}
+
+func (s MusicPlayerServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Player
 }
 
 func (s *MusicPlayerServerPacket) Serialize(writer data.EoWriter) (err error) {

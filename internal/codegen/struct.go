@@ -66,6 +66,9 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 	var instructions []xml.ProtocolInstruction
 	var packageName string
 
+	var family string
+	var action string
+
 	switchStructQualifier := ""
 	if structInfo, ok := fullSpec.IsStruct(typeName); ok {
 		name = structInfo.Name
@@ -78,6 +81,8 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 		instructions = packetInfo.Instructions
 		packageName = packetInfo.Package
 		switchStructQualifier = packetInfo.Family + packetInfo.Action
+		family = packetInfo.Family
+		action = packetInfo.Action
 	} else {
 		return nil, fmt.Errorf("type %s is not a struct or packet in the spec", typeName)
 	}
@@ -96,6 +101,12 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 			return nil, err
 		}
 		importPaths = append(importPaths, nextImports...)
+	}
+
+	if len(family) > 0 && len(action) > 0 {
+		// write out family/action methods
+		output.WriteString(fmt.Sprintf("func (s %s) Family() net.PacketFamily {\n\treturn net.PacketFamily_%s\n}\n\n", structName, family))
+		output.WriteString(fmt.Sprintf("func (s %s) Action() net.PacketAction {\n\treturn net.PacketAction_%s\n}\n\n", structName, action))
 	}
 
 	// write out serialize method
