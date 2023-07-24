@@ -10,85 +10,85 @@ import (
 func TestWriterAddByte(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddByte(0x00)
-	assert.Equal(t, []byte{0x00}, writer.ToByteArray())
+	assert.Equal(t, []byte{0x00}, writer.Array())
 }
 
 func TestWriterAddBytes(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddBytes([]byte{0x00, 0xFF})
-	assert.Equal(t, []byte{0x00, 0xFF}, writer.ToByteArray())
+	assert.Equal(t, []byte{0x00, 0xFF}, writer.Array())
 }
 
 func TestWriterAddChar(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddChar(123)
-	assert.Equal(t, []byte{0x7C}, writer.ToByteArray())
+	assert.Equal(t, []byte{0x7C}, writer.Array())
 }
 
 func TestWriterAddShort(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddShort(12345)
-	assert.Equal(t, []byte{0xCA, 0x31}, writer.ToByteArray())
+	assert.Equal(t, []byte{0xCA, 0x31}, writer.Array())
 }
 
 func TestWriterAddThree(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddThree(10_000_000)
-	assert.Equal(t, []byte{0xB0, 0x3A, 0x9D}, writer.ToByteArray())
+	assert.Equal(t, []byte{0xB0, 0x3A, 0x9D}, writer.Array())
 }
 
 func TestWriterAddInt(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddInt(2_048_576_040)
-	assert.Equal(t, []byte{0x7F, 0x7F, 0x7F, 0x7F}, writer.ToByteArray())
+	assert.Equal(t, []byte{0x7F, 0x7F, 0x7F, 0x7F}, writer.Array())
 }
 
 func TestWriterAddString(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddString("foo")
-	assert.Equal(t, toBytes("foo"), writer.ToByteArray())
+	assert.Equal(t, toBytes("foo"), writer.Array())
 }
 
 func TestWriterAddFixedString(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddFixedString("bar", 3)
-	assert.Equal(t, toBytes("bar"), writer.ToByteArray())
+	assert.Equal(t, toBytes("bar"), writer.Array())
 }
 
 func TestWriterAddPaddedString(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddPaddedString("bar", 6)
-	assert.Equal(t, toBytes("barÿÿÿ"), writer.ToByteArray())
+	assert.Equal(t, toBytes("barÿÿÿ"), writer.Array())
 }
 
 func TestWriterAddPaddedStringWithPerfectFit(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddPaddedString("bar", 3)
-	assert.Equal(t, toBytes("bar"), writer.ToByteArray())
+	assert.Equal(t, toBytes("bar"), writer.Array())
 }
 
 func TestWriterAddEncodedString(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddEncodedString("foo")
-	assert.Equal(t, toBytes("^0g"), writer.ToByteArray())
+	assert.Equal(t, toBytes("^0g"), writer.Array())
 }
 
 func TestWriterAddFixedEncodedString(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddFixedEncodedString("bar", 3)
-	assert.Equal(t, toBytes("[>k"), writer.ToByteArray())
+	assert.Equal(t, toBytes("[>k"), writer.Array())
 }
 
 func TestWriterAddPaddedEncodedString(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddPaddedEncodedString("bar", 6)
-	assert.Equal(t, toBytes("ÿÿÿ-l="), writer.ToByteArray())
+	assert.Equal(t, toBytes("ÿÿÿ-l="), writer.Array())
 }
 
 func TestWriterAddPaddedEncodedStringWithPerfectFit(t *testing.T) {
 	writer := data.NewEoWriter()
 	writer.AddPaddedEncodedString("bar", 3)
-	assert.Equal(t, toBytes("[>k"), writer.ToByteArray())
+	assert.Equal(t, toBytes("[>k"), writer.Array())
 }
 
 func TestWriterAddSanitizedString(t *testing.T) {
@@ -96,7 +96,7 @@ func TestWriterAddSanitizedString(t *testing.T) {
 	writer.SanitizeStrings = true
 
 	writer.AddString("aÿz")
-	assert.Equal(t, toBytes("ayz"), writer.ToByteArray())
+	assert.Equal(t, toBytes("ayz"), writer.Array())
 }
 
 func TestWriterAddFixedSanitizedString(t *testing.T) {
@@ -104,7 +104,7 @@ func TestWriterAddFixedSanitizedString(t *testing.T) {
 	writer.SanitizeStrings = true
 
 	writer.AddFixedString("aÿz", 3)
-	assert.Equal(t, toBytes("ayz"), writer.ToByteArray())
+	assert.Equal(t, toBytes("ayz"), writer.Array())
 }
 
 func TestWriterAddPaddedSanitizedString(t *testing.T) {
@@ -112,7 +112,7 @@ func TestWriterAddPaddedSanitizedString(t *testing.T) {
 	writer.SanitizeStrings = true
 
 	writer.AddPaddedString("aÿz", 6)
-	assert.Equal(t, toBytes("ayzÿÿÿ"), writer.ToByteArray())
+	assert.Equal(t, toBytes("ayzÿÿÿ"), writer.Array())
 }
 
 func TestWriterAddEncodedSanitizedString(t *testing.T) {
@@ -120,7 +120,7 @@ func TestWriterAddEncodedSanitizedString(t *testing.T) {
 	writer.SanitizeStrings = true
 
 	writer.AddEncodedString("aÿz")
-	assert.Equal(t, toBytes("S&l"), writer.ToByteArray())
+	assert.Equal(t, toBytes("S&l"), writer.Array())
 }
 
 func TestWriterAddFixedEncodedSanitizedString(t *testing.T) {
@@ -128,7 +128,7 @@ func TestWriterAddFixedEncodedSanitizedString(t *testing.T) {
 	writer.SanitizeStrings = true
 
 	writer.AddFixedEncodedString("aÿz", 3)
-	assert.Equal(t, toBytes("S&l"), writer.ToByteArray())
+	assert.Equal(t, toBytes("S&l"), writer.Array())
 }
 
 func TestWriterAddPaddedEncodedSanitizedString(t *testing.T) {
@@ -136,7 +136,7 @@ func TestWriterAddPaddedEncodedSanitizedString(t *testing.T) {
 	writer.SanitizeStrings = true
 
 	writer.AddPaddedEncodedString("aÿz", 6)
-	assert.Equal(t, toBytes("ÿÿÿ%T>"), writer.ToByteArray())
+	assert.Equal(t, toBytes("ÿÿÿ%T>"), writer.Array())
 }
 
 func TestWriterAddNumbersOnBoundary(t *testing.T) {
