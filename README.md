@@ -61,3 +61,9 @@ Now using version go1.20.5
 In VSCode, search for the `GOROOT` setting and update the path to point at this version of go.
 
 Note that a gvm extension exists for VSCode but it is out of date and no longer functions properly.
+
+### Building the code
+
+A `Makefile` is provided to ease the process of building, testing, and code generation. Use `make help` to see all available targets. Running `make` by itself should be enough for most uses. `make test` is also available to run all tests.
+
+Building the library on Windows is left as an exercise to the reader.
