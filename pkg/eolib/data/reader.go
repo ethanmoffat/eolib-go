@@ -90,6 +90,46 @@ func (r *EoReader) Seek(offset int64, whence int) (i int64, err error) {
 	return
 }
 
+// SliceFromCurrent creates a new [data.EoReader] from a slice of the reader's underlying data.
+//
+// The input data of the new reader will start at this reader's current position and contain all remaining data. The position and chunked reading mode of each reader are independent.
+//
+// The new reader's position starts at zero with chunked reading mode disabled.
+func (r *EoReader) SliceFromCurrent() (*EoReader, error) {
+	return r.SliceFromIndex(r.pos)
+}
+
+// SliceFromIndex creates a new [data.EoReader] from a slice of the reader's underlying data.
+//
+// The input data of the new reader will start at the specified index, offset from the start of the underlying data array, and contains all remaining data. The position and chunked reading mode of each reader are independent.
+//
+// The new reader's position starts at zero with chunked reading mode disabled.
+func (r *EoReader) SliceFromIndex(index int) (*EoReader, error) {
+	return r.Slice(index, eolib.Max(0, r.Length()-index))
+}
+
+// Slice creates a new [data.EoReader] from a slice of the reader's underlying data.
+//
+// The input data of the new reader will start at the specified index and contain bytes equal to the specified length. The position and chunked reading mode of each reader are independent.
+//
+// The new reader's position starts at zero with chunked reading mode disabled.
+func (r *EoReader) Slice(index int, length int) (ret *EoReader, err error) {
+	if index < 0 {
+		err = errors.New("index must not be less than 0")
+		return
+	}
+
+	if length < 0 {
+		err = errors.New("length must not be less than 0")
+		return
+	}
+
+	startIndex := eolib.Max(0, eolib.Min(r.Length(), index))
+	endIndex := eolib.Min(len(r.data), eolib.Min(r.Length(), length)+startIndex)
+
+	return NewEoReader(r.data[startIndex:endIndex]), nil
+}
+
 // GetByte reads a raw byte from the input data.
 func (r *EoReader) GetByte() byte {
 	return r.readByte()
@@ -193,7 +233,7 @@ func (r *EoReader) SetIsChunked(value bool) {
 // Otherwise, gets the total number of bytes remaining in the input data.
 func (r *EoReader) Remaining() int {
 	if r.chunkInfo.isChunked {
-		return r.chunkInfo.nextBreak - r.pos
+		return r.chunkInfo.nextBreak - eolib.Min(r.pos, r.chunkInfo.nextBreak)
 	} else {
 		return len(r.data) - r.pos
 	}
