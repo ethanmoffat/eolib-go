@@ -1172,8 +1172,8 @@ func (s *PubFile) Deserialize(reader data.EoReader) (err error) {
 
 // PlayersList :: Information about online players.
 type PlayersList struct {
-	OnlineCount int
-	Players     []OnlinePlayer
+	PlayersCount int
+	Players      []OnlinePlayer
 }
 
 func (s *PlayersList) Serialize(writer data.EoWriter) (err error) {
@@ -1181,14 +1181,14 @@ func (s *PlayersList) Serialize(writer data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	writer.SanitizeStrings = true
-	// OnlineCount : field : short
-	if err = writer.AddShort(s.OnlineCount); err != nil {
+	// PlayersCount : length : short
+	if err = writer.AddShort(s.PlayersCount); err != nil {
 		return
 	}
 
 	writer.AddByte(0xFF)
 	// Players : array : OnlinePlayer
-	for ndx := 0; ndx < len(s.Players); ndx++ {
+	for ndx := 0; ndx < s.PlayersCount; ndx++ {
 		if err = s.Players[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -1204,13 +1204,13 @@ func (s *PlayersList) Deserialize(reader data.EoReader) (err error) {
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	reader.SetIsChunked(true)
-	// OnlineCount : field : short
-	s.OnlineCount = reader.GetShort()
+	// PlayersCount : length : short
+	s.PlayersCount = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Players : array : OnlinePlayer
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	for ndx := 0; ndx < s.PlayersCount; ndx++ {
 		s.Players = append(s.Players, OnlinePlayer{})
 		if err = s.Players[ndx].Deserialize(reader); err != nil {
 			return
@@ -1227,8 +1227,8 @@ func (s *PlayersList) Deserialize(reader data.EoReader) (err error) {
 
 // PlayersListFriends ::  Information about online players. Sent in reply to friends list requests.
 type PlayersListFriends struct {
-	OnlineCount int
-	Players     []string
+	PlayersCount int
+	Players      []string
 }
 
 func (s *PlayersListFriends) Serialize(writer data.EoWriter) (err error) {
@@ -1236,14 +1236,14 @@ func (s *PlayersListFriends) Serialize(writer data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	writer.SanitizeStrings = true
-	// OnlineCount : field : short
-	if err = writer.AddShort(s.OnlineCount); err != nil {
+	// PlayersCount : length : short
+	if err = writer.AddShort(s.PlayersCount); err != nil {
 		return
 	}
 
 	writer.AddByte(0xFF)
 	// Players : array : string
-	for ndx := 0; ndx < len(s.Players); ndx++ {
+	for ndx := 0; ndx < s.PlayersCount; ndx++ {
 		if err = writer.AddString(s.Players[ndx]); err != nil {
 			return
 		}
@@ -1260,13 +1260,13 @@ func (s *PlayersListFriends) Deserialize(reader data.EoReader) (err error) {
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	reader.SetIsChunked(true)
-	// OnlineCount : field : short
-	s.OnlineCount = reader.GetShort()
+	// PlayersCount : length : short
+	s.PlayersCount = reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Players : array : string
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	for ndx := 0; ndx < s.PlayersCount; ndx++ {
 		if s.Players[ndx], err = reader.GetString(); err != nil {
 			return
 		}

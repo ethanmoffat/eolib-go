@@ -8,11 +8,65 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSlice(t *testing.T) {
+	reader := createReader([]byte{0x01, 0x02, 0x03, 0x04, 0x05, 0x06})
+	reader.GetByte()
+	reader.SetIsChunked(true)
+
+	reader2, err := reader.SliceFromCurrent()
+	assert.NoError(t, err)
+	assert.Equal(t, 0, reader2.Position())
+	assert.Equal(t, 5, reader2.Remaining())
+	assert.False(t, reader2.IsChunked())
+
+	reader3, err := reader2.SliceFromIndex(1)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, reader3.Position())
+	assert.Equal(t, 4, reader3.Remaining())
+	assert.False(t, reader3.IsChunked())
+
+	reader4, err := reader3.Slice(1, 2)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, reader4.Position())
+	assert.Equal(t, 2, reader4.Remaining())
+	assert.False(t, reader4.IsChunked())
+
+	assert.Equal(t, 1, reader.Position())
+	assert.Equal(t, 5, reader.Remaining())
+	assert.True(t, reader.IsChunked())
+}
+
+func TestSliceOverRead(t *testing.T) {
+	reader := createReader([]byte{0x01, 0x02, 0x03})
+
+	res, _ := reader.Slice(2, 5)
+	assert.Equal(t, 1, res.Remaining())
+
+	res, _ = reader.SliceFromIndex(3)
+	assert.Equal(t, 0, res.Remaining())
+
+	res, _ = reader.SliceFromIndex(4)
+	assert.Equal(t, 0, res.Remaining())
+
+	res, _ = reader.Slice(4, 12345)
+	assert.Equal(t, 0, res.Remaining())
+}
+
+func TestSliceNegativeInputs(t *testing.T) {
+	reader := data.EoReader{}
+
+	_, err := reader.SliceFromIndex(-1)
+	assert.Error(t, err)
+
+	_, err = reader.Slice(0, -1)
+	assert.Error(t, err)
+}
+
 func TestReaderGetByte(t *testing.T) {
 	byteValues := []byte{0x00, 0x01, 0x02, 0x80, 0xFD, 0xFE, 0xFF}
 	for _, expected := range byteValues {
 		t.Run(fmt.Sprintf("ReadByte_%d", expected), func(t *testing.T) {
-			reader := data.NewEoReader([]byte{expected})
+			reader := createReader([]byte{expected})
 			actual := reader.GetByte()
 			assert.Equal(t, expected, actual)
 		})
@@ -20,20 +74,20 @@ func TestReaderGetByte(t *testing.T) {
 }
 
 func TestReaderOverReadByte(t *testing.T) {
-	reader := data.NewEoReader([]byte{})
+	reader := createReader([]byte{})
 	value := reader.GetByte()
 	assert.Equal(t, byte(0x00), value)
 }
 
 func TestReaderGetBytes(t *testing.T) {
-	reader := data.NewEoReader([]byte{0x01, 0x02, 0x03, 0x04, 0x05})
+	reader := createReader([]byte{0x01, 0x02, 0x03, 0x04, 0x05})
 	assert.Equal(t, []byte{0x01, 0x02, 0x03}, reader.GetBytes(3))
 	assert.Equal(t, []byte{0x04, 0x05}, reader.GetBytes(10))
 	assert.Equal(t, []byte{}, reader.GetBytes(1))
 }
 
 func TestReaderGetChar(t *testing.T) {
-	reader := data.NewEoReader([]byte{0x01, 0x02, 0x80, 0x81, 0xFD, 0xFE, 0xFF})
+	reader := createReader([]byte{0x01, 0x02, 0x80, 0x81, 0xFD, 0xFE, 0xFF})
 	assert.Equal(t, 0, reader.GetChar())
 	assert.Equal(t, 1, reader.GetChar())
 	assert.Equal(t, 127, reader.GetChar())
@@ -106,14 +160,14 @@ func TestReaderGetInt(t *testing.T) {
 
 func TestReaderGetString(t *testing.T) {
 	const expected = "Hello, World!"
-	reader := data.NewEoReader(toBytes(expected))
+	reader := createReader(toBytes(expected))
 	actual, _ := reader.GetString()
 	assert.Equal(t, expected, actual)
 }
 
 func TestReaderGetFixedString(t *testing.T) {
 	const input = "foobar"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	actual1, _ := reader.GetFixedString(3)
 	actual2, _ := reader.GetFixedString(3)
 	assert.Equal(t, input[:3], actual1)
@@ -122,7 +176,7 @@ func TestReaderGetFixedString(t *testing.T) {
 
 func TestReaderGetPaddedString(t *testing.T) {
 	const input = "fooÿbarÿÿÿ"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	actual1, _ := reader.GetPaddedString(4)
 	actual2, _ := reader.GetPaddedString(6)
 	assert.Equal(t, "foo", actual1)
@@ -131,7 +185,7 @@ func TestReaderGetPaddedString(t *testing.T) {
 
 func TestReaderGetStringChunked(t *testing.T) {
 	const input = "Hello,ÿWorld!"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	reader.SetIsChunked(true)
 
 	actual1, _ := reader.GetString()
@@ -156,14 +210,14 @@ func TestReaderGetNegativeLengthPaddedString(t *testing.T) {
 
 func TestReaderGetEncodedString(t *testing.T) {
 	const input = "!;a-^H s^3a:)"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	actual, _ := reader.GetEncodedString()
 	assert.Equal(t, "Hello, World!", actual)
 }
 
 func TestReaderGetFixedEncodedString(t *testing.T) {
 	const input = "^0g[>k"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	actual1, _ := reader.GetFixedEncodedString(3)
 	actual2, _ := reader.GetFixedEncodedString(3)
 	assert.Equal(t, "foo", actual1)
@@ -172,7 +226,7 @@ func TestReaderGetFixedEncodedString(t *testing.T) {
 
 func TestReaderGetPaddedEncodedString(t *testing.T) {
 	const input = "ÿ0^9ÿÿÿ-l=S>k"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	actual1, _ := reader.GetPaddedEncodedString(4)
 	actual2, _ := reader.GetPaddedEncodedString(6)
 	actual3, _ := reader.GetPaddedEncodedString(3)
@@ -183,7 +237,7 @@ func TestReaderGetPaddedEncodedString(t *testing.T) {
 
 func TestReaderGetEncodedStringChunked(t *testing.T) {
 	const input = "E0a3hWÿ!;a-^H"
-	reader := data.NewEoReader(toBytes(input))
+	reader := createReader(toBytes(input))
 	reader.SetIsChunked(true)
 
 	actual1, _ := reader.GetEncodedString()
@@ -208,7 +262,7 @@ func TestReaderGetNegativeLengthPaddedEncodedString(t *testing.T) {
 
 func TestReaderRemaining(t *testing.T) {
 	bytes := []byte{0x01, 0x03, 0x04, 0xFE, 0x05, 0xFE, 0xFE, 0x06, 0xFE, 0xFE, 0xFE}
-	reader := data.NewEoReader(bytes)
+	reader := createReader(bytes)
 
 	assert.Equal(t, len(bytes), reader.Remaining())
 
@@ -237,7 +291,7 @@ func TestReaderRemainingChunked(t *testing.T) {
 		0xFF, // chunk delimiter
 		0x05, 0xFE, 0xFE, 0x06, 0xFE, 0xFE, 0xFE}
 
-	reader := data.NewEoReader(bytes)
+	reader := createReader(bytes)
 	reader.SetIsChunked(true)
 
 	assert.Equal(t, 3, reader.Remaining())
@@ -261,7 +315,7 @@ func TestReaderNextChunk(t *testing.T) {
 		0xFF, // chunk delimiter
 		0x06}
 
-	reader := data.NewEoReader(bytes)
+	reader := createReader(bytes)
 	reader.SetIsChunked(true)
 
 	assert.Equal(t, 0, reader.Position())
@@ -293,7 +347,7 @@ func TestReaderNextChunkWithChunkedModeToggledInBetween(t *testing.T) {
 		0xFF, // chunk delimiter
 		0x06}
 
-	reader := data.NewEoReader(bytes)
+	reader := createReader(bytes)
 
 	assert.Equal(t, 0, reader.Position())
 
@@ -320,7 +374,7 @@ func TestReaderNextChunkWithChunkedModeToggledInBetween(t *testing.T) {
 
 func TestReaderUnderRead(t *testing.T) {
 	// See: https://github.com/Cirras/eo-protocol/blob/master/docs/chunks.md#1-under-read
-	reader := data.NewEoReader([]byte{0x7C, 0x67, 0x61, 0x72, 0x62, 0x61, 0x67, 0x65, 0xFF, 0xCA, 0x31})
+	reader := createReader([]byte{0x7C, 0x67, 0x61, 0x72, 0x62, 0x61, 0x67, 0x65, 0xFF, 0xCA, 0x31})
 	reader.SetIsChunked(true)
 
 	assert.Equal(t, 123, reader.GetChar()) // byte representation: 123 = 0x7C
@@ -331,7 +385,7 @@ func TestReaderUnderRead(t *testing.T) {
 
 func TestOverRead(t *testing.T) {
 	// See: https://github.com/Cirras/eo-protocol/blob/master/docs/chunks.md#2-over-read
-	reader := data.NewEoReader([]byte{0xFF, 0x7C})
+	reader := createReader([]byte{0xFF, 0x7C})
 	reader.SetIsChunked(true)
 
 	assert.Equal(t, 0, reader.GetInt())
@@ -342,7 +396,7 @@ func TestOverRead(t *testing.T) {
 
 func TestDoubleRead(t *testing.T) {
 	// See: https://github.com/Cirras/eo-protocol/blob/master/docs/chunks.md#3-double-read
-	reader := data.NewEoReader([]byte{0xFF, 0x7C, 0xCA, 0x31})
+	reader := createReader([]byte{0xFF, 0x7C, 0xCA, 0x31})
 
 	// Reading all 4 bytes of the input data
 	assert.Equal(t, 790222478, reader.GetInt())
@@ -354,4 +408,15 @@ func TestDoubleRead(t *testing.T) {
 
 	assert.Equal(t, 123, reader.GetChar())
 	assert.Equal(t, 12345, reader.GetShort())
+}
+
+func createReader(inp []byte) *data.EoReader {
+	tmp := make([]byte, len(inp)+20)
+	for i, b := range inp {
+		tmp[i+10] = b
+	}
+
+	reader := data.NewEoReader(tmp)
+	retReader, _ := reader.Slice(10, len(inp))
+	return retReader
 }
