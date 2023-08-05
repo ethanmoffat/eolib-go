@@ -110,7 +110,7 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 	}
 
 	// write out serialize method
-	output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) (err error) {\n", structName))
+	output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer *data.EoWriter) (err error) {\n", structName))
 	output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
 	output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
 	if nextImports, err = writeSerializeBody(output, instructions, switchStructQualifier, packageName, fullSpec); err != nil {
@@ -121,7 +121,7 @@ func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol
 	output.WriteString("}\n\n")
 
 	// write out deserialize method
-	output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) (err error) {\n", structName))
+	output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader *data.EoReader) (err error) {\n", structName))
 	output.WriteString("\toldIsChunked := reader.IsChunked()\n")
 	output.WriteString("\tdefer func() { reader.SetIsChunked(oldIsChunked) }()\n\n")
 	if nextImports, err = writeDeserializeBody(output, instructions, switchStructQualifier, packageName, fullSpec); err != nil {
@@ -226,7 +226,7 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 		}
 
 		// write out serialize method
-		output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer data.EoWriter) (err error) {\n", caseStructName))
+		output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer *data.EoWriter) (err error) {\n", caseStructName))
 		output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
 		output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
 		if nextImports, err = writeSerializeBody(output, c.Instructions, switchStructQualifier, packageName, fullSpec); err != nil {
@@ -237,7 +237,7 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 		output.WriteString("}\n\n")
 
 		// write out deserialize method
-		output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader data.EoReader) (err error) {\n", caseStructName))
+		output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader *data.EoReader) (err error) {\n", caseStructName))
 		output.WriteString("\toldIsChunked := reader.IsChunked()\n")
 		output.WriteString("\tdefer func() { reader.SetIsChunked(oldIsChunked) }()\n\n")
 		if nextImports, err = writeDeserializeBody(output, c.Instructions, switchStructQualifier, packageName, fullSpec); err != nil {

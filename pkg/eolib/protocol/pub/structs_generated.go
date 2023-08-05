@@ -54,7 +54,7 @@ type EifRecord struct {
 	Size ItemSize
 }
 
-func (s *EifRecord) Serialize(writer data.EoWriter) (err error) {
+func (s *EifRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -271,7 +271,7 @@ func (s *EifRecord) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EifRecord) Deserialize(reader data.EoReader) (err error) {
+func (s *EifRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -374,7 +374,7 @@ type Eif struct {
 	Items           []EifRecord
 }
 
-func (s *Eif) Serialize(writer data.EoWriter) (err error) {
+func (s *Eif) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -411,7 +411,7 @@ func (s *Eif) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Eif) Deserialize(reader data.EoReader) (err error) {
+func (s *Eif) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -465,7 +465,7 @@ type EnfRecord struct {
 	Experience            int
 }
 
-func (s *EnfRecord) Serialize(writer data.EoWriter) (err error) {
+func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -592,7 +592,7 @@ func (s *EnfRecord) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EnfRecord) Deserialize(reader data.EoReader) (err error) {
+func (s *EnfRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -663,7 +663,7 @@ type Enf struct {
 	Npcs           []EnfRecord
 }
 
-func (s *Enf) Serialize(writer data.EoWriter) (err error) {
+func (s *Enf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -700,7 +700,7 @@ func (s *Enf) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Enf) Deserialize(reader data.EoReader) (err error) {
+func (s *Enf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -742,7 +742,7 @@ type EcfRecord struct {
 	Cha        int
 }
 
-func (s *EcfRecord) Serialize(writer data.EoWriter) (err error) {
+func (s *EcfRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -799,7 +799,7 @@ func (s *EcfRecord) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EcfRecord) Deserialize(reader data.EoReader) (err error) {
+func (s *EcfRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -838,7 +838,7 @@ type Ecf struct {
 	Classes           []EcfRecord
 }
 
-func (s *Ecf) Serialize(writer data.EoWriter) (err error) {
+func (s *Ecf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -875,7 +875,7 @@ func (s *Ecf) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Ecf) Deserialize(reader data.EoReader) (err error) {
+func (s *Ecf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -941,7 +941,7 @@ type EsfRecord struct {
 	Cha           int
 }
 
-func (s *EsfRecord) Serialize(writer data.EoWriter) (err error) {
+func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1118,7 +1118,7 @@ func (s *EsfRecord) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EsfRecord) Deserialize(reader data.EoReader) (err error) {
+func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1208,7 +1208,7 @@ type Esf struct {
 	Skills           []EsfRecord
 }
 
-func (s *Esf) Serialize(writer data.EoWriter) (err error) {
+func (s *Esf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1245,7 +1245,7 @@ func (s *Esf) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Esf) Deserialize(reader data.EoReader) (err error) {
+func (s *Esf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 

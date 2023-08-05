@@ -25,12 +25,12 @@ func TestInitSequenceGenerate(t *testing.T) {
 	const seed = 123
 	random := rand.New(rand.NewSource(seed))
 
-	start := packet.GenerateInitSequence(*random)
+	start := packet.GenerateInitSequence(random)
 
 	// note: the expected values differ from eolib-java due to a different pseudo-random implementation
 	assert.Equal(t, 1208, start.Value())
-	assert.Equal(t, 148, start.Seq1())
-	assert.Equal(t, 185, start.Seq2())
+	assert.Equal(t, 163, start.Seq1())
+	assert.Equal(t, 80, start.Seq2())
 }
 
 func TestPingSequenceFromValue(t *testing.T) {
@@ -45,7 +45,7 @@ func TestPingSequenceGenerate(t *testing.T) {
 	const seed = 123
 	random := rand.New(rand.NewSource(seed))
 
-	start := packet.GeneratePingSequence(*random)
+	start := packet.GeneratePingSequence(random)
 
 	// note: the expected values differ from eolib-java due to a different pseudo-random implementation
 	assert.Equal(t, 1208, start.Value())
@@ -63,7 +63,7 @@ func TestAccountReplySequenceGenerate(t *testing.T) {
 	const seed = 123
 	random := rand.New(rand.NewSource(seed))
 
-	start := packet.GenerateAccountReplySequence(*random)
+	start := packet.GenerateAccountReplySequence(random)
 
 	// note: the expected values differ from eolib-java due to a different pseudo-random implementation
 	assert.Equal(t, 155, start.Value())

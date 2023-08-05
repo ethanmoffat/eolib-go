@@ -51,9 +51,9 @@ func NewInitSequence(seq1 int, seq2 int) *InitSequence {
 }
 
 // GenerateInitSequence generates an instance of [packet.InitSequence] with a random value in the range 0-1757.
-func GenerateInitSequence(rand rand.Rand) *InitSequence {
+func GenerateInitSequence(rand *rand.Rand) *InitSequence {
 	value := rand.Intn(1757)
-	seq1Max := value + 13/7
+	seq1Max := (value + 13) / 7
 	seq1Min := eolib.Max(0, (value-(data.CHAR_MAX-1)+13+6)/7)
 
 	seq1 := rand.Intn(seq1Max-seq1Min) + seq1Min
@@ -74,8 +74,8 @@ func NewPingSequence(seq1 int, seq2 int) *PingSequence {
 	}
 }
 
-// GeneratePingSequence generates an isntance of [packet.PingSequence] with a random value in the range 0-1757.
-func GeneratePingSequence(rand rand.Rand) *PingSequence {
+// GeneratePingSequence generates an instance of [packet.PingSequence] with a random value in the range 0-1757.
+func GeneratePingSequence(rand *rand.Rand) *PingSequence {
 	value := rand.Intn(1757)
 	seq1 := value + rand.Intn(data.CHAR_MAX-1)
 	seq2 := seq1 - value
@@ -93,7 +93,7 @@ func NewAccountReplySequence(value int) *AccountReplySequence {
 }
 
 // GenerateAccountReplySequence generates an instance of [packet.AccountReplySequence] with a random value in th range 0-240.
-func GenerateAccountReplySequence(rand rand.Rand) *AccountReplySequence {
+func GenerateAccountReplySequence(rand *rand.Rand) *AccountReplySequence {
 	start := rand.Intn(240)
 	return &AccountReplySequence{start}
 }
