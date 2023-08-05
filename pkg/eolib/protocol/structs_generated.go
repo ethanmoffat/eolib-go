@@ -14,7 +14,7 @@ type Coords struct {
 	Y int
 }
 
-func (s *Coords) Serialize(writer data.EoWriter) (err error) {
+func (s *Coords) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -31,7 +31,7 @@ func (s *Coords) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Coords) Deserialize(reader data.EoReader) (err error) {
+func (s *Coords) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 

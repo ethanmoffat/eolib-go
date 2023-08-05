@@ -27,7 +27,7 @@ func (s InitInitClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Init
 }
 
-func (s *InitInitClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *InitInitClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -58,7 +58,7 @@ func (s *InitInitClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *InitInitClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *InitInitClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -95,7 +95,7 @@ func (s ConnectionAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *ConnectionAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ConnectionAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -117,7 +117,7 @@ func (s *ConnectionAcceptClientPacket) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *ConnectionAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ConnectionAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -143,7 +143,7 @@ func (s ConnectionPingClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Ping
 }
 
-func (s *ConnectionPingClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ConnectionPingClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -155,7 +155,7 @@ func (s *ConnectionPingClientPacket) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *ConnectionPingClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ConnectionPingClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -180,7 +180,7 @@ func (s AccountRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *AccountRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *AccountRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -192,7 +192,7 @@ func (s *AccountRequestClientPacket) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *AccountRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *AccountRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -224,7 +224,7 @@ func (s AccountCreateClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Create
 }
 
-func (s *AccountCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *AccountCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -281,7 +281,7 @@ func (s *AccountCreateClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *AccountCreateClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *AccountCreateClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -367,7 +367,7 @@ func (s AccountAgreeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Agree
 }
 
-func (s *AccountAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *AccountAgreeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -394,7 +394,7 @@ func (s *AccountAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *AccountAgreeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *AccountAgreeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -441,7 +441,7 @@ func (s CharacterRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *CharacterRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -456,7 +456,7 @@ func (s *CharacterRequestClientPacket) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *CharacterRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -492,7 +492,7 @@ func (s CharacterCreateClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Create
 }
 
-func (s *CharacterCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -533,7 +533,7 @@ func (s *CharacterCreateClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *CharacterCreateClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterCreateClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -577,7 +577,7 @@ func (s CharacterTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *CharacterTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -589,7 +589,7 @@ func (s *CharacterTakeClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *CharacterTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -613,7 +613,7 @@ func (s CharacterRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *CharacterRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -630,7 +630,7 @@ func (s *CharacterRemoveClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *CharacterRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -656,7 +656,7 @@ func (s LoginRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *LoginRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *LoginRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -677,7 +677,7 @@ func (s *LoginRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *LoginRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *LoginRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -716,7 +716,7 @@ func (s WelcomeRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *WelcomeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -728,7 +728,7 @@ func (s *WelcomeRequestClientPacket) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *WelcomeRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -752,7 +752,7 @@ func (s WelcomeMsgClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Msg
 }
 
-func (s *WelcomeMsgClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeMsgClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -769,7 +769,7 @@ func (s *WelcomeMsgClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WelcomeMsgClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeMsgClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -796,7 +796,7 @@ type WelcomeAgreeFileTypeDataEmf struct {
 	FileId int
 }
 
-func (s *WelcomeAgreeFileTypeDataEmf) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeAgreeFileTypeDataEmf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -808,7 +808,7 @@ func (s *WelcomeAgreeFileTypeDataEmf) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *WelcomeAgreeFileTypeDataEmf) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeAgreeFileTypeDataEmf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -822,7 +822,7 @@ type WelcomeAgreeFileTypeDataEif struct {
 	FileId int
 }
 
-func (s *WelcomeAgreeFileTypeDataEif) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeAgreeFileTypeDataEif) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -834,7 +834,7 @@ func (s *WelcomeAgreeFileTypeDataEif) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *WelcomeAgreeFileTypeDataEif) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeAgreeFileTypeDataEif) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -848,7 +848,7 @@ type WelcomeAgreeFileTypeDataEnf struct {
 	FileId int
 }
 
-func (s *WelcomeAgreeFileTypeDataEnf) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeAgreeFileTypeDataEnf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -860,7 +860,7 @@ func (s *WelcomeAgreeFileTypeDataEnf) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *WelcomeAgreeFileTypeDataEnf) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeAgreeFileTypeDataEnf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -874,7 +874,7 @@ type WelcomeAgreeFileTypeDataEsf struct {
 	FileId int
 }
 
-func (s *WelcomeAgreeFileTypeDataEsf) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeAgreeFileTypeDataEsf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -886,7 +886,7 @@ func (s *WelcomeAgreeFileTypeDataEsf) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *WelcomeAgreeFileTypeDataEsf) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeAgreeFileTypeDataEsf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -900,7 +900,7 @@ type WelcomeAgreeFileTypeDataEcf struct {
 	FileId int
 }
 
-func (s *WelcomeAgreeFileTypeDataEcf) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeAgreeFileTypeDataEcf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -912,7 +912,7 @@ func (s *WelcomeAgreeFileTypeDataEcf) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *WelcomeAgreeFileTypeDataEcf) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeAgreeFileTypeDataEcf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -930,7 +930,7 @@ func (s WelcomeAgreeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Agree
 }
 
-func (s *WelcomeAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WelcomeAgreeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -999,7 +999,7 @@ func (s *WelcomeAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WelcomeAgreeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WelcomeAgreeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1051,7 +1051,7 @@ func (s AdminInteractTellClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Tell
 }
 
-func (s *AdminInteractTellClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *AdminInteractTellClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1063,7 +1063,7 @@ func (s *AdminInteractTellClientPacket) Serialize(writer data.EoWriter) (err err
 	return
 }
 
-func (s *AdminInteractTellClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *AdminInteractTellClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1089,7 +1089,7 @@ func (s AdminInteractReportClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Report
 }
 
-func (s *AdminInteractReportClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *AdminInteractReportClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1109,7 +1109,7 @@ func (s *AdminInteractReportClientPacket) Serialize(writer data.EoWriter) (err e
 	return
 }
 
-func (s *AdminInteractReportClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *AdminInteractReportClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1144,7 +1144,7 @@ func (s GlobalRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *GlobalRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GlobalRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1156,7 +1156,7 @@ func (s *GlobalRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GlobalRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GlobalRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1180,7 +1180,7 @@ func (s GlobalPlayerClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Player
 }
 
-func (s *GlobalPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GlobalPlayerClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1192,7 +1192,7 @@ func (s *GlobalPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GlobalPlayerClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GlobalPlayerClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1216,7 +1216,7 @@ func (s GlobalOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *GlobalOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GlobalOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1228,7 +1228,7 @@ func (s *GlobalOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GlobalOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GlobalOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1252,7 +1252,7 @@ func (s GlobalCloseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Close
 }
 
-func (s *GlobalCloseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GlobalCloseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1264,7 +1264,7 @@ func (s *GlobalCloseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GlobalCloseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GlobalCloseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1289,7 +1289,7 @@ func (s TalkRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *TalkRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1301,7 +1301,7 @@ func (s *TalkRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1326,7 +1326,7 @@ func (s TalkOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *TalkOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1338,7 +1338,7 @@ func (s *TalkOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1363,7 +1363,7 @@ func (s TalkMsgClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Msg
 }
 
-func (s *TalkMsgClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkMsgClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1375,7 +1375,7 @@ func (s *TalkMsgClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkMsgClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkMsgClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1401,7 +1401,7 @@ func (s TalkTellClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Tell
 }
 
-func (s *TalkTellClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkTellClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1421,7 +1421,7 @@ func (s *TalkTellClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkTellClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkTellClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1457,7 +1457,7 @@ func (s TalkReportClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Report
 }
 
-func (s *TalkReportClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkReportClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1469,7 +1469,7 @@ func (s *TalkReportClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkReportClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkReportClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1494,7 +1494,7 @@ func (s TalkPlayerClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Player
 }
 
-func (s *TalkPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkPlayerClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1506,7 +1506,7 @@ func (s *TalkPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkPlayerClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkPlayerClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1531,7 +1531,7 @@ func (s TalkUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *TalkUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1543,7 +1543,7 @@ func (s *TalkUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1568,7 +1568,7 @@ func (s TalkAdminClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Admin
 }
 
-func (s *TalkAdminClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkAdminClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1580,7 +1580,7 @@ func (s *TalkAdminClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkAdminClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkAdminClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1605,7 +1605,7 @@ func (s TalkAnnounceClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Announce
 }
 
-func (s *TalkAnnounceClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TalkAnnounceClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1617,7 +1617,7 @@ func (s *TalkAnnounceClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TalkAnnounceClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TalkAnnounceClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1643,7 +1643,7 @@ func (s AttackUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *AttackUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *AttackUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1660,7 +1660,7 @@ func (s *AttackUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *AttackUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *AttackUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1686,7 +1686,7 @@ type ChairRequestSitActionDataSit struct {
 	Coords protocol.Coords
 }
 
-func (s *ChairRequestSitActionDataSit) Serialize(writer data.EoWriter) (err error) {
+func (s *ChairRequestSitActionDataSit) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1697,7 +1697,7 @@ func (s *ChairRequestSitActionDataSit) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *ChairRequestSitActionDataSit) Deserialize(reader data.EoReader) (err error) {
+func (s *ChairRequestSitActionDataSit) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1717,7 +1717,7 @@ func (s ChairRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *ChairRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ChairRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1741,7 +1741,7 @@ func (s *ChairRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChairRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ChairRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1772,7 +1772,7 @@ type SitRequestSitActionDataSit struct {
 	CursorCoords protocol.Coords // The coordinates of the map cursor.
 }
 
-func (s *SitRequestSitActionDataSit) Serialize(writer data.EoWriter) (err error) {
+func (s *SitRequestSitActionDataSit) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1783,7 +1783,7 @@ func (s *SitRequestSitActionDataSit) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *SitRequestSitActionDataSit) Deserialize(reader data.EoReader) (err error) {
+func (s *SitRequestSitActionDataSit) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1803,7 +1803,7 @@ func (s SitRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *SitRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *SitRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1827,7 +1827,7 @@ func (s *SitRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *SitRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *SitRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1857,7 +1857,7 @@ func (s EmoteReportClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Report
 }
 
-func (s *EmoteReportClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *EmoteReportClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1869,7 +1869,7 @@ func (s *EmoteReportClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EmoteReportClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *EmoteReportClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1892,7 +1892,7 @@ func (s FacePlayerClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Player
 }
 
-func (s *FacePlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *FacePlayerClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1904,7 +1904,7 @@ func (s *FacePlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *FacePlayerClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *FacePlayerClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1927,7 +1927,7 @@ func (s WalkAdminClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Admin
 }
 
-func (s *WalkAdminClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WalkAdminClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1938,7 +1938,7 @@ func (s *WalkAdminClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WalkAdminClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WalkAdminClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1963,7 +1963,7 @@ func (s WalkSpecClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Spec
 }
 
-func (s *WalkSpecClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WalkSpecClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1974,7 +1974,7 @@ func (s *WalkSpecClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WalkSpecClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WalkSpecClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1999,7 +1999,7 @@ func (s WalkPlayerClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Player
 }
 
-func (s *WalkPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WalkPlayerClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2010,7 +2010,7 @@ func (s *WalkPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WalkPlayerClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WalkPlayerClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2035,7 +2035,7 @@ func (s BankOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *BankOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BankOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2047,7 +2047,7 @@ func (s *BankOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BankOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BankOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2070,7 +2070,7 @@ func (s BankAddClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Add
 }
 
-func (s *BankAddClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BankAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2082,7 +2082,7 @@ func (s *BankAddClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BankAddClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BankAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2105,7 +2105,7 @@ func (s BankTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *BankTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BankTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2117,7 +2117,7 @@ func (s *BankTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BankTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BankTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2142,7 +2142,7 @@ func (s BarberBuyClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Buy
 }
 
-func (s *BarberBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BarberBuyClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2164,7 +2164,7 @@ func (s *BarberBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BarberBuyClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BarberBuyClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2191,7 +2191,7 @@ func (s BarberOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *BarberOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BarberOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2203,7 +2203,7 @@ func (s *BarberOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BarberOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BarberOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2227,7 +2227,7 @@ func (s LockerAddClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Add
 }
 
-func (s *LockerAddClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *LockerAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2242,7 +2242,7 @@ func (s *LockerAddClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *LockerAddClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *LockerAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2272,7 +2272,7 @@ func (s LockerTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *LockerTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *LockerTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2288,7 +2288,7 @@ func (s *LockerTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *LockerTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *LockerTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2315,7 +2315,7 @@ func (s LockerOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *LockerOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *LockerOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2326,7 +2326,7 @@ func (s *LockerOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *LockerOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *LockerOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2350,7 +2350,7 @@ func (s LockerBuyClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Buy
 }
 
-func (s *LockerBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *LockerBuyClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2362,7 +2362,7 @@ func (s *LockerBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *LockerBuyClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *LockerBuyClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2386,7 +2386,7 @@ func (s CitizenRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *CitizenRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CitizenRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2403,7 +2403,7 @@ func (s *CitizenRequestClientPacket) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *CitizenRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CitizenRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2429,7 +2429,7 @@ func (s CitizenAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *CitizenAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CitizenAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2446,7 +2446,7 @@ func (s *CitizenAcceptClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *CitizenAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CitizenAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2473,7 +2473,7 @@ func (s CitizenReplyClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Reply
 }
 
-func (s *CitizenReplyClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CitizenReplyClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2506,7 +2506,7 @@ func (s *CitizenReplyClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CitizenReplyClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CitizenReplyClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2552,7 +2552,7 @@ func (s CitizenRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *CitizenRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CitizenRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2564,7 +2564,7 @@ func (s *CitizenRemoveClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *CitizenRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CitizenRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2587,7 +2587,7 @@ func (s CitizenOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *CitizenOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *CitizenOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2599,7 +2599,7 @@ func (s *CitizenOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CitizenOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *CitizenOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2623,7 +2623,7 @@ func (s ShopCreateClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Create
 }
 
-func (s *ShopCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2640,7 +2640,7 @@ func (s *ShopCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopCreateClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopCreateClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2666,7 +2666,7 @@ func (s ShopBuyClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Buy
 }
 
-func (s *ShopBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopBuyClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2682,7 +2682,7 @@ func (s *ShopBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopBuyClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopBuyClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2710,7 +2710,7 @@ func (s ShopSellClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Sell
 }
 
-func (s *ShopSellClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopSellClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2726,7 +2726,7 @@ func (s *ShopSellClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopSellClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopSellClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2753,7 +2753,7 @@ func (s ShopOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *ShopOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2765,7 +2765,7 @@ func (s *ShopOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2788,7 +2788,7 @@ func (s StatSkillOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *StatSkillOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2800,7 +2800,7 @@ func (s *StatSkillOpenClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *StatSkillOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2824,7 +2824,7 @@ func (s StatSkillTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *StatSkillTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2841,7 +2841,7 @@ func (s *StatSkillTakeClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *StatSkillTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2867,7 +2867,7 @@ func (s StatSkillRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *StatSkillRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2884,7 +2884,7 @@ func (s *StatSkillRemoveClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *StatSkillRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2910,7 +2910,7 @@ type StatSkillAddActionTypeDataStat struct {
 	StatId StatId
 }
 
-func (s *StatSkillAddActionTypeDataStat) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillAddActionTypeDataStat) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2922,7 +2922,7 @@ func (s *StatSkillAddActionTypeDataStat) Serialize(writer data.EoWriter) (err er
 	return
 }
 
-func (s *StatSkillAddActionTypeDataStat) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillAddActionTypeDataStat) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2936,7 +2936,7 @@ type StatSkillAddActionTypeDataSkill struct {
 	SpellId int
 }
 
-func (s *StatSkillAddActionTypeDataSkill) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillAddActionTypeDataSkill) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2948,7 +2948,7 @@ func (s *StatSkillAddActionTypeDataSkill) Serialize(writer data.EoWriter) (err e
 	return
 }
 
-func (s *StatSkillAddActionTypeDataSkill) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillAddActionTypeDataSkill) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2966,7 +2966,7 @@ func (s StatSkillAddClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Add
 }
 
-func (s *StatSkillAddClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3000,7 +3000,7 @@ func (s *StatSkillAddClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *StatSkillAddClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3035,7 +3035,7 @@ func (s StatSkillJunkClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Junk
 }
 
-func (s *StatSkillJunkClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *StatSkillJunkClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3047,7 +3047,7 @@ func (s *StatSkillJunkClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *StatSkillJunkClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *StatSkillJunkClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3070,7 +3070,7 @@ func (s ItemUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *ItemUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ItemUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3082,7 +3082,7 @@ func (s *ItemUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ItemUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ItemUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3106,7 +3106,7 @@ func (s ItemDropClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Drop
 }
 
-func (s *ItemDropClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ItemDropClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3121,7 +3121,7 @@ func (s *ItemDropClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ItemDropClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ItemDropClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3150,7 +3150,7 @@ func (s ItemJunkClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Junk
 }
 
-func (s *ItemJunkClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ItemJunkClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3161,7 +3161,7 @@ func (s *ItemJunkClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ItemJunkClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ItemJunkClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3186,7 +3186,7 @@ func (s ItemGetClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Get
 }
 
-func (s *ItemGetClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ItemGetClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3198,7 +3198,7 @@ func (s *ItemGetClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ItemGetClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ItemGetClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3222,7 +3222,7 @@ func (s BoardRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *BoardRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BoardRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3239,7 +3239,7 @@ func (s *BoardRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BoardRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BoardRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3266,7 +3266,7 @@ func (s BoardCreateClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Create
 }
 
-func (s *BoardCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BoardCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3293,7 +3293,7 @@ func (s *BoardCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BoardCreateClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BoardCreateClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3338,7 +3338,7 @@ func (s BoardTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *BoardTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BoardTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3355,7 +3355,7 @@ func (s *BoardTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BoardTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BoardTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3380,7 +3380,7 @@ func (s BoardOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *BoardOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BoardOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3392,7 +3392,7 @@ func (s *BoardOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BoardOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BoardOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3415,7 +3415,7 @@ func (s JukeboxOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *JukeboxOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *JukeboxOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3426,7 +3426,7 @@ func (s *JukeboxOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *JukeboxOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *JukeboxOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3451,7 +3451,7 @@ func (s JukeboxMsgClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Msg
 }
 
-func (s *JukeboxMsgClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *JukeboxMsgClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3475,7 +3475,7 @@ func (s *JukeboxMsgClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *JukeboxMsgClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *JukeboxMsgClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3505,7 +3505,7 @@ func (s JukeboxUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *JukeboxUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *JukeboxUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3522,7 +3522,7 @@ func (s *JukeboxUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *JukeboxUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *JukeboxUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3548,7 +3548,7 @@ func (s WarpAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *WarpAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WarpAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3565,7 +3565,7 @@ func (s *WarpAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WarpAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WarpAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3591,7 +3591,7 @@ func (s WarpTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *WarpTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *WarpTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3608,7 +3608,7 @@ func (s *WarpTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WarpTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *WarpTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3633,7 +3633,7 @@ func (s PaperdollRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *PaperdollRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PaperdollRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3645,7 +3645,7 @@ func (s *PaperdollRequestClientPacket) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *PaperdollRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PaperdollRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3669,7 +3669,7 @@ func (s PaperdollRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *PaperdollRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PaperdollRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3686,7 +3686,7 @@ func (s *PaperdollRemoveClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *PaperdollRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PaperdollRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3712,7 +3712,7 @@ func (s PaperdollAddClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Add
 }
 
-func (s *PaperdollAddClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PaperdollAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3729,7 +3729,7 @@ func (s *PaperdollAddClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PaperdollAddClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PaperdollAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3754,7 +3754,7 @@ func (s BookRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *BookRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *BookRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3766,7 +3766,7 @@ func (s *BookRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BookRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *BookRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3788,7 +3788,7 @@ func (s MessagePingClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Ping
 }
 
-func (s *MessagePingClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *MessagePingClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3800,7 +3800,7 @@ func (s *MessagePingClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MessagePingClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *MessagePingClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3823,7 +3823,7 @@ func (s PlayersAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *PlayersAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PlayersAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3835,7 +3835,7 @@ func (s *PlayersAcceptClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *PlayersAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PlayersAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3859,7 +3859,7 @@ func (s PlayersRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *PlayersRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PlayersRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3871,7 +3871,7 @@ func (s *PlayersRequestClientPacket) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *PlayersRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PlayersRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3893,7 +3893,7 @@ func (s PlayersListClientPacket) Action() net.PacketAction {
 	return net.PacketAction_List
 }
 
-func (s *PlayersListClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PlayersListClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3905,7 +3905,7 @@ func (s *PlayersListClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PlayersListClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PlayersListClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3928,7 +3928,7 @@ func (s DoorOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *DoorOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *DoorOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3939,7 +3939,7 @@ func (s *DoorOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *DoorOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *DoorOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3964,7 +3964,7 @@ func (s ChestOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *ChestOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ChestOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3975,7 +3975,7 @@ func (s *ChestOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChestOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ChestOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4001,7 +4001,7 @@ func (s ChestAddClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Add
 }
 
-func (s *ChestAddClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ChestAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4016,7 +4016,7 @@ func (s *ChestAddClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChestAddClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ChestAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4046,7 +4046,7 @@ func (s ChestTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *ChestTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *ChestTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4062,7 +4062,7 @@ func (s *ChestTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChestTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *ChestTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4088,7 +4088,7 @@ func (s RefreshRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *RefreshRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *RefreshRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4100,7 +4100,7 @@ func (s *RefreshRequestClientPacket) Serialize(writer data.EoWriter) (err error)
 	return
 }
 
-func (s *RefreshRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *RefreshRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4124,7 +4124,7 @@ func (s RangeRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *RangeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *RangeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4150,7 +4150,7 @@ func (s *RangeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *RangeRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *RangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4186,7 +4186,7 @@ func (s PlayerRangeRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *PlayerRangeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PlayerRangeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4201,7 +4201,7 @@ func (s *PlayerRangeRequestClientPacket) Serialize(writer data.EoWriter) (err er
 	return
 }
 
-func (s *PlayerRangeRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PlayerRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4228,7 +4228,7 @@ func (s NpcRangeRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *NpcRangeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *NpcRangeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4253,7 +4253,7 @@ func (s *NpcRangeRequestClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *NpcRangeRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *NpcRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4283,7 +4283,7 @@ func (s PartyRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *PartyRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PartyRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4300,7 +4300,7 @@ func (s *PartyRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PartyRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PartyRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4326,7 +4326,7 @@ func (s PartyAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *PartyAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PartyAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4343,7 +4343,7 @@ func (s *PartyAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PartyAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PartyAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4368,7 +4368,7 @@ func (s PartyRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *PartyRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PartyRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4380,7 +4380,7 @@ func (s *PartyRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PartyRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PartyRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4403,7 +4403,7 @@ func (s PartyTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *PartyTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PartyTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4415,7 +4415,7 @@ func (s *PartyTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PartyTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PartyTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4440,7 +4440,7 @@ func (s GuildRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *GuildRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4467,7 +4467,7 @@ func (s *GuildRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4511,7 +4511,7 @@ func (s GuildAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *GuildAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4528,7 +4528,7 @@ func (s *GuildAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4553,7 +4553,7 @@ func (s GuildRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *GuildRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4565,7 +4565,7 @@ func (s *GuildRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4590,7 +4590,7 @@ type GuildAgreeInfoTypeDataDescription struct {
 	Description string
 }
 
-func (s *GuildAgreeInfoTypeDataDescription) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildAgreeInfoTypeDataDescription) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4602,7 +4602,7 @@ func (s *GuildAgreeInfoTypeDataDescription) Serialize(writer data.EoWriter) (err
 	return
 }
 
-func (s *GuildAgreeInfoTypeDataDescription) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildAgreeInfoTypeDataDescription) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4618,7 +4618,7 @@ type GuildAgreeInfoTypeDataRanks struct {
 	Ranks []string
 }
 
-func (s *GuildAgreeInfoTypeDataRanks) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildAgreeInfoTypeDataRanks) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4634,7 +4634,7 @@ func (s *GuildAgreeInfoTypeDataRanks) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *GuildAgreeInfoTypeDataRanks) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildAgreeInfoTypeDataRanks) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4657,7 +4657,7 @@ func (s GuildAgreeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Agree
 }
 
-func (s *GuildAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildAgreeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4698,7 +4698,7 @@ func (s *GuildAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildAgreeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildAgreeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4740,7 +4740,7 @@ func (s GuildCreateClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Create
 }
 
-func (s *GuildCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4773,7 +4773,7 @@ func (s *GuildCreateClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildCreateClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildCreateClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4827,7 +4827,7 @@ func (s GuildPlayerClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Player
 }
 
-func (s *GuildPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildPlayerClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4854,7 +4854,7 @@ func (s *GuildPlayerClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildPlayerClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildPlayerClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4899,7 +4899,7 @@ func (s GuildTakeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Take
 }
 
-func (s *GuildTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4916,7 +4916,7 @@ func (s *GuildTakeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildTakeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4941,7 +4941,7 @@ func (s GuildUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *GuildUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4953,7 +4953,7 @@ func (s *GuildUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -4977,7 +4977,7 @@ func (s GuildBuyClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Buy
 }
 
-func (s *GuildBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildBuyClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -4994,7 +4994,7 @@ func (s *GuildBuyClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildBuyClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildBuyClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5019,7 +5019,7 @@ func (s GuildOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *GuildOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5031,7 +5031,7 @@ func (s *GuildOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5055,7 +5055,7 @@ func (s GuildTellClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Tell
 }
 
-func (s *GuildTellClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildTellClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5072,7 +5072,7 @@ func (s *GuildTellClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildTellClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildTellClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5100,7 +5100,7 @@ func (s GuildReportClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Report
 }
 
-func (s *GuildReportClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildReportClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5117,7 +5117,7 @@ func (s *GuildReportClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildReportClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildReportClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5144,7 +5144,7 @@ func (s GuildJunkClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Junk
 }
 
-func (s *GuildJunkClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildJunkClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5156,7 +5156,7 @@ func (s *GuildJunkClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildJunkClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildJunkClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5180,7 +5180,7 @@ func (s GuildKickClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Kick
 }
 
-func (s *GuildKickClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildKickClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5197,7 +5197,7 @@ func (s *GuildKickClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildKickClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildKickClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5226,7 +5226,7 @@ func (s GuildRankClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Rank
 }
 
-func (s *GuildRankClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildRankClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5248,7 +5248,7 @@ func (s *GuildRankClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildRankClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildRankClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5278,7 +5278,7 @@ func (s SpellRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *SpellRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *SpellRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5295,7 +5295,7 @@ func (s *SpellRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *SpellRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *SpellRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5322,7 +5322,7 @@ func (s SpellTargetSelfClientPacket) Action() net.PacketAction {
 	return net.PacketAction_TargetSelf
 }
 
-func (s *SpellTargetSelfClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *SpellTargetSelfClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5344,7 +5344,7 @@ func (s *SpellTargetSelfClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *SpellTargetSelfClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *SpellTargetSelfClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5375,7 +5375,7 @@ func (s SpellTargetOtherClientPacket) Action() net.PacketAction {
 	return net.PacketAction_TargetOther
 }
 
-func (s *SpellTargetOtherClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *SpellTargetOtherClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5407,7 +5407,7 @@ func (s *SpellTargetOtherClientPacket) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *SpellTargetOtherClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *SpellTargetOtherClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5439,7 +5439,7 @@ func (s SpellTargetGroupClientPacket) Action() net.PacketAction {
 	return net.PacketAction_TargetGroup
 }
 
-func (s *SpellTargetGroupClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *SpellTargetGroupClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5456,7 +5456,7 @@ func (s *SpellTargetGroupClientPacket) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *SpellTargetGroupClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *SpellTargetGroupClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5481,7 +5481,7 @@ func (s SpellUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *SpellUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *SpellUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5493,7 +5493,7 @@ func (s *SpellUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *SpellUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *SpellUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5516,7 +5516,7 @@ func (s TradeRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *TradeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5533,7 +5533,7 @@ func (s *TradeRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5558,7 +5558,7 @@ func (s TradeAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *TradeAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5575,7 +5575,7 @@ func (s *TradeAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5600,7 +5600,7 @@ func (s TradeRemoveClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Remove
 }
 
-func (s *TradeRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5612,7 +5612,7 @@ func (s *TradeRemoveClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeRemoveClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeRemoveClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5635,7 +5635,7 @@ func (s TradeAgreeClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Agree
 }
 
-func (s *TradeAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeAgreeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5652,7 +5652,7 @@ func (s *TradeAgreeClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeAgreeClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeAgreeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5679,7 +5679,7 @@ func (s TradeAddClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Add
 }
 
-func (s *TradeAddClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5690,7 +5690,7 @@ func (s *TradeAddClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeAddClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5714,7 +5714,7 @@ func (s TradeCloseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Close
 }
 
-func (s *TradeCloseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeCloseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5726,7 +5726,7 @@ func (s *TradeCloseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeCloseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeCloseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5750,7 +5750,7 @@ func (s QuestUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *QuestUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *QuestUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5767,7 +5767,7 @@ func (s *QuestUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *QuestUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *QuestUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5797,7 +5797,7 @@ type QuestAcceptReplyTypeDataLink struct {
 	Action int
 }
 
-func (s *QuestAcceptReplyTypeDataLink) Serialize(writer data.EoWriter) (err error) {
+func (s *QuestAcceptReplyTypeDataLink) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5809,7 +5809,7 @@ func (s *QuestAcceptReplyTypeDataLink) Serialize(writer data.EoWriter) (err erro
 	return
 }
 
-func (s *QuestAcceptReplyTypeDataLink) Deserialize(reader data.EoReader) (err error) {
+func (s *QuestAcceptReplyTypeDataLink) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5827,7 +5827,7 @@ func (s QuestAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *QuestAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *QuestAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5871,7 +5871,7 @@ func (s *QuestAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *QuestAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *QuestAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5909,7 +5909,7 @@ func (s QuestListClientPacket) Action() net.PacketAction {
 	return net.PacketAction_List
 }
 
-func (s *QuestListClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *QuestListClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5921,7 +5921,7 @@ func (s *QuestListClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *QuestListClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *QuestListClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5944,7 +5944,7 @@ func (s MarriageOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *MarriageOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *MarriageOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -5956,7 +5956,7 @@ func (s *MarriageOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MarriageOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *MarriageOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -5981,7 +5981,7 @@ func (s MarriageRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *MarriageRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *MarriageRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -6006,7 +6006,7 @@ func (s *MarriageRequestClientPacket) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *MarriageRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *MarriageRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -6041,7 +6041,7 @@ func (s PriestAcceptClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Accept
 }
 
-func (s *PriestAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PriestAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -6053,7 +6053,7 @@ func (s *PriestAcceptClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PriestAcceptClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PriestAcceptClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -6076,7 +6076,7 @@ func (s PriestOpenClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Open
 }
 
-func (s *PriestOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PriestOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -6088,7 +6088,7 @@ func (s *PriestOpenClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PriestOpenClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PriestOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -6112,7 +6112,7 @@ func (s PriestRequestClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Request
 }
 
-func (s *PriestRequestClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PriestRequestClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -6132,7 +6132,7 @@ func (s *PriestRequestClientPacket) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *PriestRequestClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PriestRequestClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -6165,7 +6165,7 @@ func (s PriestUseClientPacket) Action() net.PacketAction {
 	return net.PacketAction_Use
 }
 
-func (s *PriestUseClientPacket) Serialize(writer data.EoWriter) (err error) {
+func (s *PriestUseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -6177,7 +6177,7 @@ func (s *PriestUseClientPacket) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PriestUseClientPacket) Deserialize(reader data.EoReader) (err error) {
+func (s *PriestUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 

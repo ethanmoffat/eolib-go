@@ -15,7 +15,7 @@ type Version struct {
 	Patch int
 }
 
-func (s *Version) Serialize(writer data.EoWriter) (err error) {
+func (s *Version) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -37,7 +37,7 @@ func (s *Version) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Version) Deserialize(reader data.EoReader) (err error) {
+func (s *Version) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -57,7 +57,7 @@ type Weight struct {
 	Max     int
 }
 
-func (s *Weight) Serialize(writer data.EoWriter) (err error) {
+func (s *Weight) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -74,7 +74,7 @@ func (s *Weight) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Weight) Deserialize(reader data.EoReader) (err error) {
+func (s *Weight) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -92,7 +92,7 @@ type Item struct {
 	Amount int
 }
 
-func (s *Item) Serialize(writer data.EoWriter) (err error) {
+func (s *Item) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -109,7 +109,7 @@ func (s *Item) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Item) Deserialize(reader data.EoReader) (err error) {
+func (s *Item) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -127,7 +127,7 @@ type ThreeItem struct {
 	Amount int
 }
 
-func (s *ThreeItem) Serialize(writer data.EoWriter) (err error) {
+func (s *ThreeItem) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -144,7 +144,7 @@ func (s *ThreeItem) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ThreeItem) Deserialize(reader data.EoReader) (err error) {
+func (s *ThreeItem) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -162,7 +162,7 @@ type CharItem struct {
 	Amount int
 }
 
-func (s *CharItem) Serialize(writer data.EoWriter) (err error) {
+func (s *CharItem) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -179,7 +179,7 @@ func (s *CharItem) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharItem) Deserialize(reader data.EoReader) (err error) {
+func (s *CharItem) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -197,7 +197,7 @@ type Spell struct {
 	Level int
 }
 
-func (s *Spell) Serialize(writer data.EoWriter) (err error) {
+func (s *Spell) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -214,7 +214,7 @@ func (s *Spell) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Spell) Deserialize(reader data.EoReader) (err error) {
+func (s *Spell) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 

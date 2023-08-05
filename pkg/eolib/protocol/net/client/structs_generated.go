@@ -15,7 +15,7 @@ type ByteCoords struct {
 	Y int
 }
 
-func (s *ByteCoords) Serialize(writer data.EoWriter) (err error) {
+func (s *ByteCoords) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -32,7 +32,7 @@ func (s *ByteCoords) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ByteCoords) Deserialize(reader data.EoReader) (err error) {
+func (s *ByteCoords) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -51,7 +51,7 @@ type WalkAction struct {
 	Coords    protocol.Coords
 }
 
-func (s *WalkAction) Serialize(writer data.EoWriter) (err error) {
+func (s *WalkAction) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -72,7 +72,7 @@ func (s *WalkAction) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *WalkAction) Deserialize(reader data.EoReader) (err error) {
+func (s *WalkAction) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 

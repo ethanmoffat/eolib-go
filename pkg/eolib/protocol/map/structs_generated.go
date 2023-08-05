@@ -18,7 +18,7 @@ type MapNpc struct {
 	Amount    int
 }
 
-func (s *MapNpc) Serialize(writer data.EoWriter) (err error) {
+func (s *MapNpc) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -49,7 +49,7 @@ func (s *MapNpc) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapNpc) Deserialize(reader data.EoReader) (err error) {
+func (s *MapNpc) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -75,7 +75,7 @@ type MapLegacyDoorKey struct {
 	Key    int
 }
 
-func (s *MapLegacyDoorKey) Serialize(writer data.EoWriter) (err error) {
+func (s *MapLegacyDoorKey) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -91,7 +91,7 @@ func (s *MapLegacyDoorKey) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapLegacyDoorKey) Deserialize(reader data.EoReader) (err error) {
+func (s *MapLegacyDoorKey) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -115,7 +115,7 @@ type MapItem struct {
 	Amount    int
 }
 
-func (s *MapItem) Serialize(writer data.EoWriter) (err error) {
+func (s *MapItem) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -151,7 +151,7 @@ func (s *MapItem) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapItem) Deserialize(reader data.EoReader) (err error) {
+func (s *MapItem) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -181,7 +181,7 @@ type MapWarp struct {
 	Door              int
 }
 
-func (s *MapWarp) Serialize(writer data.EoWriter) (err error) {
+func (s *MapWarp) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -207,7 +207,7 @@ func (s *MapWarp) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapWarp) Deserialize(reader data.EoReader) (err error) {
+func (s *MapWarp) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -233,7 +233,7 @@ type MapSign struct {
 	TitleLength      int
 }
 
-func (s *MapSign) Serialize(writer data.EoWriter) (err error) {
+func (s *MapSign) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -259,7 +259,7 @@ func (s *MapSign) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapSign) Deserialize(reader data.EoReader) (err error) {
+func (s *MapSign) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -286,7 +286,7 @@ type MapTileSpecRowTile struct {
 	TileSpec MapTileSpec
 }
 
-func (s *MapTileSpecRowTile) Serialize(writer data.EoWriter) (err error) {
+func (s *MapTileSpecRowTile) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -303,7 +303,7 @@ func (s *MapTileSpecRowTile) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapTileSpecRowTile) Deserialize(reader data.EoReader) (err error) {
+func (s *MapTileSpecRowTile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -322,7 +322,7 @@ type MapTileSpecRow struct {
 	Tiles      []MapTileSpecRowTile
 }
 
-func (s *MapTileSpecRow) Serialize(writer data.EoWriter) (err error) {
+func (s *MapTileSpecRow) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -346,7 +346,7 @@ func (s *MapTileSpecRow) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapTileSpecRow) Deserialize(reader data.EoReader) (err error) {
+func (s *MapTileSpecRow) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -371,7 +371,7 @@ type MapWarpRowTile struct {
 	Warp MapWarp
 }
 
-func (s *MapWarpRowTile) Serialize(writer data.EoWriter) (err error) {
+func (s *MapWarpRowTile) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -387,7 +387,7 @@ func (s *MapWarpRowTile) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapWarpRowTile) Deserialize(reader data.EoReader) (err error) {
+func (s *MapWarpRowTile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -408,7 +408,7 @@ type MapWarpRow struct {
 	Tiles      []MapWarpRowTile
 }
 
-func (s *MapWarpRow) Serialize(writer data.EoWriter) (err error) {
+func (s *MapWarpRow) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -432,7 +432,7 @@ func (s *MapWarpRow) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapWarpRow) Deserialize(reader data.EoReader) (err error) {
+func (s *MapWarpRow) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -457,7 +457,7 @@ type MapGraphicRowTile struct {
 	Graphic int
 }
 
-func (s *MapGraphicRowTile) Serialize(writer data.EoWriter) (err error) {
+func (s *MapGraphicRowTile) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -474,7 +474,7 @@ func (s *MapGraphicRowTile) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapGraphicRowTile) Deserialize(reader data.EoReader) (err error) {
+func (s *MapGraphicRowTile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -493,7 +493,7 @@ type MapGraphicRow struct {
 	Tiles      []MapGraphicRowTile
 }
 
-func (s *MapGraphicRow) Serialize(writer data.EoWriter) (err error) {
+func (s *MapGraphicRow) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -517,7 +517,7 @@ func (s *MapGraphicRow) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapGraphicRow) Deserialize(reader data.EoReader) (err error) {
+func (s *MapGraphicRow) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -542,7 +542,7 @@ type MapGraphicLayer struct {
 	GraphicRows      []MapGraphicRow
 }
 
-func (s *MapGraphicLayer) Serialize(writer data.EoWriter) (err error) {
+func (s *MapGraphicLayer) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -561,7 +561,7 @@ func (s *MapGraphicLayer) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapGraphicLayer) Deserialize(reader data.EoReader) (err error) {
+func (s *MapGraphicLayer) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -610,7 +610,7 @@ type Emf struct {
 	Signs               []MapSign
 }
 
-func (s *Emf) Serialize(writer data.EoWriter) (err error) {
+func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -789,7 +789,7 @@ func (s *Emf) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *Emf) Deserialize(reader data.EoReader) (err error) {
+func (s *Emf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 

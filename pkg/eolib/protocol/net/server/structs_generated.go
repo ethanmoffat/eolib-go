@@ -16,7 +16,7 @@ type BigCoords struct {
 	Y int
 }
 
-func (s *BigCoords) Serialize(writer data.EoWriter) (err error) {
+func (s *BigCoords) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -33,7 +33,7 @@ func (s *BigCoords) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BigCoords) Deserialize(reader data.EoReader) (err error) {
+func (s *BigCoords) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -54,7 +54,7 @@ type EquipmentChange struct {
 	Shield int
 }
 
-func (s *EquipmentChange) Serialize(writer data.EoWriter) (err error) {
+func (s *EquipmentChange) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -86,7 +86,7 @@ func (s *EquipmentChange) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EquipmentChange) Deserialize(reader data.EoReader) (err error) {
+func (s *EquipmentChange) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -115,7 +115,7 @@ type EquipmentMapInfo struct {
 	Weapon int
 }
 
-func (s *EquipmentMapInfo) Serialize(writer data.EoWriter) (err error) {
+func (s *EquipmentMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -167,7 +167,7 @@ func (s *EquipmentMapInfo) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EquipmentMapInfo) Deserialize(reader data.EoReader) (err error) {
+func (s *EquipmentMapInfo) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -202,7 +202,7 @@ type EquipmentCharacterSelect struct {
 	Weapon int
 }
 
-func (s *EquipmentCharacterSelect) Serialize(writer data.EoWriter) (err error) {
+func (s *EquipmentCharacterSelect) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -234,7 +234,7 @@ func (s *EquipmentCharacterSelect) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EquipmentCharacterSelect) Deserialize(reader data.EoReader) (err error) {
+func (s *EquipmentCharacterSelect) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -268,7 +268,7 @@ type EquipmentWelcome struct {
 	Bracer    []int
 }
 
-func (s *EquipmentWelcome) Serialize(writer data.EoWriter) (err error) {
+func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -344,7 +344,7 @@ func (s *EquipmentWelcome) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EquipmentWelcome) Deserialize(reader data.EoReader) (err error) {
+func (s *EquipmentWelcome) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -400,7 +400,7 @@ type EquipmentPaperdoll struct {
 	Bracer    []int
 }
 
-func (s *EquipmentPaperdoll) Serialize(writer data.EoWriter) (err error) {
+func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -476,7 +476,7 @@ func (s *EquipmentPaperdoll) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EquipmentPaperdoll) Deserialize(reader data.EoReader) (err error) {
+func (s *EquipmentPaperdoll) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -540,7 +540,7 @@ type CharacterMapInfo struct {
 	WarpEffect WarpEffect
 }
 
-func (s *CharacterMapInfo) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -653,7 +653,7 @@ func (s *CharacterMapInfo) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterMapInfo) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterMapInfo) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -728,7 +728,7 @@ type NpcMapInfo struct {
 	Direction protocol.Direction
 }
 
-func (s *NpcMapInfo) Serialize(writer data.EoWriter) (err error) {
+func (s *NpcMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -754,7 +754,7 @@ func (s *NpcMapInfo) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *NpcMapInfo) Deserialize(reader data.EoReader) (err error) {
+func (s *NpcMapInfo) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -780,7 +780,7 @@ type ItemMapInfo struct {
 	Amount int
 }
 
-func (s *ItemMapInfo) Serialize(writer data.EoWriter) (err error) {
+func (s *ItemMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -806,7 +806,7 @@ func (s *ItemMapInfo) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ItemMapInfo) Deserialize(reader data.EoReader) (err error) {
+func (s *ItemMapInfo) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -840,7 +840,7 @@ type ChangeTypeDataEquipment struct {
 	Equipment EquipmentChange
 }
 
-func (s *ChangeTypeDataEquipment) Serialize(writer data.EoWriter) (err error) {
+func (s *ChangeTypeDataEquipment) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -851,7 +851,7 @@ func (s *ChangeTypeDataEquipment) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChangeTypeDataEquipment) Deserialize(reader data.EoReader) (err error) {
+func (s *ChangeTypeDataEquipment) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -868,7 +868,7 @@ type ChangeTypeDataHair struct {
 	HairColor int
 }
 
-func (s *ChangeTypeDataHair) Serialize(writer data.EoWriter) (err error) {
+func (s *ChangeTypeDataHair) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -885,7 +885,7 @@ func (s *ChangeTypeDataHair) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChangeTypeDataHair) Deserialize(reader data.EoReader) (err error) {
+func (s *ChangeTypeDataHair) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -901,7 +901,7 @@ type ChangeTypeDataHairColor struct {
 	HairColor int
 }
 
-func (s *ChangeTypeDataHairColor) Serialize(writer data.EoWriter) (err error) {
+func (s *ChangeTypeDataHairColor) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -913,7 +913,7 @@ func (s *ChangeTypeDataHairColor) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ChangeTypeDataHairColor) Deserialize(reader data.EoReader) (err error) {
+func (s *ChangeTypeDataHairColor) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -923,7 +923,7 @@ func (s *ChangeTypeDataHairColor) Deserialize(reader data.EoReader) (err error) 
 	return
 }
 
-func (s *AvatarChange) Serialize(writer data.EoWriter) (err error) {
+func (s *AvatarChange) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -982,7 +982,7 @@ func (s *AvatarChange) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *AvatarChange) Deserialize(reader data.EoReader) (err error) {
+func (s *AvatarChange) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1025,7 +1025,7 @@ type NearbyInfo struct {
 	Items           []ItemMapInfo
 }
 
-func (s *NearbyInfo) Serialize(writer data.EoWriter) (err error) {
+func (s *NearbyInfo) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1063,7 +1063,7 @@ func (s *NearbyInfo) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *NearbyInfo) Deserialize(reader data.EoReader) (err error) {
+func (s *NearbyInfo) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1113,7 +1113,7 @@ type MapFile struct {
 	Content []byte
 }
 
-func (s *MapFile) Serialize(writer data.EoWriter) (err error) {
+func (s *MapFile) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1125,7 +1125,7 @@ func (s *MapFile) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapFile) Deserialize(reader data.EoReader) (err error) {
+func (s *MapFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1141,7 +1141,7 @@ type PubFile struct {
 	Content []byte
 }
 
-func (s *PubFile) Serialize(writer data.EoWriter) (err error) {
+func (s *PubFile) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1158,7 +1158,7 @@ func (s *PubFile) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PubFile) Deserialize(reader data.EoReader) (err error) {
+func (s *PubFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1176,7 +1176,7 @@ type PlayersList struct {
 	Players      []OnlinePlayer
 }
 
-func (s *PlayersList) Serialize(writer data.EoWriter) (err error) {
+func (s *PlayersList) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1199,7 +1199,7 @@ func (s *PlayersList) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PlayersList) Deserialize(reader data.EoReader) (err error) {
+func (s *PlayersList) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1231,7 +1231,7 @@ type PlayersListFriends struct {
 	Players      []string
 }
 
-func (s *PlayersListFriends) Serialize(writer data.EoWriter) (err error) {
+func (s *PlayersListFriends) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1255,7 +1255,7 @@ func (s *PlayersListFriends) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PlayersListFriends) Deserialize(reader data.EoReader) (err error) {
+func (s *PlayersListFriends) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1291,7 +1291,7 @@ type OnlinePlayer struct {
 	GuildTag string
 }
 
-func (s *OnlinePlayer) Serialize(writer data.EoWriter) (err error) {
+func (s *OnlinePlayer) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1332,7 +1332,7 @@ func (s *OnlinePlayer) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *OnlinePlayer) Deserialize(reader data.EoReader) (err error) {
+func (s *OnlinePlayer) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1382,7 +1382,7 @@ type CharacterSelectionListEntry struct {
 	Equipment EquipmentCharacterSelect
 }
 
-func (s *CharacterSelectionListEntry) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterSelectionListEntry) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1436,7 +1436,7 @@ func (s *CharacterSelectionListEntry) Serialize(writer data.EoWriter) (err error
 	return
 }
 
-func (s *CharacterSelectionListEntry) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterSelectionListEntry) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1483,7 +1483,7 @@ type ServerSettings struct {
 	HighGameMasterFloodRate   int
 }
 
-func (s *ServerSettings) Serialize(writer data.EoWriter) (err error) {
+func (s *ServerSettings) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1524,7 +1524,7 @@ func (s *ServerSettings) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ServerSettings) Deserialize(reader data.EoReader) (err error) {
+func (s *ServerSettings) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1556,7 +1556,7 @@ type ShopTradeItem struct {
 	MaxBuyAmount int
 }
 
-func (s *ShopTradeItem) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopTradeItem) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1583,7 +1583,7 @@ func (s *ShopTradeItem) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopTradeItem) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopTradeItem) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1605,7 +1605,7 @@ type ShopCraftItem struct {
 	Ingredients []net.CharItem
 }
 
-func (s *ShopCraftItem) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopCraftItem) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1624,7 +1624,7 @@ func (s *ShopCraftItem) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopCraftItem) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopCraftItem) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1647,7 +1647,7 @@ type ShopSoldItem struct {
 	Id     int
 }
 
-func (s *ShopSoldItem) Serialize(writer data.EoWriter) (err error) {
+func (s *ShopSoldItem) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1664,7 +1664,7 @@ func (s *ShopSoldItem) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *ShopSoldItem) Deserialize(reader data.EoReader) (err error) {
+func (s *ShopSoldItem) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1686,7 +1686,7 @@ type CharacterBaseStats struct {
 	Cha  int
 }
 
-func (s *CharacterBaseStats) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterBaseStats) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1723,7 +1723,7 @@ func (s *CharacterBaseStats) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterBaseStats) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterBaseStats) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1753,7 +1753,7 @@ type CharacterBaseStatsWelcome struct {
 	Cha  int
 }
 
-func (s *CharacterBaseStatsWelcome) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterBaseStatsWelcome) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1790,7 +1790,7 @@ func (s *CharacterBaseStatsWelcome) Serialize(writer data.EoWriter) (err error) 
 	return
 }
 
-func (s *CharacterBaseStatsWelcome) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterBaseStatsWelcome) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1819,7 +1819,7 @@ type CharacterSecondaryStats struct {
 	Armor     int
 }
 
-func (s *CharacterSecondaryStats) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterSecondaryStats) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1851,7 +1851,7 @@ func (s *CharacterSecondaryStats) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterSecondaryStats) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterSecondaryStats) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1878,7 +1878,7 @@ type CharacterSecondaryStatsInfoLookup struct {
 	Armor     int
 }
 
-func (s *CharacterSecondaryStatsInfoLookup) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterSecondaryStatsInfoLookup) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1910,7 +1910,7 @@ func (s *CharacterSecondaryStatsInfoLookup) Serialize(writer data.EoWriter) (err
 	return
 }
 
-func (s *CharacterSecondaryStatsInfoLookup) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterSecondaryStatsInfoLookup) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -1938,7 +1938,7 @@ type CharacterElementalStats struct {
 	Wind  int
 }
 
-func (s *CharacterElementalStats) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterElementalStats) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -1975,7 +1975,7 @@ func (s *CharacterElementalStats) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterElementalStats) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterElementalStats) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2008,7 +2008,7 @@ type CharacterStatsReset struct {
 	Secondary   CharacterSecondaryStats
 }
 
-func (s *CharacterStatsReset) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterStatsReset) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2058,7 +2058,7 @@ func (s *CharacterStatsReset) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterStatsReset) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterStatsReset) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2102,7 +2102,7 @@ type CharacterStatsWelcome struct {
 	Base        CharacterBaseStatsWelcome
 }
 
-func (s *CharacterStatsWelcome) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterStatsWelcome) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2157,7 +2157,7 @@ func (s *CharacterStatsWelcome) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterStatsWelcome) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterStatsWelcome) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2199,7 +2199,7 @@ type CharacterStatsUpdate struct {
 	SecondaryStats CharacterSecondaryStats
 }
 
-func (s *CharacterStatsUpdate) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterStatsUpdate) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2234,7 +2234,7 @@ func (s *CharacterStatsUpdate) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterStatsUpdate) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterStatsUpdate) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2269,7 +2269,7 @@ type CharacterStatsInfoLookup struct {
 	ElementalStats CharacterElementalStats
 }
 
-func (s *CharacterStatsInfoLookup) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterStatsInfoLookup) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2308,7 +2308,7 @@ func (s *CharacterStatsInfoLookup) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterStatsInfoLookup) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterStatsInfoLookup) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2344,7 +2344,7 @@ type CharacterStatsEquipmentChange struct {
 	SecondaryStats CharacterSecondaryStats
 }
 
-func (s *CharacterStatsEquipmentChange) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterStatsEquipmentChange) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2369,7 +2369,7 @@ func (s *CharacterStatsEquipmentChange) Serialize(writer data.EoWriter) (err err
 	return
 }
 
-func (s *CharacterStatsEquipmentChange) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterStatsEquipmentChange) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2399,7 +2399,7 @@ type SkillLearn struct {
 	StatRequirements  CharacterBaseStats
 }
 
-func (s *SkillLearn) Serialize(writer data.EoWriter) (err error) {
+func (s *SkillLearn) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2438,7 +2438,7 @@ func (s *SkillLearn) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *SkillLearn) Deserialize(reader data.EoReader) (err error) {
+func (s *SkillLearn) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2470,7 +2470,7 @@ type BoardPostListing struct {
 	Subject string
 }
 
-func (s *BoardPostListing) Serialize(writer data.EoWriter) (err error) {
+func (s *BoardPostListing) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2496,7 +2496,7 @@ func (s *BoardPostListing) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *BoardPostListing) Deserialize(reader data.EoReader) (err error) {
+func (s *BoardPostListing) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2538,7 +2538,7 @@ type CharacterDetails struct {
 	Admin     protocol.AdminLevel
 }
 
-func (s *CharacterDetails) Serialize(writer data.EoWriter) (err error) {
+func (s *CharacterDetails) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2603,7 +2603,7 @@ func (s *CharacterDetails) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *CharacterDetails) Deserialize(reader data.EoReader) (err error) {
+func (s *CharacterDetails) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2678,7 +2678,7 @@ type PartyMember struct {
 	Name         string
 }
 
-func (s *PartyMember) Serialize(writer data.EoWriter) (err error) {
+func (s *PartyMember) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2715,7 +2715,7 @@ func (s *PartyMember) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PartyMember) Deserialize(reader data.EoReader) (err error) {
+func (s *PartyMember) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2746,7 +2746,7 @@ type PartyExpShare struct {
 	LevelUp    int //  A value greater than 0 is "new level" and indicates the player leveled up.
 }
 
-func (s *PartyExpShare) Serialize(writer data.EoWriter) (err error) {
+func (s *PartyExpShare) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2768,7 +2768,7 @@ func (s *PartyExpShare) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *PartyExpShare) Deserialize(reader data.EoReader) (err error) {
+func (s *PartyExpShare) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2788,7 +2788,7 @@ type GuildStaff struct {
 	Name string
 }
 
-func (s *GuildStaff) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildStaff) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2808,7 +2808,7 @@ func (s *GuildStaff) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildStaff) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildStaff) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2835,7 +2835,7 @@ type GuildMember struct {
 	RankName string
 }
 
-func (s *GuildMember) Serialize(writer data.EoWriter) (err error) {
+func (s *GuildMember) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2861,7 +2861,7 @@ func (s *GuildMember) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GuildMember) Deserialize(reader data.EoReader) (err error) {
+func (s *GuildMember) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2896,7 +2896,7 @@ type GroupHealTargetPlayer struct {
 	Hp           int
 }
 
-func (s *GroupHealTargetPlayer) Serialize(writer data.EoWriter) (err error) {
+func (s *GroupHealTargetPlayer) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2918,7 +2918,7 @@ func (s *GroupHealTargetPlayer) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GroupHealTargetPlayer) Deserialize(reader data.EoReader) (err error) {
+func (s *GroupHealTargetPlayer) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -2940,7 +2940,7 @@ type TradeItemData struct {
 	YourItems       []net.Item
 }
 
-func (s *TradeItemData) Serialize(writer data.EoWriter) (err error) {
+func (s *TradeItemData) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -2975,7 +2975,7 @@ func (s *TradeItemData) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *TradeItemData) Deserialize(reader data.EoReader) (err error) {
+func (s *TradeItemData) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3023,7 +3023,7 @@ type NpcKilledData struct {
 	Damage          int
 }
 
-func (s *NpcKilledData) Serialize(writer data.EoWriter) (err error) {
+func (s *NpcKilledData) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3069,7 +3069,7 @@ func (s *NpcKilledData) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *NpcKilledData) Deserialize(reader data.EoReader) (err error) {
+func (s *NpcKilledData) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3105,7 +3105,7 @@ type LevelUpStats struct {
 	MaxSp       int
 }
 
-func (s *LevelUpStats) Serialize(writer data.EoWriter) (err error) {
+func (s *LevelUpStats) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3142,7 +3142,7 @@ func (s *LevelUpStats) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *LevelUpStats) Deserialize(reader data.EoReader) (err error) {
+func (s *LevelUpStats) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3169,7 +3169,7 @@ type NpcUpdatePosition struct {
 	Direction protocol.Direction
 }
 
-func (s *NpcUpdatePosition) Serialize(writer data.EoWriter) (err error) {
+func (s *NpcUpdatePosition) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3190,7 +3190,7 @@ func (s *NpcUpdatePosition) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *NpcUpdatePosition) Deserialize(reader data.EoReader) (err error) {
+func (s *NpcUpdatePosition) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3216,7 +3216,7 @@ type NpcUpdateAttack struct {
 	HpPercentage int
 }
 
-func (s *NpcUpdateAttack) Serialize(writer data.EoWriter) (err error) {
+func (s *NpcUpdateAttack) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3253,7 +3253,7 @@ func (s *NpcUpdateAttack) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *NpcUpdateAttack) Deserialize(reader data.EoReader) (err error) {
+func (s *NpcUpdateAttack) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3280,7 +3280,7 @@ type NpcUpdateChat struct {
 	Message       string
 }
 
-func (s *NpcUpdateChat) Serialize(writer data.EoWriter) (err error) {
+func (s *NpcUpdateChat) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3302,7 +3302,7 @@ func (s *NpcUpdateChat) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *NpcUpdateChat) Deserialize(reader data.EoReader) (err error) {
+func (s *NpcUpdateChat) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3327,7 +3327,7 @@ type QuestProgressEntry struct {
 	Target      int
 }
 
-func (s *QuestProgressEntry) Serialize(writer data.EoWriter) (err error) {
+func (s *QuestProgressEntry) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3363,7 +3363,7 @@ func (s *QuestProgressEntry) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *QuestProgressEntry) Deserialize(reader data.EoReader) (err error) {
+func (s *QuestProgressEntry) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3401,7 +3401,7 @@ type DialogQuestEntry struct {
 	QuestName string
 }
 
-func (s *DialogQuestEntry) Serialize(writer data.EoWriter) (err error) {
+func (s *DialogQuestEntry) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3418,7 +3418,7 @@ func (s *DialogQuestEntry) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *DialogQuestEntry) Deserialize(reader data.EoReader) (err error) {
+func (s *DialogQuestEntry) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3447,7 +3447,7 @@ type EntryTypeDataLink struct {
 	LinkId int
 }
 
-func (s *EntryTypeDataLink) Serialize(writer data.EoWriter) (err error) {
+func (s *EntryTypeDataLink) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3459,7 +3459,7 @@ func (s *EntryTypeDataLink) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *EntryTypeDataLink) Deserialize(reader data.EoReader) (err error) {
+func (s *EntryTypeDataLink) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3469,7 +3469,7 @@ func (s *EntryTypeDataLink) Deserialize(reader data.EoReader) (err error) {
 	return
 }
 
-func (s *DialogEntry) Serialize(writer data.EoWriter) (err error) {
+func (s *DialogEntry) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3498,7 +3498,7 @@ func (s *DialogEntry) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *DialogEntry) Deserialize(reader data.EoReader) (err error) {
+func (s *DialogEntry) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3526,7 +3526,7 @@ type MapDrainDamageOther struct {
 	Damage       int
 }
 
-func (s *MapDrainDamageOther) Serialize(writer data.EoWriter) (err error) {
+func (s *MapDrainDamageOther) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3548,7 +3548,7 @@ func (s *MapDrainDamageOther) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *MapDrainDamageOther) Deserialize(reader data.EoReader) (err error) {
+func (s *MapDrainDamageOther) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -3568,7 +3568,7 @@ type GlobalBackfillMessage struct {
 	Message    string
 }
 
-func (s *GlobalBackfillMessage) Serialize(writer data.EoWriter) (err error) {
+func (s *GlobalBackfillMessage) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -3588,7 +3588,7 @@ func (s *GlobalBackfillMessage) Serialize(writer data.EoWriter) (err error) {
 	return
 }
 
-func (s *GlobalBackfillMessage) Deserialize(reader data.EoReader) (err error) {
+func (s *GlobalBackfillMessage) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
