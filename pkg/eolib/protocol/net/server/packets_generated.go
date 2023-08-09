@@ -4507,7 +4507,7 @@ func (s *FacePlayerServerPacket) Deserialize(reader *data.EoReader) (err error) 
 // AvatarRemoveServerPacket :: Nearby player has disappeared from view.
 type AvatarRemoveServerPacket struct {
 	PlayerId   int
-	WarpEffect WarpEffect
+	WarpEffect *WarpEffect
 }
 
 func (s AvatarRemoveServerPacket) Family() net.PacketFamily {
@@ -4528,8 +4528,11 @@ func (s *AvatarRemoveServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	}
 
 	// WarpEffect : field : WarpEffect
-	if err = writer.AddChar(int(s.WarpEffect)); err != nil {
-		return
+	if s.WarpEffect != nil {
+		if err = writer.AddChar(int(*s.WarpEffect)); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -4542,7 +4545,10 @@ func (s *AvatarRemoveServerPacket) Deserialize(reader *data.EoReader) (err error
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
 	// WarpEffect : field : WarpEffect
-	s.WarpEffect = WarpEffect(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.WarpEffect = new(WarpEffect)
+		*s.WarpEffect = WarpEffect(reader.GetChar())
+	}
 
 	return
 }
@@ -8325,7 +8331,7 @@ func (s *ChestSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 
 // ChestCloseServerPacket ::  Reply to trying to interact with a locked or "broken" chest. The official client assumes a broken chest if the packet is under 2 bytes in length.
 type ChestCloseServerPacket struct {
-	Key int // Sent if the player is trying to interact with a locked chest.
+	Key *int // Sent if the player is trying to interact with a locked chest.
 
 }
 
@@ -8342,8 +8348,11 @@ func (s *ChestCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// Key : field : short
-	if err = writer.AddShort(s.Key); err != nil {
-		return
+	if s.Key != nil {
+		if err = writer.AddShort(*s.Key); err != nil {
+			return
+		}
+
 	}
 
 	//  : dummy : string
@@ -8359,7 +8368,10 @@ func (s *ChestCloseServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Key : field : short
-	s.Key = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Key = new(int)
+		*s.Key = reader.GetShort()
+	}
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
@@ -9823,8 +9835,8 @@ type SpellTargetSelfServerPacket struct {
 	SpellId      int
 	SpellHealHp  int
 	HpPercentage int
-	Hp           int // The official client reads this if the packet is larger than 12 bytes.
-	Tp           int // The official client reads this if the packet is larger than 12 bytes.
+	Hp           *int // The official client reads this if the packet is larger than 12 bytes.
+	Tp           *int // The official client reads this if the packet is larger than 12 bytes.
 }
 
 func (s SpellTargetSelfServerPacket) Family() net.PacketFamily {
@@ -9860,13 +9872,19 @@ func (s *SpellTargetSelfServerPacket) Serialize(writer *data.EoWriter) (err erro
 	}
 
 	// Hp : field : short
-	if err = writer.AddShort(s.Hp); err != nil {
-		return
+	if s.Hp != nil {
+		if err = writer.AddShort(*s.Hp); err != nil {
+			return
+		}
+
 	}
 
 	// Tp : field : short
-	if err = writer.AddShort(s.Tp); err != nil {
-		return
+	if s.Tp != nil {
+		if err = writer.AddShort(*s.Tp); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -9885,9 +9903,15 @@ func (s *SpellTargetSelfServerPacket) Deserialize(reader *data.EoReader) (err er
 	// HpPercentage : field : char
 	s.HpPercentage = reader.GetChar()
 	// Hp : field : short
-	s.Hp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Hp = new(int)
+		*s.Hp = reader.GetShort()
+	}
 	// Tp : field : short
-	s.Tp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Tp = new(int)
+		*s.Tp = reader.GetShort()
+	}
 
 	return
 }
@@ -10143,7 +10167,7 @@ type SpellTargetOtherServerPacket struct {
 	SpellId         int
 	SpellHealHp     int
 	HpPercentage    int
-	Hp              int
+	Hp              *int
 }
 
 func (s SpellTargetOtherServerPacket) Family() net.PacketFamily {
@@ -10189,8 +10213,11 @@ func (s *SpellTargetOtherServerPacket) Serialize(writer *data.EoWriter) (err err
 	}
 
 	// Hp : field : short
-	if err = writer.AddShort(s.Hp); err != nil {
-		return
+	if s.Hp != nil {
+		if err = writer.AddShort(*s.Hp); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -10213,7 +10240,10 @@ func (s *SpellTargetOtherServerPacket) Deserialize(reader *data.EoReader) (err e
 	// HpPercentage : field : char
 	s.HpPercentage = reader.GetChar()
 	// Hp : field : short
-	s.Hp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Hp = new(int)
+		*s.Hp = reader.GetShort()
+	}
 
 	return
 }
@@ -10593,7 +10623,7 @@ type NpcReplyServerPacket struct {
 	NpcIndex            int
 	Damage              int
 	HpPercentage        int
-	KillStealProtection NpcKillStealProtectionState
+	KillStealProtection *NpcKillStealProtectionState
 }
 
 func (s NpcReplyServerPacket) Family() net.PacketFamily {
@@ -10634,8 +10664,11 @@ func (s *NpcReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	}
 
 	// KillStealProtection : field : NpcKillStealProtectionState
-	if err = writer.AddChar(int(s.KillStealProtection)); err != nil {
-		return
+	if s.KillStealProtection != nil {
+		if err = writer.AddChar(int(*s.KillStealProtection)); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -10656,7 +10689,10 @@ func (s *NpcReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// HpPercentage : field : short
 	s.HpPercentage = reader.GetShort()
 	// KillStealProtection : field : NpcKillStealProtectionState
-	s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.KillStealProtection = new(NpcKillStealProtectionState)
+		*s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	}
 
 	return
 }
@@ -10670,7 +10706,7 @@ type CastReplyServerPacket struct {
 	Damage              int
 	HpPercentage        int
 	CasterTp            int
-	KillStealProtection NpcKillStealProtectionState
+	KillStealProtection *NpcKillStealProtectionState
 }
 
 func (s CastReplyServerPacket) Family() net.PacketFamily {
@@ -10721,8 +10757,11 @@ func (s *CastReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	}
 
 	// KillStealProtection : field : NpcKillStealProtectionState
-	if err = writer.AddChar(int(s.KillStealProtection)); err != nil {
-		return
+	if s.KillStealProtection != nil {
+		if err = writer.AddChar(int(*s.KillStealProtection)); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -10747,7 +10786,10 @@ func (s *CastReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// CasterTp : field : short
 	s.CasterTp = reader.GetShort()
 	// KillStealProtection : field : NpcKillStealProtectionState
-	s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.KillStealProtection = new(NpcKillStealProtectionState)
+		*s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	}
 
 	return
 }
@@ -10755,7 +10797,7 @@ func (s *CastReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 // NpcSpecServerPacket :: Nearby NPC killed by player.
 type NpcSpecServerPacket struct {
 	NpcKilledData NpcKilledData
-	Experience    int
+	Experience    *int
 }
 
 func (s NpcSpecServerPacket) Family() net.PacketFamily {
@@ -10775,8 +10817,11 @@ func (s *NpcSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// Experience : field : int
-	if err = writer.AddInt(s.Experience); err != nil {
-		return
+	if s.Experience != nil {
+		if err = writer.AddInt(*s.Experience); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -10791,7 +10836,10 @@ func (s *NpcSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Experience : field : int
-	s.Experience = reader.GetInt()
+	if reader.Remaining() > 0 {
+		s.Experience = new(int)
+		*s.Experience = reader.GetInt()
+	}
 
 	return
 }
@@ -10854,7 +10902,7 @@ type CastSpecServerPacket struct {
 	SpellId       int
 	NpcKilledData NpcKilledData
 	CasterTp      int
-	Experience    int
+	Experience    *int
 }
 
 func (s CastSpecServerPacket) Family() net.PacketFamily {
@@ -10884,8 +10932,11 @@ func (s *CastSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	}
 
 	// Experience : field : int
-	if err = writer.AddInt(s.Experience); err != nil {
-		return
+	if s.Experience != nil {
+		if err = writer.AddInt(*s.Experience); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -10904,7 +10955,10 @@ func (s *CastSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// CasterTp : field : short
 	s.CasterTp = reader.GetShort()
 	// Experience : field : int
-	s.Experience = reader.GetInt()
+	if reader.Remaining() > 0 {
+		s.Experience = new(int)
+		*s.Experience = reader.GetInt()
+	}
 
 	return
 }
@@ -11018,8 +11072,8 @@ type NpcPlayerServerPacket struct {
 	Positions []NpcUpdatePosition
 	Attacks   []NpcUpdateAttack
 	Chats     []NpcUpdateChat
-	Hp        int
-	Tp        int
+	Hp        *int
+	Tp        *int
 }
 
 func (s NpcPlayerServerPacket) Family() net.PacketFamily {
@@ -11060,13 +11114,19 @@ func (s *NpcPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 
 	writer.AddByte(0xFF)
 	// Hp : field : short
-	if err = writer.AddShort(s.Hp); err != nil {
-		return
+	if s.Hp != nil {
+		if err = writer.AddShort(*s.Hp); err != nil {
+			return
+		}
+
 	}
 
 	// Tp : field : short
-	if err = writer.AddShort(s.Tp); err != nil {
-		return
+	if s.Tp != nil {
+		if err = writer.AddShort(*s.Tp); err != nil {
+			return
+		}
+
 	}
 
 	writer.SanitizeStrings = false
@@ -11112,9 +11172,15 @@ func (s *NpcPlayerServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Hp : field : short
-	s.Hp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Hp = new(int)
+		*s.Hp = reader.GetShort()
+	}
 	// Tp : field : short
-	s.Tp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Tp = new(int)
+		*s.Tp = reader.GetShort()
+	}
 	reader.SetIsChunked(false)
 
 	return
@@ -12167,9 +12233,9 @@ func (s *RecoverListServerPacket) Deserialize(reader *data.EoReader) (err error)
 type RecoverReplyServerPacket struct {
 	Experience  int
 	Karma       int
-	LevelUp     int //  A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
-	StatPoints  int // The official client reads this if the player leveled up.
-	SkillPoints int // The official client reads this if the player leveled up.
+	LevelUp     *int //  A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
+	StatPoints  *int // The official client reads this if the player leveled up.
+	SkillPoints *int // The official client reads this if the player leveled up.
 }
 
 func (s RecoverReplyServerPacket) Family() net.PacketFamily {
@@ -12195,18 +12261,27 @@ func (s *RecoverReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	}
 
 	// LevelUp : field : char
-	if err = writer.AddChar(s.LevelUp); err != nil {
-		return
+	if s.LevelUp != nil {
+		if err = writer.AddChar(*s.LevelUp); err != nil {
+			return
+		}
+
 	}
 
 	// StatPoints : field : short
-	if err = writer.AddShort(s.StatPoints); err != nil {
-		return
+	if s.StatPoints != nil {
+		if err = writer.AddShort(*s.StatPoints); err != nil {
+			return
+		}
+
 	}
 
 	// SkillPoints : field : short
-	if err = writer.AddShort(s.SkillPoints); err != nil {
-		return
+	if s.SkillPoints != nil {
+		if err = writer.AddShort(*s.SkillPoints); err != nil {
+			return
+		}
+
 	}
 
 	return
@@ -12221,11 +12296,20 @@ func (s *RecoverReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 	// Karma : field : short
 	s.Karma = reader.GetShort()
 	// LevelUp : field : char
-	s.LevelUp = reader.GetChar()
+	if reader.Remaining() > 0 {
+		s.LevelUp = new(int)
+		*s.LevelUp = reader.GetChar()
+	}
 	// StatPoints : field : short
-	s.StatPoints = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.StatPoints = new(int)
+		*s.StatPoints = reader.GetShort()
+	}
 	// SkillPoints : field : short
-	s.SkillPoints = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.SkillPoints = new(int)
+		*s.SkillPoints = reader.GetShort()
+	}
 
 	return
 }

@@ -537,7 +537,7 @@ type CharacterMapInfo struct {
 	Equipment  EquipmentMapInfo
 	SitState   SitState
 	Invisible  bool
-	WarpEffect WarpEffect
+	WarpEffect *WarpEffect
 }
 
 func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
@@ -645,8 +645,11 @@ func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	}
 
 	// WarpEffect : field : WarpEffect
-	if err = writer.AddChar(int(s.WarpEffect)); err != nil {
-		return
+	if s.WarpEffect != nil {
+		if err = writer.AddChar(int(*s.WarpEffect)); err != nil {
+			return
+		}
+
 	}
 
 	writer.SanitizeStrings = false
@@ -714,7 +717,10 @@ func (s *CharacterMapInfo) Deserialize(reader *data.EoReader) (err error) {
 		s.Invisible = false
 	}
 	// WarpEffect : field : WarpEffect
-	s.WarpEffect = WarpEffect(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.WarpEffect = new(WarpEffect)
+		*s.WarpEffect = WarpEffect(reader.GetChar())
+	}
 	reader.SetIsChunked(false)
 
 	return

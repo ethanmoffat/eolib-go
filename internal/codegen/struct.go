@@ -149,6 +149,17 @@ func writeStructFields(output *strings.Builder, instructions []xml.ProtocolInstr
 			if typeName, nextImport = eoTypeToGoType(*inst.Type, packageName, fullSpec); nextImport != nil {
 				imports = append(imports, *nextImport)
 			}
+
+			if inst.Optional != nil && *inst.Optional {
+				switch inst.XMLName.Local {
+				// these are the only supported values where the type needs to be modified to a pointer
+				// arrays also support the "optional" attribute in the spec but can be nil because they're defined as slices in the structs
+				case "field":
+					fallthrough
+				case "length":
+					typeName = "*" + typeName
+				}
+			}
 		}
 
 		switch inst.XMLName.Local {
@@ -662,6 +673,8 @@ func getInstructionName(inst xml.ProtocolInstruction) (instName string) {
 }
 
 func writeAddTypeForSerialize(output *strings.Builder, instructionName string, instruction xml.ProtocolInstruction, methodType string, needsCastToInt bool) {
+	optional := instruction.Optional != nil && *instruction.Optional
+
 	if len(instructionName) == 0 && instruction.Content != nil {
 		instructionName = *instruction.Content
 	} else {
@@ -670,15 +683,30 @@ func writeAddTypeForSerialize(output *strings.Builder, instructionName string, i
 
 	if instruction.XMLName.Local == "array" {
 		instructionName = instructionName + "[ndx]"
+
+		// optional arrays that are unset will be nil.
+		// The length expression in the loop checks the length of the nil slice, which evaluates to 0.
+		// This means that arrays do not need additional dereferencing when optional.
+		optional = false
+	} else if optional {
+		output.WriteString(fmt.Sprintf("\tif %s != nil {\n", instructionName))
+		instructionName = "*" + instructionName
 	}
 
 	if needsCastToInt {
 		instructionName = "int(" + instructionName + ")"
 	}
-	output.WriteString(fmt.Sprintf("\tif err = writer.Add%s(%s); err != nil {\n\t\treturn\n\t}\n\n", methodType, instructionName))
+
+	output.WriteString(fmt.Sprintf("\t\tif err = writer.Add%s(%s); err != nil {\n\t\t\treturn\n\t\t}\n\n", methodType, instructionName))
+
+	if optional {
+		output.WriteString("\t}\n\n")
+	}
 }
 
 func writeGetTypeForDeserialize(output *strings.Builder, instructionName string, instruction xml.ProtocolInstruction, methodType string, castType *string) {
+	optional := instruction.Optional != nil && *instruction.Optional
+
 	lengthExpr := ""
 	if instruction.XMLName.Local != "array" {
 		if instruction.Length != nil {
@@ -686,6 +714,15 @@ func writeGetTypeForDeserialize(output *strings.Builder, instructionName string,
 		} else if methodType == "Bytes" {
 			lengthExpr = "reader.Remaining()"
 		}
+	} else {
+		// optional arrays that are unset will be nil.
+		// The length expression in the loop checks the length of the nil slice, which evaluates to 0.
+		// This means that arrays do not need additional dereferencing when optional.
+		optional = false
+	}
+
+	if optional {
+		output.WriteString("\tif reader.Remaining() > 0 {\n")
 	}
 
 	if len(instructionName) == 0 && instruction.Content != nil {
@@ -696,33 +733,71 @@ func writeGetTypeForDeserialize(output *strings.Builder, instructionName string,
 		}
 
 		if castType != nil {
-			output.WriteString(fmt.Sprintf("\ts.%s = %s(reader.Get%s(%s))\n", instructionName, *castType, methodType, lengthExpr))
+			if optional {
+				output.WriteString(fmt.Sprintf("\t\ts.%s = new(%s)\n\t\t*s.", instructionName, *castType))
+			} else {
+				output.WriteString("\t\ts.")
+			}
+
+			output.WriteString(fmt.Sprintf("%s = %s(reader.Get%s(%s))\n", instructionName, *castType, methodType, lengthExpr))
 		} else {
-			output.WriteString(fmt.Sprintf("\ts.%s = reader.Get%s(%s)\n", instructionName, methodType, lengthExpr))
+			if optional {
+				output.WriteString(fmt.Sprintf("\t\ts.%s = new(int)\n\t\t*s.", instructionName))
+			} else {
+				output.WriteString("\t\ts.")
+			}
+
+			output.WriteString(fmt.Sprintf("%s = reader.Get%s(%s)\n", instructionName, methodType, lengthExpr))
 		}
+	}
+
+	if optional {
+		output.WriteString("\t}\n")
 	}
 }
 
-func writeAddStringTypeForSerialize(output *strings.Builder, instName string, inst xml.ProtocolInstruction, methodType string) {
-	if len(instName) == 0 && inst.Content != nil {
-		instName = `"` + *inst.Content + `"`
+func writeAddStringTypeForSerialize(output *strings.Builder, instructionName string, instruction xml.ProtocolInstruction, methodType string) {
+	optional := instruction.Optional != nil && *instruction.Optional
+
+	if len(instructionName) == 0 && instruction.Content != nil {
+		instructionName = `"` + *instruction.Content + `"`
 	} else {
-		instName = "s." + instName
+		instructionName = "s." + instructionName
 	}
 
-	if inst.XMLName.Local == "array" {
-		instName = instName + "[ndx]"
-	} else if inst.Length != nil {
-		instName = instName + ", " + getLengthExpression(*inst.Length)
+	if instruction.XMLName.Local == "array" {
+		instructionName = instructionName + "[ndx]"
+		optional = false
+	} else if instruction.Length != nil {
+		instructionName = instructionName + ", " + getLengthExpression(*instruction.Length)
 	}
 
-	output.WriteString(fmt.Sprintf("\tif err = writer.Add%s(%s); err != nil {\n\t\treturn\n\t}\n\n", methodType, instName))
+	if optional {
+		output.WriteString(fmt.Sprintf("\tif %s != nil {\n", instructionName))
+		instructionName = "*" + instructionName
+	}
+
+	output.WriteString(fmt.Sprintf("\t\tif err = writer.Add%s(%s); err != nil {\n\t\t\treturn\n\t\t}\n\n", methodType, instructionName))
+
+	if optional {
+		output.WriteString("\t}\n\n")
+	}
 }
 
 func writeGetStringTypeForDeserialize(output *strings.Builder, instructionName string, instruction xml.ProtocolInstruction, methodType string) {
+	optional := instruction.Optional != nil && *instruction.Optional
+
 	lengthExpr := ""
-	if instruction.XMLName.Local != "array" && instruction.Length != nil {
-		lengthExpr = getLengthExpression(*instruction.Length)
+	if instruction.XMLName.Local != "array" {
+		if instruction.Length != nil {
+			lengthExpr = getLengthExpression(*instruction.Length)
+		}
+	} else {
+		optional = false
+	}
+
+	if optional {
+		output.WriteString("\tif reader.Remaining() > 0 {\n")
 	}
 
 	if len(instructionName) == 0 && instruction.Content != nil {
@@ -732,7 +807,17 @@ func writeGetStringTypeForDeserialize(output *strings.Builder, instructionName s
 			instructionName = instructionName + "[ndx]"
 		}
 
-		output.WriteString(fmt.Sprintf("\tif s.%s, err = reader.Get%s(%s); err != nil {\n\t\treturn\n\t}\n\n", instructionName, methodType, lengthExpr))
+		if optional {
+			output.WriteString(fmt.Sprintf("\t\ts.%s = new(string)\n\t\tif *s.", instructionName))
+		} else {
+			output.WriteString("\t\tif s.")
+		}
+
+		output.WriteString(fmt.Sprintf("%s, err = reader.Get%s(%s); err != nil {\n\t\treturn\n\t}\n\n", instructionName, methodType, lengthExpr))
+	}
+
+	if optional {
+		output.WriteString("\t}\n")
 	}
 }
 
