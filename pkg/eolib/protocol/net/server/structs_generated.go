@@ -335,16 +335,19 @@ func (s *EquipmentWelcome) Deserialize(reader *data.EoReader) (err error) {
 	s.Weapon = reader.GetShort()
 	// Ring : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Ring = append(s.Ring, 0)
 		s.Ring[ndx] = reader.GetShort()
 	}
 
 	// Armlet : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Armlet = append(s.Armlet, 0)
 		s.Armlet[ndx] = reader.GetShort()
 	}
 
 	// Bracer : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Bracer = append(s.Bracer, 0)
 		s.Bracer[ndx] = reader.GetShort()
 	}
 
@@ -455,16 +458,19 @@ func (s *EquipmentPaperdoll) Deserialize(reader *data.EoReader) (err error) {
 	s.Weapon = reader.GetShort()
 	// Ring : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Ring = append(s.Ring, 0)
 		s.Ring[ndx] = reader.GetShort()
 	}
 
 	// Armlet : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Armlet = append(s.Armlet, 0)
 		s.Armlet[ndx] = reader.GetShort()
 	}
 
 	// Bracer : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Bracer = append(s.Bracer, 0)
 		s.Bracer[ndx] = reader.GetShort()
 	}
 
@@ -1192,6 +1198,7 @@ func (s *PlayersListFriends) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// Players : array : string
 	for ndx := 0; ndx < s.PlayersCount; ndx++ {
+		s.Players = append(s.Players, "")
 		if s.Players[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -2292,6 +2299,7 @@ func (s *SkillLearn) Deserialize(reader *data.EoReader) (err error) {
 	s.Cost = reader.GetInt()
 	// SkillRequirements : array : short
 	for ndx := 0; ndx < 4; ndx++ {
+		s.SkillRequirements = append(s.SkillRequirements, 0)
 		s.SkillRequirements[ndx] = reader.GetShort()
 	}
 

@@ -375,6 +375,7 @@ func (s *Eif) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Rid = append(s.Rid, 0)
 		s.Rid[ndx] = reader.GetShort()
 	}
 
@@ -640,6 +641,7 @@ func (s *Enf) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Rid = append(s.Rid, 0)
 		s.Rid[ndx] = reader.GetShort()
 	}
 
@@ -801,6 +803,7 @@ func (s *Ecf) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Rid = append(s.Rid, 0)
 		s.Rid[ndx] = reader.GetShort()
 	}
 
@@ -1133,6 +1136,7 @@ func (s *Esf) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Rid = append(s.Rid, 0)
 		s.Rid[ndx] = reader.GetShort()
 	}
 

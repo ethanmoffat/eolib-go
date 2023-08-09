@@ -2330,6 +2330,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.MapId = reader.GetShort()
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.MapRid = append(s.MapRid, 0)
 		s.MapRid[ndx] = reader.GetShort()
 	}
 
@@ -2337,6 +2338,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.MapFileSize = reader.GetThree()
 	// EifRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EifRid = append(s.EifRid, 0)
 		s.EifRid[ndx] = reader.GetShort()
 	}
 
@@ -2344,6 +2346,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.EifLength = reader.GetShort()
 	// EnfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EnfRid = append(s.EnfRid, 0)
 		s.EnfRid[ndx] = reader.GetShort()
 	}
 
@@ -2351,6 +2354,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.EnfLength = reader.GetShort()
 	// EsfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EsfRid = append(s.EsfRid, 0)
 		s.EsfRid[ndx] = reader.GetShort()
 	}
 
@@ -2358,6 +2362,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.EsfLength = reader.GetShort()
 	// EcfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EcfRid = append(s.EcfRid, 0)
 		s.EcfRid[ndx] = reader.GetShort()
 	}
 
@@ -2490,6 +2495,7 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 	}
 	// News : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.News = append(s.News, "")
 		if s.News[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -3662,6 +3668,7 @@ func (s *MessageAcceptServerPacket) Deserialize(reader *data.EoReader) (err erro
 	reader.SetIsChunked(true)
 	// Messages : array : string
 	for ndx := 0; ndx < 4; ndx++ {
+		s.Messages = append(s.Messages, "")
 		if s.Messages[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -4677,6 +4684,7 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	reader.SetIsChunked(true)
 	// PlayerIds : array : short
 	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
+		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}
 
@@ -4685,6 +4693,7 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// NpcIndexes : array : char
 	for ndx := 0; ndx < reader.Remaining()/1; ndx++ {
+		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}
 
@@ -5319,6 +5328,7 @@ func (s *CitizenOpenServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 	// Questions : array : string
 	for ndx := 0; ndx < 3; ndx++ {
+		s.Questions = append(s.Questions, "")
 		if s.Questions[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -7127,6 +7137,7 @@ func (s *WarpRequestWarpTypeDataMapSwitch) Deserialize(reader *data.EoReader) (e
 
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.MapRid = append(s.MapRid, 0)
 		s.MapRid[ndx] = reader.GetShort()
 	}
 
@@ -7607,6 +7618,7 @@ func (s *BookReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// QuestNames : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.QuestNames = append(s.QuestNames, "")
 		if s.QuestNames[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -9021,6 +9033,7 @@ func (s *GuildRankServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	reader.SetIsChunked(true)
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.Ranks = append(s.Ranks, "")
 		if s.Ranks[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -9321,6 +9334,7 @@ func (s *GuildReportServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.Ranks = append(s.Ranks, "")
 		if s.Ranks[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -10922,6 +10936,7 @@ func (s *QuestReportServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 	// Messages : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.Messages = append(s.Messages, "")
 		if s.Messages[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -11116,6 +11131,7 @@ func (s *QuestListPageDataHistory) Deserialize(reader *data.EoReader) (err error
 
 	// CompletedQuests : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.CompletedQuests = append(s.CompletedQuests, "")
 		if s.CompletedQuests[ndx], err = reader.GetString(); err != nil {
 			return
 		}

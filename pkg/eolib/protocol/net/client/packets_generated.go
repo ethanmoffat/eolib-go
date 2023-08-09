@@ -2442,6 +2442,7 @@ func (s *CitizenReplyClientPacket) Deserialize(reader *data.EoReader) (err error
 	}
 	// Answers : array : string
 	for ndx := 0; ndx < 3; ndx++ {
+		s.Answers = append(s.Answers, "")
 		if s.Answers[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -4027,6 +4028,7 @@ func (s *RangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 	reader.SetIsChunked(true)
 	// PlayerIds : array : short
 	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
+		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}
 
@@ -4035,6 +4037,7 @@ func (s *RangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 	}
 	// NpcIndexes : array : char
 	for ndx := 0; ndx < reader.Remaining()/1; ndx++ {
+		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}
 
@@ -4076,6 +4079,7 @@ func (s *PlayerRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err
 
 	// PlayerIds : array : short
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}
 
@@ -4129,6 +4133,7 @@ func (s *NpcRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err er
 	reader.GetByte()
 	// NpcIndexes : array : char
 	for ndx := 0; ndx < s.NpcIndexesLength; ndx++ {
+		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}
 
@@ -4492,6 +4497,7 @@ func (s *GuildAgreeInfoTypeDataRanks) Deserialize(reader *data.EoReader) (err er
 
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.Ranks = append(s.Ranks, "")
 		if s.Ranks[ndx], err = reader.GetString(); err != nil {
 			return
 		}

@@ -751,6 +751,7 @@ func (s *Emf) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.Rid = append(s.Rid, 0)
 		s.Rid[ndx] = reader.GetShort()
 	}
 

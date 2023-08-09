@@ -729,6 +729,7 @@ func writeGetTypeForDeserialize(output *strings.Builder, instructionName string,
 		output.WriteString(fmt.Sprintf("\treader.Get%s(%s)\n", methodType, lengthExpr))
 	} else {
 		if instruction.XMLName.Local == "array" {
+			output.WriteString(fmt.Sprintf("\t\ts.%s = append(s.%s, 0)\n", instructionName, instructionName))
 			instructionName = instructionName + "[ndx]"
 		}
 
@@ -804,6 +805,7 @@ func writeGetStringTypeForDeserialize(output *strings.Builder, instructionName s
 		output.WriteString(fmt.Sprintf("\tif _, err = reader.Get%s(%s); err != nil {\n\t\treturn\n\t}\n", methodType, lengthExpr))
 	} else {
 		if instruction.XMLName.Local == "array" {
+			output.WriteString(fmt.Sprintf("\t\ts.%s = append(s.%s, \"\")\n", instructionName, instructionName))
 			instructionName = instructionName + "[ndx]"
 		}
 
