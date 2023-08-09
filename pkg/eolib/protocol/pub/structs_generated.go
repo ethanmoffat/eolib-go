@@ -62,212 +62,170 @@ func (s *EifRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
-
 	// GraphicId : field : short
 	if err = writer.AddShort(s.GraphicId); err != nil {
 		return
 	}
-
 	// Type : field : ItemType
 	if err = writer.AddChar(int(s.Type)); err != nil {
 		return
 	}
-
 	// Subtype : field : ItemSubtype
 	if err = writer.AddChar(int(s.Subtype)); err != nil {
 		return
 	}
-
 	// Special : field : ItemSpecial
 	if err = writer.AddChar(int(s.Special)); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// MinDamage : field : short
 	if err = writer.AddShort(s.MinDamage); err != nil {
 		return
 	}
-
 	// MaxDamage : field : short
 	if err = writer.AddShort(s.MaxDamage); err != nil {
 		return
 	}
-
 	// Accuracy : field : short
 	if err = writer.AddShort(s.Accuracy); err != nil {
 		return
 	}
-
 	// Evade : field : short
 	if err = writer.AddShort(s.Evade); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// ReturnDamage : field : char
 	if err = writer.AddChar(s.ReturnDamage); err != nil {
 		return
 	}
-
 	// Str : field : char
 	if err = writer.AddChar(s.Str); err != nil {
 		return
 	}
-
 	// Intl : field : char
 	if err = writer.AddChar(s.Intl); err != nil {
 		return
 	}
-
 	// Wis : field : char
 	if err = writer.AddChar(s.Wis); err != nil {
 		return
 	}
-
 	// Agi : field : char
 	if err = writer.AddChar(s.Agi); err != nil {
 		return
 	}
-
 	// Con : field : char
 	if err = writer.AddChar(s.Con); err != nil {
 		return
 	}
-
 	// Cha : field : char
 	if err = writer.AddChar(s.Cha); err != nil {
 		return
 	}
-
 	// LightResistance : field : char
 	if err = writer.AddChar(s.LightResistance); err != nil {
 		return
 	}
-
 	// DarkResistance : field : char
 	if err = writer.AddChar(s.DarkResistance); err != nil {
 		return
 	}
-
 	// EarthResistance : field : char
 	if err = writer.AddChar(s.EarthResistance); err != nil {
 		return
 	}
-
 	// AirResistance : field : char
 	if err = writer.AddChar(s.AirResistance); err != nil {
 		return
 	}
-
 	// WaterResistance : field : char
 	if err = writer.AddChar(s.WaterResistance); err != nil {
 		return
 	}
-
 	// FireResistance : field : char
 	if err = writer.AddChar(s.FireResistance); err != nil {
 		return
 	}
-
 	// Spec1 : field : three
 	if err = writer.AddThree(s.Spec1); err != nil {
 		return
 	}
-
 	// Spec2 : field : char
 	if err = writer.AddChar(s.Spec2); err != nil {
 		return
 	}
-
 	// Spec3 : field : char
 	if err = writer.AddChar(s.Spec3); err != nil {
 		return
 	}
-
 	// LevelRequirement : field : short
 	if err = writer.AddShort(s.LevelRequirement); err != nil {
 		return
 	}
-
 	// ClassRequirement : field : short
 	if err = writer.AddShort(s.ClassRequirement); err != nil {
 		return
 	}
-
 	// StrRequirement : field : short
 	if err = writer.AddShort(s.StrRequirement); err != nil {
 		return
 	}
-
 	// IntRequirement : field : short
 	if err = writer.AddShort(s.IntRequirement); err != nil {
 		return
 	}
-
 	// WisRequirement : field : short
 	if err = writer.AddShort(s.WisRequirement); err != nil {
 		return
 	}
-
 	// AgiRequirement : field : short
 	if err = writer.AddShort(s.AgiRequirement); err != nil {
 		return
 	}
-
 	// ConRequirement : field : short
 	if err = writer.AddShort(s.ConRequirement); err != nil {
 		return
 	}
-
 	// ChaRequirement : field : short
 	if err = writer.AddShort(s.ChaRequirement); err != nil {
 		return
 	}
-
 	// Element : field : Element
 	if err = writer.AddChar(int(s.Element)); err != nil {
 		return
 	}
-
 	// ElementDamage : field : char
 	if err = writer.AddChar(s.ElementDamage); err != nil {
 		return
 	}
-
 	// Weight : field : char
 	if err = writer.AddChar(s.Weight); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	// Size : field : ItemSize
 	if err = writer.AddChar(int(s.Size)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -382,25 +340,21 @@ func (s *Eif) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddFixedString("EIF", 3); err != nil {
 		return
 	}
-
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// TotalItemsCount : field : short
 	if err = writer.AddShort(s.TotalItemsCount); err != nil {
 		return
 	}
-
 	// Version : field : char
 	if err = writer.AddChar(s.Version); err != nil {
 		return
 	}
-
 	// Items : array : EifRecord
 	for ndx := 0; ndx < len(s.Items); ndx++ {
 		if err = s.Items[ndx].Serialize(writer); err != nil {
@@ -473,22 +427,18 @@ func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
-
 	// GraphicId : field : short
 	if err = writer.AddShort(s.GraphicId); err != nil {
 		return
 	}
-
 	// Race : field : char
 	if err = writer.AddChar(s.Race); err != nil {
 		return
 	}
-
 	// Boss : field : bool:short
 	if s.Boss {
 		err = writer.AddShort(1)
@@ -513,82 +463,66 @@ func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.Type)); err != nil {
 		return
 	}
-
 	// BehaviorId : field : short
 	if err = writer.AddShort(s.BehaviorId); err != nil {
 		return
 	}
-
 	// Hp : field : three
 	if err = writer.AddThree(s.Hp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// MinDamage : field : short
 	if err = writer.AddShort(s.MinDamage); err != nil {
 		return
 	}
-
 	// MaxDamage : field : short
 	if err = writer.AddShort(s.MaxDamage); err != nil {
 		return
 	}
-
 	// Accuracy : field : short
 	if err = writer.AddShort(s.Accuracy); err != nil {
 		return
 	}
-
 	// Evade : field : short
 	if err = writer.AddShort(s.Evade); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// ReturnDamage : field : char
 	if err = writer.AddChar(s.ReturnDamage); err != nil {
 		return
 	}
-
 	// Element : field : Element:short
 	if err = writer.AddChar(int(s.Element)); err != nil {
 		return
 	}
-
 	// ElementDamage : field : short
 	if err = writer.AddShort(s.ElementDamage); err != nil {
 		return
 	}
-
 	// ElementWeakness : field : Element:short
 	if err = writer.AddChar(int(s.ElementWeakness)); err != nil {
 		return
 	}
-
 	// ElementWeaknessDamage : field : short
 	if err = writer.AddShort(s.ElementWeaknessDamage); err != nil {
 		return
 	}
-
 	// Level : field : char
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// Experience : field : three
 	if err = writer.AddThree(s.Experience); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -671,25 +605,21 @@ func (s *Enf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddFixedString("ENF", 3); err != nil {
 		return
 	}
-
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// TotalNpcsCount : field : short
 	if err = writer.AddShort(s.TotalNpcsCount); err != nil {
 		return
 	}
-
 	// Version : field : char
 	if err = writer.AddChar(s.Version); err != nil {
 		return
 	}
-
 	// Npcs : array : EnfRecord
 	for ndx := 0; ndx < len(s.Npcs); ndx++ {
 		if err = s.Npcs[ndx].Serialize(writer); err != nil {
@@ -750,52 +680,42 @@ func (s *EcfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
-
 	// ParentType : field : char
 	if err = writer.AddChar(s.ParentType); err != nil {
 		return
 	}
-
 	// StatGroup : field : char
 	if err = writer.AddChar(s.StatGroup); err != nil {
 		return
 	}
-
 	// Str : field : short
 	if err = writer.AddShort(s.Str); err != nil {
 		return
 	}
-
 	// Intl : field : short
 	if err = writer.AddShort(s.Intl); err != nil {
 		return
 	}
-
 	// Wis : field : short
 	if err = writer.AddShort(s.Wis); err != nil {
 		return
 	}
-
 	// Agi : field : short
 	if err = writer.AddShort(s.Agi); err != nil {
 		return
 	}
-
 	// Con : field : short
 	if err = writer.AddShort(s.Con); err != nil {
 		return
 	}
-
 	// Cha : field : short
 	if err = writer.AddShort(s.Cha); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -846,25 +766,21 @@ func (s *Ecf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddFixedString("ECF", 3); err != nil {
 		return
 	}
-
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// TotalClassesCount : field : short
 	if err = writer.AddShort(s.TotalClassesCount); err != nil {
 		return
 	}
-
 	// Version : field : char
 	if err = writer.AddChar(s.Version); err != nil {
 		return
 	}
-
 	// Classes : array : EcfRecord
 	for ndx := 0; ndx < len(s.Classes); ndx++ {
 		if err = s.Classes[ndx].Serialize(writer); err != nil {
@@ -949,172 +865,138 @@ func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
-
 	// ChantLength : length : char
 	if err = writer.AddChar(s.ChantLength); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
-
 	// Chant : field : string
 	if err = writer.AddFixedString(s.Chant, s.ChantLength); err != nil {
 		return
 	}
-
 	// IconId : field : short
 	if err = writer.AddShort(s.IconId); err != nil {
 		return
 	}
-
 	// GraphicId : field : short
 	if err = writer.AddShort(s.GraphicId); err != nil {
 		return
 	}
-
 	// TpCost : field : short
 	if err = writer.AddShort(s.TpCost); err != nil {
 		return
 	}
-
 	// SpCost : field : short
 	if err = writer.AddShort(s.SpCost); err != nil {
 		return
 	}
-
 	// CastTime : field : char
 	if err = writer.AddChar(s.CastTime); err != nil {
 		return
 	}
-
 	// Nature : field : SkillNature
 	if err = writer.AddChar(int(s.Nature)); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(1); err != nil {
 		return
 	}
-
 	// Type : field : SkillType
 	if err = writer.AddThree(int(s.Type)); err != nil {
 		return
 	}
-
 	// Element : field : Element
 	if err = writer.AddChar(int(s.Element)); err != nil {
 		return
 	}
-
 	// ElementPower : field : short
 	if err = writer.AddShort(s.ElementPower); err != nil {
 		return
 	}
-
 	// TargetRestrict : field : SkillTargetRestrict
 	if err = writer.AddChar(int(s.TargetRestrict)); err != nil {
 		return
 	}
-
 	// TargetType : field : SkillTargetType
 	if err = writer.AddChar(int(s.TargetType)); err != nil {
 		return
 	}
-
 	// TargetTime : field : char
 	if err = writer.AddChar(s.TargetTime); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	// MaxSkillLevel : field : short
 	if err = writer.AddShort(s.MaxSkillLevel); err != nil {
 		return
 	}
-
 	// MinDamage : field : short
 	if err = writer.AddShort(s.MinDamage); err != nil {
 		return
 	}
-
 	// MaxDamage : field : short
 	if err = writer.AddShort(s.MaxDamage); err != nil {
 		return
 	}
-
 	// Accuracy : field : short
 	if err = writer.AddShort(s.Accuracy); err != nil {
 		return
 	}
-
 	// Evade : field : short
 	if err = writer.AddShort(s.Evade); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// ReturnDamage : field : char
 	if err = writer.AddChar(s.ReturnDamage); err != nil {
 		return
 	}
-
 	// HpHeal : field : short
 	if err = writer.AddShort(s.HpHeal); err != nil {
 		return
 	}
-
 	// TpHeal : field : short
 	if err = writer.AddShort(s.TpHeal); err != nil {
 		return
 	}
-
 	// SpHeal : field : char
 	if err = writer.AddChar(s.SpHeal); err != nil {
 		return
 	}
-
 	// Str : field : short
 	if err = writer.AddShort(s.Str); err != nil {
 		return
 	}
-
 	// Intl : field : short
 	if err = writer.AddShort(s.Intl); err != nil {
 		return
 	}
-
 	// Wis : field : short
 	if err = writer.AddShort(s.Wis); err != nil {
 		return
 	}
-
 	// Agi : field : short
 	if err = writer.AddShort(s.Agi); err != nil {
 		return
 	}
-
 	// Con : field : short
 	if err = writer.AddShort(s.Con); err != nil {
 		return
 	}
-
 	// Cha : field : short
 	if err = writer.AddShort(s.Cha); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1216,25 +1098,21 @@ func (s *Esf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddFixedString("ESF", 3); err != nil {
 		return
 	}
-
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// TotalSkillsCount : field : short
 	if err = writer.AddShort(s.TotalSkillsCount); err != nil {
 		return
 	}
-
 	// Version : field : char
 	if err = writer.AddChar(s.Version); err != nil {
 		return
 	}
-
 	// Skills : array : EsfRecord
 	for ndx := 0; ndx < len(s.Skills); ndx++ {
 		if err = s.Skills[ndx].Serialize(writer); err != nil {

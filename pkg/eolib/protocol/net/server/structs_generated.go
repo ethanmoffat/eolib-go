@@ -24,12 +24,10 @@ func (s *BigCoords) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.X); err != nil {
 		return
 	}
-
 	// Y : field : short
 	if err = writer.AddShort(s.Y); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -62,27 +60,22 @@ func (s *EquipmentChange) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Boots); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// Hat : field : short
 	if err = writer.AddShort(s.Hat); err != nil {
 		return
 	}
-
 	// Weapon : field : short
 	if err = writer.AddShort(s.Weapon); err != nil {
 		return
 	}
-
 	// Shield : field : short
 	if err = writer.AddShort(s.Shield); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -123,47 +116,38 @@ func (s *EquipmentMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Boots); err != nil {
 		return
 	}
-
 	//  : field : short
 	if err = writer.AddShort(0); err != nil {
 		return
 	}
-
 	//  : field : short
 	if err = writer.AddShort(0); err != nil {
 		return
 	}
-
 	//  : field : short
 	if err = writer.AddShort(0); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	//  : field : short
 	if err = writer.AddShort(0); err != nil {
 		return
 	}
-
 	// Hat : field : short
 	if err = writer.AddShort(s.Hat); err != nil {
 		return
 	}
-
 	// Shield : field : short
 	if err = writer.AddShort(s.Shield); err != nil {
 		return
 	}
-
 	// Weapon : field : short
 	if err = writer.AddShort(s.Weapon); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -210,27 +194,22 @@ func (s *EquipmentCharacterSelect) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.Boots); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// Hat : field : short
 	if err = writer.AddShort(s.Hat); err != nil {
 		return
 	}
-
 	// Shield : field : short
 	if err = writer.AddShort(s.Shield); err != nil {
 		return
 	}
-
 	// Weapon : field : short
 	if err = writer.AddShort(s.Weapon); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -276,53 +255,43 @@ func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Boots); err != nil {
 		return
 	}
-
 	// Gloves : field : short
 	if err = writer.AddShort(s.Gloves); err != nil {
 		return
 	}
-
 	// Accessory : field : short
 	if err = writer.AddShort(s.Accessory); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// Belt : field : short
 	if err = writer.AddShort(s.Belt); err != nil {
 		return
 	}
-
 	// Necklace : field : short
 	if err = writer.AddShort(s.Necklace); err != nil {
 		return
 	}
-
 	// Hat : field : short
 	if err = writer.AddShort(s.Hat); err != nil {
 		return
 	}
-
 	// Shield : field : short
 	if err = writer.AddShort(s.Shield); err != nil {
 		return
 	}
-
 	// Weapon : field : short
 	if err = writer.AddShort(s.Weapon); err != nil {
 		return
 	}
-
 	// Ring : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Ring[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// Armlet : array : short
@@ -330,7 +299,6 @@ func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddShort(s.Armlet[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// Bracer : array : short
@@ -338,7 +306,6 @@ func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddShort(s.Bracer[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	return
@@ -408,53 +375,43 @@ func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Boots); err != nil {
 		return
 	}
-
 	// Accessory : field : short
 	if err = writer.AddShort(s.Accessory); err != nil {
 		return
 	}
-
 	// Gloves : field : short
 	if err = writer.AddShort(s.Gloves); err != nil {
 		return
 	}
-
 	// Belt : field : short
 	if err = writer.AddShort(s.Belt); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	// Necklace : field : short
 	if err = writer.AddShort(s.Necklace); err != nil {
 		return
 	}
-
 	// Hat : field : short
 	if err = writer.AddShort(s.Hat); err != nil {
 		return
 	}
-
 	// Shield : field : short
 	if err = writer.AddShort(s.Shield); err != nil {
 		return
 	}
-
 	// Weapon : field : short
 	if err = writer.AddShort(s.Weapon); err != nil {
 		return
 	}
-
 	// Ring : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Ring[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// Armlet : array : short
@@ -462,7 +419,6 @@ func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddShort(s.Armlet[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// Bracer : array : short
@@ -470,7 +426,6 @@ func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddShort(s.Bracer[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	return
@@ -549,18 +504,15 @@ func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// PlayerId : field : short
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// MapId : field : short
 	if err = writer.AddShort(s.MapId); err != nil {
 		return
 	}
-
 	// Coords : field : BigCoords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -569,62 +521,50 @@ func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	// ClassId : field : char
 	if err = writer.AddChar(s.ClassId); err != nil {
 		return
 	}
-
 	// GuildTag : field : string
 	if err = writer.AddFixedString(s.GuildTag, 3); err != nil {
 		return
 	}
-
 	// Level : field : char
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// Gender : field : Gender
 	if err = writer.AddChar(int(s.Gender)); err != nil {
 		return
 	}
-
 	// HairStyle : field : char
 	if err = writer.AddChar(s.HairStyle); err != nil {
 		return
 	}
-
 	// HairColor : field : char
 	if err = writer.AddChar(s.HairColor); err != nil {
 		return
 	}
-
 	// Skin : field : char
 	if err = writer.AddChar(s.Skin); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// Equipment : field : EquipmentMapInfo
 	if err = s.Equipment.Serialize(writer); err != nil {
 		return
@@ -633,7 +573,6 @@ func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.SitState)); err != nil {
 		return
 	}
-
 	// Invisible : field : bool
 	if s.Invisible {
 		err = writer.AddChar(1)
@@ -649,9 +588,7 @@ func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddChar(int(*s.WarpEffect)); err != nil {
 			return
 		}
-
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -742,12 +679,10 @@ func (s *NpcMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Index); err != nil {
 		return
 	}
-
 	// Id : field : short
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -756,7 +691,6 @@ func (s *NpcMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -794,12 +728,10 @@ func (s *ItemMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Uid); err != nil {
 		return
 	}
-
 	// Id : field : short
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -808,7 +740,6 @@ func (s *ItemMapInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddThree(s.Amount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -882,12 +813,10 @@ func (s *ChangeTypeDataHair) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.HairStyle); err != nil {
 		return
 	}
-
 	// HairColor : field : char
 	if err = writer.AddChar(s.HairColor); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -915,7 +844,6 @@ func (s *ChangeTypeDataHairColor) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.HairColor); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -937,12 +865,10 @@ func (s *AvatarChange) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// ChangeType : field : AvatarChangeType
 	if err = writer.AddChar(int(s.ChangeType)); err != nil {
 		return
 	}
-
 	// Sound : field : bool
 	if s.Sound {
 		err = writer.AddChar(1)
@@ -1039,7 +965,6 @@ func (s *NearbyInfo) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.CharactersCount); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = true
 	writer.AddByte(0xFF)
 	// Characters : array : CharacterMapInfo
@@ -1127,7 +1052,6 @@ func (s *MapFile) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddBytes(s.Content); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1155,12 +1079,10 @@ func (s *PubFile) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.FileId); err != nil {
 		return
 	}
-
 	// Content : field : blob
 	if err = writer.AddBytes(s.Content); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1191,7 +1113,6 @@ func (s *PlayersList) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayersCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Players : array : OnlinePlayer
 	for ndx := 0; ndx < s.PlayersCount; ndx++ {
@@ -1246,14 +1167,12 @@ func (s *PlayersListFriends) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayersCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Players : array : string
 	for ndx := 0; ndx < s.PlayersCount; ndx++ {
 		if err = writer.AddString(s.Players[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -1306,34 +1225,28 @@ func (s *OnlinePlayer) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Title : field : string
 	if err = writer.AddString(s.Title); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Level : field : char
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// Icon : field : CharacterIcon
 	if err = writer.AddChar(int(s.Icon)); err != nil {
 		return
 	}
-
 	// ClassId : field : char
 	if err = writer.AddChar(s.ClassId); err != nil {
 		return
 	}
-
 	// GuildTag : field : string
 	if err = writer.AddString(s.GuildTag); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -1397,43 +1310,35 @@ func (s *CharacterSelectionListEntry) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Id : field : int
 	if err = writer.AddInt(s.Id); err != nil {
 		return
 	}
-
 	// Level : field : char
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// Gender : field : Gender
 	if err = writer.AddChar(int(s.Gender)); err != nil {
 		return
 	}
-
 	// HairStyle : field : char
 	if err = writer.AddChar(s.HairStyle); err != nil {
 		return
 	}
-
 	// HairColor : field : char
 	if err = writer.AddChar(s.HairColor); err != nil {
 		return
 	}
-
 	// Skin : field : char
 	if err = writer.AddChar(s.Skin); err != nil {
 		return
 	}
-
 	// Admin : field : AdminLevel
 	if err = writer.AddChar(int(s.Admin)); err != nil {
 		return
 	}
-
 	// Equipment : field : EquipmentCharacterSelect
 	if err = s.Equipment.Serialize(writer); err != nil {
 		return
@@ -1497,12 +1402,10 @@ func (s *ServerSettings) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.JailMap); err != nil {
 		return
 	}
-
 	// RescueMap : field : short
 	if err = writer.AddShort(s.RescueMap); err != nil {
 		return
 	}
-
 	// RescueCoords : field : Coords
 	if err = s.RescueCoords.Serialize(writer); err != nil {
 		return
@@ -1511,22 +1414,18 @@ func (s *ServerSettings) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SpyAndLightGuideFloodRate); err != nil {
 		return
 	}
-
 	// GuardianFloodRate : field : short
 	if err = writer.AddShort(s.GuardianFloodRate); err != nil {
 		return
 	}
-
 	// GameMasterFloodRate : field : short
 	if err = writer.AddShort(s.GameMasterFloodRate); err != nil {
 		return
 	}
-
 	// HighGameMasterFloodRate : field : short
 	if err = writer.AddShort(s.HighGameMasterFloodRate); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1570,22 +1469,18 @@ func (s *ShopTradeItem) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	// BuyPrice : field : three
 	if err = writer.AddThree(s.BuyPrice); err != nil {
 		return
 	}
-
 	// SellPrice : field : three
 	if err = writer.AddThree(s.SellPrice); err != nil {
 		return
 	}
-
 	// MaxBuyAmount : field : char
 	if err = writer.AddChar(s.MaxBuyAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1619,7 +1514,6 @@ func (s *ShopCraftItem) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	// Ingredients : array : CharItem
 	for ndx := 0; ndx < 4; ndx++ {
 		if err = s.Ingredients[ndx].Serialize(writer); err != nil {
@@ -1661,12 +1555,10 @@ func (s *ShopSoldItem) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.Amount); err != nil {
 		return
 	}
-
 	// Id : field : short
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1700,32 +1592,26 @@ func (s *CharacterBaseStats) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Str); err != nil {
 		return
 	}
-
 	// Intl : field : short
 	if err = writer.AddShort(s.Intl); err != nil {
 		return
 	}
-
 	// Wis : field : short
 	if err = writer.AddShort(s.Wis); err != nil {
 		return
 	}
-
 	// Agi : field : short
 	if err = writer.AddShort(s.Agi); err != nil {
 		return
 	}
-
 	// Con : field : short
 	if err = writer.AddShort(s.Con); err != nil {
 		return
 	}
-
 	// Cha : field : short
 	if err = writer.AddShort(s.Cha); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1767,32 +1653,26 @@ func (s *CharacterBaseStatsWelcome) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.Str); err != nil {
 		return
 	}
-
 	// Wis : field : short
 	if err = writer.AddShort(s.Wis); err != nil {
 		return
 	}
-
 	// Intl : field : short
 	if err = writer.AddShort(s.Intl); err != nil {
 		return
 	}
-
 	// Agi : field : short
 	if err = writer.AddShort(s.Agi); err != nil {
 		return
 	}
-
 	// Con : field : short
 	if err = writer.AddShort(s.Con); err != nil {
 		return
 	}
-
 	// Cha : field : short
 	if err = writer.AddShort(s.Cha); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1833,27 +1713,22 @@ func (s *CharacterSecondaryStats) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.MinDamage); err != nil {
 		return
 	}
-
 	// MaxDamage : field : short
 	if err = writer.AddShort(s.MaxDamage); err != nil {
 		return
 	}
-
 	// Accuracy : field : short
 	if err = writer.AddShort(s.Accuracy); err != nil {
 		return
 	}
-
 	// Evade : field : short
 	if err = writer.AddShort(s.Evade); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1892,27 +1767,22 @@ func (s *CharacterSecondaryStatsInfoLookup) Serialize(writer *data.EoWriter) (er
 	if err = writer.AddShort(s.MaxDamage); err != nil {
 		return
 	}
-
 	// MinDamage : field : short
 	if err = writer.AddShort(s.MinDamage); err != nil {
 		return
 	}
-
 	// Accuracy : field : short
 	if err = writer.AddShort(s.Accuracy); err != nil {
 		return
 	}
-
 	// Evade : field : short
 	if err = writer.AddShort(s.Evade); err != nil {
 		return
 	}
-
 	// Armor : field : short
 	if err = writer.AddShort(s.Armor); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1952,32 +1822,26 @@ func (s *CharacterElementalStats) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Light); err != nil {
 		return
 	}
-
 	// Dark : field : short
 	if err = writer.AddShort(s.Dark); err != nil {
 		return
 	}
-
 	// Fire : field : short
 	if err = writer.AddShort(s.Fire); err != nil {
 		return
 	}
-
 	// Water : field : short
 	if err = writer.AddShort(s.Water); err != nil {
 		return
 	}
-
 	// Earth : field : short
 	if err = writer.AddShort(s.Earth); err != nil {
 		return
 	}
-
 	// Wind : field : short
 	if err = writer.AddShort(s.Wind); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2022,37 +1886,30 @@ func (s *CharacterStatsReset) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.StatPoints); err != nil {
 		return
 	}
-
 	// SkillPoints : field : short
 	if err = writer.AddShort(s.SkillPoints); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// MaxSp : field : short
 	if err = writer.AddShort(s.MaxSp); err != nil {
 		return
 	}
-
 	// Base : field : CharacterBaseStats
 	if err = s.Base.Serialize(writer); err != nil {
 		return
@@ -2116,42 +1973,34 @@ func (s *CharacterStatsWelcome) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// MaxSp : field : short
 	if err = writer.AddShort(s.MaxSp); err != nil {
 		return
 	}
-
 	// StatPoints : field : short
 	if err = writer.AddShort(s.StatPoints); err != nil {
 		return
 	}
-
 	// SkillPoints : field : short
 	if err = writer.AddShort(s.SkillPoints); err != nil {
 		return
 	}
-
 	// Karma : field : short
 	if err = writer.AddShort(s.Karma); err != nil {
 		return
 	}
-
 	// Secondary : field : CharacterSecondaryStats
 	if err = s.Secondary.Serialize(writer); err != nil {
 		return
@@ -2217,22 +2066,18 @@ func (s *CharacterStatsUpdate) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// MaxSp : field : short
 	if err = writer.AddShort(s.MaxSp); err != nil {
 		return
 	}
-
 	// MaxWeight : field : short
 	if err = writer.AddShort(s.MaxWeight); err != nil {
 		return
 	}
-
 	// SecondaryStats : field : CharacterSecondaryStats
 	if err = s.SecondaryStats.Serialize(writer); err != nil {
 		return
@@ -2283,22 +2128,18 @@ func (s *CharacterStatsInfoLookup) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// BaseStats : field : CharacterBaseStats
 	if err = s.BaseStats.Serialize(writer); err != nil {
 		return
@@ -2358,12 +2199,10 @@ func (s *CharacterStatsEquipmentChange) Serialize(writer *data.EoWriter) (err er
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// BaseStats : field : CharacterBaseStats
 	if err = s.BaseStats.Serialize(writer); err != nil {
 		return
@@ -2413,28 +2252,23 @@ func (s *SkillLearn) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// LevelRequirement : field : char
 	if err = writer.AddChar(s.LevelRequirement); err != nil {
 		return
 	}
-
 	// ClassRequirement : field : char
 	if err = writer.AddChar(s.ClassRequirement); err != nil {
 		return
 	}
-
 	// Cost : field : int
 	if err = writer.AddInt(s.Cost); err != nil {
 		return
 	}
-
 	// SkillRequirements : array : short
 	for ndx := 0; ndx < 4; ndx++ {
 		if err = writer.AddShort(s.SkillRequirements[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// StatRequirements : field : CharacterBaseStats
@@ -2485,19 +2319,16 @@ func (s *BoardPostListing) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PostId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Author : field : string
 	if err = writer.AddString(s.Author); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Subject : field : string
 	if err = writer.AddString(s.Subject); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -2553,58 +2384,48 @@ func (s *CharacterDetails) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Home : field : string
 	if err = writer.AddString(s.Home); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Partner : field : string
 	if err = writer.AddString(s.Partner); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Title : field : string
 	if err = writer.AddString(s.Title); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Guild : field : string
 	if err = writer.AddString(s.Guild); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildRank : field : string
 	if err = writer.AddString(s.GuildRank); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// PlayerId : field : short
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// ClassId : field : char
 	if err = writer.AddChar(s.ClassId); err != nil {
 		return
 	}
-
 	// Gender : field : Gender
 	if err = writer.AddChar(int(s.Gender)); err != nil {
 		return
 	}
-
 	// Admin : field : AdminLevel
 	if err = writer.AddChar(int(s.Admin)); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -2692,7 +2513,6 @@ func (s *PartyMember) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Leader : field : bool
 	if s.Leader {
 		err = writer.AddChar(1)
@@ -2707,17 +2527,14 @@ func (s *PartyMember) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2760,17 +2577,14 @@ func (s *PartyExpShare) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Experience : field : int
 	if err = writer.AddInt(s.Experience); err != nil {
 		return
 	}
-
 	// LevelUp : field : char
 	if err = writer.AddChar(s.LevelUp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2803,13 +2617,11 @@ func (s *GuildStaff) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Rank); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -2850,19 +2662,16 @@ func (s *GuildMember) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Rank); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// RankName : field : string
 	if err = writer.AddString(s.RankName); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -2910,17 +2719,14 @@ func (s *GroupHealTargetPlayer) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2955,7 +2761,6 @@ func (s *TradeItemData) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PartnerPlayerId); err != nil {
 		return
 	}
-
 	// PartnerItems : array : Item
 	for ndx := 0; ndx < len(s.PartnerItems); ndx++ {
 		if err = s.PartnerItems[ndx].Serialize(writer); err != nil {
@@ -2968,7 +2773,6 @@ func (s *TradeItemData) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.YourPlayerId); err != nil {
 		return
 	}
-
 	// YourItems : array : Item
 	for ndx := 0; ndx < len(s.YourItems); ndx++ {
 		if err = s.YourItems[ndx].Serialize(writer); err != nil {
@@ -3037,27 +2841,22 @@ func (s *NpcKilledData) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.KillerId); err != nil {
 		return
 	}
-
 	// KillerDirection : field : Direction
 	if err = writer.AddChar(int(s.KillerDirection)); err != nil {
 		return
 	}
-
 	// NpcIndex : field : short
 	if err = writer.AddShort(s.NpcIndex); err != nil {
 		return
 	}
-
 	// DropIndex : field : short
 	if err = writer.AddShort(s.DropIndex); err != nil {
 		return
 	}
-
 	// DropId : field : short
 	if err = writer.AddShort(s.DropId); err != nil {
 		return
 	}
-
 	// DropCoords : field : Coords
 	if err = s.DropCoords.Serialize(writer); err != nil {
 		return
@@ -3066,12 +2865,10 @@ func (s *NpcKilledData) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.DropAmount); err != nil {
 		return
 	}
-
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3119,32 +2916,26 @@ func (s *LevelUpStats) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// StatPoints : field : short
 	if err = writer.AddShort(s.StatPoints); err != nil {
 		return
 	}
-
 	// SkillPoints : field : short
 	if err = writer.AddShort(s.SkillPoints); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// MaxSp : field : short
 	if err = writer.AddShort(s.MaxSp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3183,7 +2974,6 @@ func (s *NpcUpdatePosition) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NpcIndex); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -3192,7 +2982,6 @@ func (s *NpcUpdatePosition) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3230,32 +3019,26 @@ func (s *NpcUpdateAttack) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NpcIndex); err != nil {
 		return
 	}
-
 	// Killed : field : PlayerKilledState
 	if err = writer.AddChar(int(s.Killed)); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	// PlayerId : field : short
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3294,17 +3077,14 @@ func (s *NpcUpdateChat) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.NpcIndex); err != nil {
 		return
 	}
-
 	// MessageLength : length : char
 	if err = writer.AddChar(s.MessageLength); err != nil {
 		return
 	}
-
 	// Message : field : string
 	if err = writer.AddFixedString(s.Message, s.MessageLength); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3342,29 +3122,24 @@ func (s *QuestProgressEntry) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Description : field : string
 	if err = writer.AddString(s.Description); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Icon : field : QuestRequirementIcon
 	if err = writer.AddShort(int(s.Icon)); err != nil {
 		return
 	}
-
 	// Progress : field : short
 	if err = writer.AddShort(s.Progress); err != nil {
 		return
 	}
-
 	// Target : field : short
 	if err = writer.AddShort(s.Target); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -3415,12 +3190,10 @@ func (s *DialogQuestEntry) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.QuestId); err != nil {
 		return
 	}
-
 	// QuestName : field : string
 	if err = writer.AddString(s.QuestName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3461,7 +3234,6 @@ func (s *EntryTypeDataLink) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.LinkId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3483,7 +3255,6 @@ func (s *DialogEntry) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.EntryType)); err != nil {
 		return
 	}
-
 	switch s.EntryType {
 	case DialogEntry_Link:
 		switch s.EntryTypeData.(type) {
@@ -3500,7 +3271,6 @@ func (s *DialogEntry) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Line); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3540,17 +3310,14 @@ func (s *MapDrainDamageOther) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Damage : field : short
 	if err = writer.AddShort(s.Damage); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3583,13 +3350,11 @@ func (s *GlobalBackfillMessage) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }

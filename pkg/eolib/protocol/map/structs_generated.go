@@ -30,22 +30,18 @@ func (s *MapNpc) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// SpawnType : field : char
 	if err = writer.AddChar(s.SpawnType); err != nil {
 		return
 	}
-
 	// SpawnTime : field : short
 	if err = writer.AddShort(s.SpawnTime); err != nil {
 		return
 	}
-
 	// Amount : field : char
 	if err = writer.AddChar(s.Amount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -87,7 +83,6 @@ func (s *MapLegacyDoorKey) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Key); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -127,27 +122,22 @@ func (s *MapItem) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Key); err != nil {
 		return
 	}
-
 	// ChestSlot : field : char
 	if err = writer.AddChar(s.ChestSlot); err != nil {
 		return
 	}
-
 	// ItemId : field : short
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	// SpawnTime : field : short
 	if err = writer.AddShort(s.SpawnTime); err != nil {
 		return
 	}
-
 	// Amount : field : three
 	if err = writer.AddThree(s.Amount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -189,7 +179,6 @@ func (s *MapWarp) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.DestinationMap); err != nil {
 		return
 	}
-
 	// DestinationCoords : field : Coords
 	if err = s.DestinationCoords.Serialize(writer); err != nil {
 		return
@@ -198,12 +187,10 @@ func (s *MapWarp) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.LevelRequired); err != nil {
 		return
 	}
-
 	// Door : field : short
 	if err = writer.AddShort(s.Door); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -245,17 +232,14 @@ func (s *MapSign) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.StringDataLength); err != nil {
 		return
 	}
-
 	// StringData : field : encoded_string
 	if err = writer.AddFixedEncodedString(s.StringData, s.StringDataLength); err != nil {
 		return
 	}
-
 	// TitleLength : field : char
 	if err = writer.AddChar(s.TitleLength); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -294,12 +278,10 @@ func (s *MapTileSpecRowTile) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.X); err != nil {
 		return
 	}
-
 	// TileSpec : field : MapTileSpec
 	if err = writer.AddChar(int(s.TileSpec)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -330,12 +312,10 @@ func (s *MapTileSpecRow) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Y); err != nil {
 		return
 	}
-
 	// TilesCount : length : char
 	if err = writer.AddChar(s.TilesCount); err != nil {
 		return
 	}
-
 	// Tiles : array : MapTileSpecRowTile
 	for ndx := 0; ndx < s.TilesCount; ndx++ {
 		if err = s.Tiles[ndx].Serialize(writer); err != nil {
@@ -379,7 +359,6 @@ func (s *MapWarpRowTile) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.X); err != nil {
 		return
 	}
-
 	// Warp : field : MapWarp
 	if err = s.Warp.Serialize(writer); err != nil {
 		return
@@ -416,12 +395,10 @@ func (s *MapWarpRow) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Y); err != nil {
 		return
 	}
-
 	// TilesCount : length : char
 	if err = writer.AddChar(s.TilesCount); err != nil {
 		return
 	}
-
 	// Tiles : array : MapWarpRowTile
 	for ndx := 0; ndx < s.TilesCount; ndx++ {
 		if err = s.Tiles[ndx].Serialize(writer); err != nil {
@@ -465,12 +442,10 @@ func (s *MapGraphicRowTile) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.X); err != nil {
 		return
 	}
-
 	// Graphic : field : short
 	if err = writer.AddShort(s.Graphic); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -501,12 +476,10 @@ func (s *MapGraphicRow) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Y); err != nil {
 		return
 	}
-
 	// TilesCount : length : char
 	if err = writer.AddChar(s.TilesCount); err != nil {
 		return
 	}
-
 	// Tiles : array : MapGraphicRowTile
 	for ndx := 0; ndx < s.TilesCount; ndx++ {
 		if err = s.Tiles[ndx].Serialize(writer); err != nil {
@@ -550,7 +523,6 @@ func (s *MapGraphicLayer) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.GraphicRowsCount); err != nil {
 		return
 	}
-
 	// GraphicRows : array : MapGraphicRow
 	for ndx := 0; ndx < s.GraphicRowsCount; ndx++ {
 		if err = s.GraphicRows[ndx].Serialize(writer); err != nil {
@@ -618,60 +590,49 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddFixedString("EMF", 3); err != nil {
 		return
 	}
-
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// Name : field : encoded_string
 	if err = writer.AddPaddedEncodedString(s.Name, 24); err != nil {
 		return
 	}
-
 	// Type : field : MapType
 	if err = writer.AddChar(int(s.Type)); err != nil {
 		return
 	}
-
 	// TimedEffect : field : MapTimedEffect
 	if err = writer.AddChar(int(s.TimedEffect)); err != nil {
 		return
 	}
-
 	// MusicId : field : char
 	if err = writer.AddChar(s.MusicId); err != nil {
 		return
 	}
-
 	// MusicControl : field : MapMusicControl
 	if err = writer.AddChar(int(s.MusicControl)); err != nil {
 		return
 	}
-
 	// AmbientSoundId : field : short
 	if err = writer.AddShort(s.AmbientSoundId); err != nil {
 		return
 	}
-
 	// Width : field : char
 	if err = writer.AddChar(s.Width); err != nil {
 		return
 	}
-
 	// Height : field : char
 	if err = writer.AddChar(s.Height); err != nil {
 		return
 	}
-
 	// FillTile : field : short
 	if err = writer.AddShort(s.FillTile); err != nil {
 		return
 	}
-
 	// MapAvailable : field : bool
 	if s.MapAvailable {
 		err = writer.AddChar(1)
@@ -696,22 +657,18 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.RelogX); err != nil {
 		return
 	}
-
 	// RelogY : field : char
 	if err = writer.AddChar(s.RelogY); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	// NpcsCount : length : char
 	if err = writer.AddChar(s.NpcsCount); err != nil {
 		return
 	}
-
 	// Npcs : array : MapNpc
 	for ndx := 0; ndx < s.NpcsCount; ndx++ {
 		if err = s.Npcs[ndx].Serialize(writer); err != nil {
@@ -723,7 +680,6 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.LegacyDoorKeysCount); err != nil {
 		return
 	}
-
 	// LegacyDoorKeys : array : MapLegacyDoorKey
 	for ndx := 0; ndx < s.LegacyDoorKeysCount; ndx++ {
 		if err = s.LegacyDoorKeys[ndx].Serialize(writer); err != nil {
@@ -735,7 +691,6 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.ItemsCount); err != nil {
 		return
 	}
-
 	// Items : array : MapItem
 	for ndx := 0; ndx < s.ItemsCount; ndx++ {
 		if err = s.Items[ndx].Serialize(writer); err != nil {
@@ -747,7 +702,6 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.TileSpecRowsCount); err != nil {
 		return
 	}
-
 	// TileSpecRows : array : MapTileSpecRow
 	for ndx := 0; ndx < s.TileSpecRowsCount; ndx++ {
 		if err = s.TileSpecRows[ndx].Serialize(writer); err != nil {
@@ -759,7 +713,6 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.WarpRowsCount); err != nil {
 		return
 	}
-
 	// WarpRows : array : MapWarpRow
 	for ndx := 0; ndx < s.WarpRowsCount; ndx++ {
 		if err = s.WarpRows[ndx].Serialize(writer); err != nil {
@@ -778,7 +731,6 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.SignsCount); err != nil {
 		return
 	}
-
 	// Signs : array : MapSign
 	for ndx := 0; ndx < s.SignsCount; ndx++ {
 		if err = s.Signs[ndx].Serialize(writer); err != nil {

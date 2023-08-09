@@ -697,10 +697,10 @@ func writeAddTypeForSerialize(output *strings.Builder, instructionName string, i
 		instructionName = "int(" + instructionName + ")"
 	}
 
-	output.WriteString(fmt.Sprintf("\t\tif err = writer.Add%s(%s); err != nil {\n\t\t\treturn\n\t\t}\n\n", methodType, instructionName))
+	output.WriteString(fmt.Sprintf("\t\tif err = writer.Add%s(%s); err != nil {\n\t\t\treturn\n\t\t}\n", methodType, instructionName))
 
 	if optional {
-		output.WriteString("\t}\n\n")
+		output.WriteString("\t}\n")
 	}
 }
 
@@ -777,10 +777,10 @@ func writeAddStringTypeForSerialize(output *strings.Builder, instructionName str
 		instructionName = "*" + instructionName
 	}
 
-	output.WriteString(fmt.Sprintf("\t\tif err = writer.Add%s(%s); err != nil {\n\t\t\treturn\n\t\t}\n\n", methodType, instructionName))
+	output.WriteString(fmt.Sprintf("\t\tif err = writer.Add%s(%s); err != nil {\n\t\t\treturn\n\t\t}\n", methodType, instructionName))
 
 	if optional {
-		output.WriteString("\t}\n\n")
+		output.WriteString("\t}\n")
 	}
 }
 

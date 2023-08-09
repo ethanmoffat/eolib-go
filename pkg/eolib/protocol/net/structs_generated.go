@@ -23,17 +23,14 @@ func (s *Version) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Major); err != nil {
 		return
 	}
-
 	// Minor : field : char
 	if err = writer.AddChar(s.Minor); err != nil {
 		return
 	}
-
 	// Patch : field : char
 	if err = writer.AddChar(s.Patch); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -65,12 +62,10 @@ func (s *Weight) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Current); err != nil {
 		return
 	}
-
 	// Max : field : char
 	if err = writer.AddChar(s.Max); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -100,12 +95,10 @@ func (s *Item) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// Amount : field : int
 	if err = writer.AddInt(s.Amount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -135,12 +128,10 @@ func (s *ThreeItem) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// Amount : field : three
 	if err = writer.AddThree(s.Amount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -170,12 +161,10 @@ func (s *CharItem) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// Amount : field : char
 	if err = writer.AddChar(s.Amount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -205,12 +194,10 @@ func (s *Spell) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.Id); err != nil {
 		return
 	}
-
 	// Level : field : short
 	if err = writer.AddShort(s.Level); err != nil {
 		return
 	}
-
 	return
 }
 
