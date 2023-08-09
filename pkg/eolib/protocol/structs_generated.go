@@ -22,12 +22,10 @@ func (s *Coords) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.X); err != nil {
 		return
 	}
-
 	// Y : field : char
 	if err = writer.AddChar(s.Y); err != nil {
 		return
 	}
-
 	return
 }
 

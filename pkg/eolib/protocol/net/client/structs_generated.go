@@ -23,12 +23,10 @@ func (s *ByteCoords) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(s.X); err != nil {
 		return
 	}
-
 	// Y : field : byte
 	if err = writer.AddByte(s.Y); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -59,12 +57,10 @@ func (s *WalkAction) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	// Timestamp : field : three
 	if err = writer.AddThree(s.Timestamp); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return

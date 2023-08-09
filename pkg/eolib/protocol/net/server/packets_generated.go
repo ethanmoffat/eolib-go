@@ -65,32 +65,26 @@ func (s *InitInitReplyCodeDataOk) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(s.Seq1); err != nil {
 		return
 	}
-
 	// Seq2 : field : byte
 	if err = writer.AddByte(s.Seq2); err != nil {
 		return
 	}
-
 	// ServerEncryptionMultiple : field : byte
 	if err = writer.AddByte(s.ServerEncryptionMultiple); err != nil {
 		return
 	}
-
 	// ClientEncryptionMultiple : field : byte
 	if err = writer.AddByte(s.ClientEncryptionMultiple); err != nil {
 		return
 	}
-
 	// PlayerId : field : short
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// ChallengeResponse : field : three
 	if err = writer.AddThree(s.ChallengeResponse); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -136,7 +130,6 @@ func (s *InitInitBanTypeData0) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(s.MinutesRemaining); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -162,7 +155,6 @@ func (s *InitInitBanTypeDataTemporary) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddByte(s.MinutesRemaining); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -184,7 +176,6 @@ func (s *InitInitReplyCodeDataBanned) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddByte(int(s.BanType)); err != nil {
 		return
 	}
-
 	switch s.BanType {
 	case 0:
 		switch s.BanTypeData.(type) {
@@ -499,7 +490,6 @@ func (s *InitInitServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case InitReply_OutOfDate:
 		switch s.ReplyCodeData.(type) {
@@ -1051,12 +1041,10 @@ func (s *ConnectionPlayerServerPacket) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddShort(s.Seq1); err != nil {
 		return
 	}
-
 	// Seq2 : field : char
 	if err = writer.AddChar(s.Seq2); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1093,7 +1081,6 @@ func (s *AccountReplyReplyCodeDataExists) Serialize(writer *data.EoWriter) (err 
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1120,7 +1107,6 @@ func (s *AccountReplyReplyCodeDataNotApproved) Serialize(writer *data.EoWriter) 
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1147,7 +1133,6 @@ func (s *AccountReplyReplyCodeDataCreated) Serialize(writer *data.EoWriter) (err
 	if err = writer.AddString("GO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1174,7 +1159,6 @@ func (s *AccountReplyReplyCodeDataChangeFailed) Serialize(writer *data.EoWriter)
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1201,7 +1185,6 @@ func (s *AccountReplyReplyCodeDataChanged) Serialize(writer *data.EoWriter) (err
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1228,7 +1211,6 @@ func (s *AccountReplyReplyCodeDataRequestDenied) Serialize(writer *data.EoWriter
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1257,12 +1239,10 @@ func (s *AccountReplyReplyCodeDataDefault) Serialize(writer *data.EoWriter) (err
 	if err = writer.AddChar(s.SequenceStart); err != nil {
 		return
 	}
-
 	//  : field : string
 	if err = writer.AddString("OK"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1296,7 +1276,6 @@ func (s *AccountReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case AccountReply_Exists:
 		switch s.ReplyCodeData.(type) {
@@ -1440,7 +1419,6 @@ func (s *CharacterReplyReplyCodeDataExists) Serialize(writer *data.EoWriter) (er
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1467,7 +1445,6 @@ func (s *CharacterReplyReplyCodeDataFull) Serialize(writer *data.EoWriter) (err 
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1494,7 +1471,6 @@ func (s *CharacterReplyReplyCodeDataFull3) Serialize(writer *data.EoWriter) (err
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1521,7 +1497,6 @@ func (s *CharacterReplyReplyCodeDataNotApproved) Serialize(writer *data.EoWriter
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1551,12 +1526,10 @@ func (s *CharacterReplyReplyCodeDataOk) Serialize(writer *data.EoWriter) (err er
 	if err = writer.AddChar(s.CharactersCount); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Characters : array : CharacterSelectionListEntry
 	for ndx := 0; ndx < s.CharactersCount; ndx++ {
@@ -1604,7 +1577,6 @@ func (s *CharacterReplyReplyCodeDataDeleted) Serialize(writer *data.EoWriter) (e
 	if err = writer.AddChar(s.CharactersCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Characters : array : CharacterSelectionListEntry
 	for ndx := 0; ndx < s.CharactersCount; ndx++ {
@@ -1649,7 +1621,6 @@ func (s *CharacterReplyReplyCodeDataDefault) Serialize(writer *data.EoWriter) (e
 	if err = writer.AddString("OK"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1682,7 +1653,6 @@ func (s *CharacterReplyServerPacket) Serialize(writer *data.EoWriter) (err error
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case CharacterReply_Exists:
 		switch s.ReplyCodeData.(type) {
@@ -1830,12 +1800,10 @@ func (s *CharacterPlayerServerPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	// CharacterId : field : int
 	if err = writer.AddInt(s.CharacterId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1872,7 +1840,6 @@ func (s *LoginReplyReplyCodeDataWrongUser) Serialize(writer *data.EoWriter) (err
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1899,7 +1866,6 @@ func (s *LoginReplyReplyCodeDataWrongUserPassword) Serialize(writer *data.EoWrit
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -1929,12 +1895,10 @@ func (s *LoginReplyReplyCodeDataOk) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddChar(s.CharactersCount); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Characters : array : CharacterSelectionListEntry
 	for ndx := 0; ndx < s.CharactersCount; ndx++ {
@@ -1980,7 +1944,6 @@ func (s *LoginReplyReplyCodeDataBanned) Serialize(writer *data.EoWriter) (err er
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2007,7 +1970,6 @@ func (s *LoginReplyReplyCodeDataLoggedIn) Serialize(writer *data.EoWriter) (err 
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2034,7 +1996,6 @@ func (s *LoginReplyReplyCodeDataBusy) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddString("NO"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2067,7 +2028,6 @@ func (s *LoginReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case LoginReply_WrongUser:
 		switch s.ReplyCodeData.(type) {
@@ -2227,136 +2187,113 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	// CharacterId : field : int
 	if err = writer.AddInt(s.CharacterId); err != nil {
 		return
 	}
-
 	// MapId : field : short
 	if err = writer.AddShort(s.MapId); err != nil {
 		return
 	}
-
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.MapRid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// MapFileSize : field : three
 	if err = writer.AddThree(s.MapFileSize); err != nil {
 		return
 	}
-
 	// EifRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.EifRid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// EifLength : field : short
 	if err = writer.AddShort(s.EifLength); err != nil {
 		return
 	}
-
 	// EnfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.EnfRid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// EnfLength : field : short
 	if err = writer.AddShort(s.EnfLength); err != nil {
 		return
 	}
-
 	// EsfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.EsfRid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// EsfLength : field : short
 	if err = writer.AddShort(s.EsfLength); err != nil {
 		return
 	}
-
 	// EcfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
 		if err = writer.AddShort(s.EcfRid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// EcfLength : field : short
 	if err = writer.AddShort(s.EcfLength); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Title : field : string
 	if err = writer.AddString(s.Title); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildName : field : string
 	if err = writer.AddString(s.GuildName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildRankName : field : string
 	if err = writer.AddString(s.GuildRankName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// ClassId : field : char
 	if err = writer.AddChar(s.ClassId); err != nil {
 		return
 	}
-
 	// GuildTag : field : string
 	if err = writer.AddFixedString(s.GuildTag, 3); err != nil {
 		return
 	}
-
 	// Admin : field : AdminLevel
 	if err = writer.AddChar(int(s.Admin)); err != nil {
 		return
 	}
-
 	// Level : field : char
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// Experience : field : int
 	if err = writer.AddInt(s.Experience); err != nil {
 		return
 	}
-
 	// Usage : field : int
 	if err = writer.AddInt(s.Usage); err != nil {
 		return
 	}
-
 	// Stats : field : CharacterStatsWelcome
 	if err = s.Stats.Serialize(writer); err != nil {
 		return
@@ -2369,7 +2306,6 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	if err = writer.AddChar(s.GuildRank); err != nil {
 		return
 	}
-
 	// Settings : field : ServerSettings
 	if err = s.Settings.Serialize(writer); err != nil {
 		return
@@ -2378,7 +2314,6 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	if err = writer.AddChar(int(s.LoginMessageCode)); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	return
 }
@@ -2395,6 +2330,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.MapId = reader.GetShort()
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.MapRid = append(s.MapRid, 0)
 		s.MapRid[ndx] = reader.GetShort()
 	}
 
@@ -2402,6 +2338,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.MapFileSize = reader.GetThree()
 	// EifRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EifRid = append(s.EifRid, 0)
 		s.EifRid[ndx] = reader.GetShort()
 	}
 
@@ -2409,6 +2346,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.EifLength = reader.GetShort()
 	// EnfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EnfRid = append(s.EnfRid, 0)
 		s.EnfRid[ndx] = reader.GetShort()
 	}
 
@@ -2416,6 +2354,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.EnfLength = reader.GetShort()
 	// EsfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EsfRid = append(s.EsfRid, 0)
 		s.EsfRid[ndx] = reader.GetShort()
 	}
 
@@ -2423,6 +2362,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	s.EsfLength = reader.GetShort()
 	// EcfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.EcfRid = append(s.EcfRid, 0)
 		s.EcfRid[ndx] = reader.GetShort()
 	}
 
@@ -2516,7 +2456,6 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Serialize(writer *data.EoWriter) 
 		if err = writer.AddString(s.News[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -2556,6 +2495,7 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 	}
 	// News : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.News = append(s.News, "")
 		if s.News[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -2612,7 +2552,6 @@ func (s *WelcomeReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(int(s.WelcomeCode)); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = true
 	switch s.WelcomeCode {
 	case WelcomeCode_SelectCharacter:
@@ -2687,13 +2626,11 @@ func (s *AdminInteractReplyMessageTypeDataMessage) Serialize(writer *data.EoWrit
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	return
 }
@@ -2736,19 +2673,16 @@ func (s *AdminInteractReplyMessageTypeDataReport) Serialize(writer *data.EoWrite
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// ReporteeName : field : string
 	if err = writer.AddString(s.ReporteeName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	return
 }
@@ -2802,7 +2736,6 @@ func (s *AdminInteractReplyServerPacket) Serialize(writer *data.EoWriter) (err e
 	if err = writer.AddChar(int(s.MessageType)); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	switch s.MessageType {
 	case AdminMessage_Message:
@@ -2878,7 +2811,6 @@ func (s *AdminInteractRemoveServerPacket) Serialize(writer *data.EoWriter) (err 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2913,7 +2845,6 @@ func (s *AdminInteractAgreeServerPacket) Serialize(writer *data.EoWriter) (err e
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -2953,19 +2884,16 @@ func (s *AdminInteractListServerPacket) Serialize(writer *data.EoWriter) (err er
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Usage : field : int
 	if err = writer.AddInt(s.Usage); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GoldBank : field : int
 	if err = writer.AddInt(s.GoldBank); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Inventory : array : Item
 	for ndx := 0; ndx < len(s.Inventory); ndx++ {
@@ -3062,30 +2990,25 @@ func (s *AdminInteractTellServerPacket) Serialize(writer *data.EoWriter) (err er
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Usage : field : int
 	if err = writer.AddInt(s.Usage); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	writer.AddByte(0xFF)
 	// Exp : field : int
 	if err = writer.AddInt(s.Exp); err != nil {
 		return
 	}
-
 	// Level : field : char
 	if err = writer.AddChar(s.Level); err != nil {
 		return
 	}
-
 	// MapId : field : short
 	if err = writer.AddShort(s.MapId); err != nil {
 		return
 	}
-
 	// MapCoords : field : BigCoords
 	if err = s.MapCoords.Serialize(writer); err != nil {
 		return
@@ -3169,13 +3092,11 @@ func (s *TalkRequestServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -3225,12 +3146,10 @@ func (s *TalkOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3271,13 +3190,11 @@ func (s *TalkMsgServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -3328,13 +3245,11 @@ func (s *TalkTellServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -3384,12 +3299,10 @@ func (s *TalkPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3429,12 +3342,10 @@ func (s *TalkReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3475,13 +3386,11 @@ func (s *TalkAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -3532,13 +3441,11 @@ func (s *TalkAnnounceServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -3587,7 +3494,6 @@ func (s *TalkServerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3675,7 +3581,6 @@ func (s *MessageOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3711,7 +3616,6 @@ func (s *MessageCloseServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddString("r"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3750,7 +3654,6 @@ func (s *MessageAcceptServerPacket) Serialize(writer *data.EoWriter) (err error)
 		if err = writer.AddString(s.Messages[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -3765,6 +3668,7 @@ func (s *MessageAcceptServerPacket) Deserialize(reader *data.EoReader) (err erro
 	reader.SetIsChunked(true)
 	// Messages : array : string
 	for ndx := 0; ndx < 4; ndx++ {
+		s.Messages = append(s.Messages, "")
 		if s.Messages[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -3800,7 +3704,6 @@ func (s *TalkSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.AdminName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3838,12 +3741,10 @@ func (s *AttackPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3879,7 +3780,6 @@ func (s *AttackErrorServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -3919,27 +3819,22 @@ func (s *AvatarReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// VictimId : field : short
 	if err = writer.AddShort(s.VictimId); err != nil {
 		return
 	}
-
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Dead : field : bool
 	if s.Dead {
 		err = writer.AddChar(1)
@@ -4000,7 +3895,6 @@ func (s *ChairPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4009,7 +3903,6 @@ func (s *ChairPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4052,7 +3945,6 @@ func (s *ChairReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4061,7 +3953,6 @@ func (s *ChairReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4103,7 +3994,6 @@ func (s *ChairCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4147,7 +4037,6 @@ func (s *ChairRemoveServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4192,7 +4081,6 @@ func (s *SitPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4201,12 +4089,10 @@ func (s *SitPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4250,7 +4136,6 @@ func (s *SitCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4294,7 +4179,6 @@ func (s *SitRemoveServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4339,7 +4223,6 @@ func (s *SitReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4348,12 +4231,10 @@ func (s *SitReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4397,12 +4278,10 @@ func (s *EmotePlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Emote : field : Emote
 	if err = writer.AddChar(int(s.Emote)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4440,12 +4319,10 @@ func (s *EffectPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// EffectId : field : three
 	if err = writer.AddThree(s.EffectId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4483,12 +4360,10 @@ func (s *FacePlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4507,7 +4382,7 @@ func (s *FacePlayerServerPacket) Deserialize(reader *data.EoReader) (err error) 
 // AvatarRemoveServerPacket :: Nearby player has disappeared from view.
 type AvatarRemoveServerPacket struct {
 	PlayerId   int
-	WarpEffect WarpEffect
+	WarpEffect *WarpEffect
 }
 
 func (s AvatarRemoveServerPacket) Family() net.PacketFamily {
@@ -4526,12 +4401,12 @@ func (s *AvatarRemoveServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// WarpEffect : field : WarpEffect
-	if err = writer.AddChar(int(s.WarpEffect)); err != nil {
-		return
+	if s.WarpEffect != nil {
+		if err = writer.AddChar(int(*s.WarpEffect)); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -4542,7 +4417,10 @@ func (s *AvatarRemoveServerPacket) Deserialize(reader *data.EoReader) (err error
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
 	// WarpEffect : field : WarpEffect
-	s.WarpEffect = WarpEffect(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.WarpEffect = new(WarpEffect)
+		*s.WarpEffect = WarpEffect(reader.GetChar())
+	}
 
 	return
 }
@@ -4604,7 +4482,6 @@ func (s *PlayersRemoveServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4676,7 +4553,6 @@ func (s *NpcAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.NpcsCount); err != nil {
 		return
 	}
-
 	// Npcs : array : NpcMapInfo
 	for ndx := 0; ndx < s.NpcsCount; ndx++ {
 		if err = s.Npcs[ndx].Serialize(writer); err != nil {
@@ -4727,12 +4603,10 @@ func (s *WalkPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -4781,7 +4655,6 @@ func (s *WalkReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddShort(s.PlayerIds[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	writer.AddByte(0xFF)
@@ -4790,7 +4663,6 @@ func (s *WalkReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddChar(s.NpcIndexes[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	writer.AddByte(0xFF)
@@ -4812,6 +4684,7 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	reader.SetIsChunked(true)
 	// PlayerIds : array : short
 	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
+		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}
 
@@ -4820,6 +4693,7 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// NpcIndexes : array : char
 	for ndx := 0; ndx < reader.Remaining()/1; ndx++ {
+		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}
 
@@ -4859,7 +4733,6 @@ func (s *WalkCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString("S"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4895,7 +4768,6 @@ func (s *WalkOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString("S"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4934,17 +4806,14 @@ func (s *BankOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldBank); err != nil {
 		return
 	}
-
 	// SessionId : field : three
 	if err = writer.AddThree(s.SessionId); err != nil {
 		return
 	}
-
 	// LockerUpgrades : field : char
 	if err = writer.AddChar(s.LockerUpgrades); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -4984,12 +4853,10 @@ func (s *BankReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldInventory); err != nil {
 		return
 	}
-
 	// GoldBank : field : int
 	if err = writer.AddInt(s.GoldBank); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5027,7 +4894,6 @@ func (s *BarberAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	// Change : field : AvatarChange
 	if err = s.Change.Serialize(writer); err != nil {
 		return
@@ -5070,7 +4936,6 @@ func (s *BarberOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5277,12 +5142,10 @@ func (s *LockerBuyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	// LockerUpgrades : field : char
 	if err = writer.AddChar(s.LockerUpgrades); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5319,7 +5182,6 @@ func (s *LockerSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.LockerMaxItems); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5354,7 +5216,6 @@ func (s *CitizenReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddChar(s.QuestionsWrong); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5389,7 +5250,6 @@ func (s *CitizenRemoveServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddChar(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5428,17 +5288,14 @@ func (s *CitizenOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddThree(s.BehaviorId); err != nil {
 		return
 	}
-
 	// CurrentHomeId : field : char
 	if err = writer.AddChar(s.CurrentHomeId); err != nil {
 		return
 	}
-
 	// SessionId : field : short
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Questions : array : string
 	for ndx := 0; ndx < 3; ndx++ {
@@ -5449,7 +5306,6 @@ func (s *CitizenOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddString(s.Questions[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	writer.SanitizeStrings = false
@@ -5472,6 +5328,7 @@ func (s *CitizenOpenServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 	// Questions : array : string
 	for ndx := 0; ndx < 3; ndx++ {
+		s.Questions = append(s.Questions, "")
 		if s.Questions[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -5509,7 +5366,6 @@ func (s *CitizenRequestServerPacket) Serialize(writer *data.EoWriter) (err error
 	if err = writer.AddInt(s.Cost); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5544,7 +5400,6 @@ func (s *CitizenAcceptServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5581,7 +5436,6 @@ func (s *ShopCreateServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.CraftItemId); err != nil {
 		return
 	}
-
 	// Weight : field : Weight
 	if err = s.Weight.Serialize(writer); err != nil {
 		return
@@ -5640,7 +5494,6 @@ func (s *ShopBuyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	// BoughtItem : field : Item
 	if err = s.BoughtItem.Serialize(writer); err != nil {
 		return
@@ -5697,7 +5550,6 @@ func (s *ShopSellServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	// Weight : field : Weight
 	if err = s.Weight.Serialize(writer); err != nil {
 		return
@@ -5748,12 +5600,10 @@ func (s *ShopOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	// ShopName : field : string
 	if err = writer.AddString(s.ShopName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// TradeItems : array : ShopTradeItem
 	for ndx := 0; ndx < len(s.TradeItems); ndx++ {
@@ -5841,12 +5691,10 @@ func (s *StatSkillOpenServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	// ShopName : field : string
 	if err = writer.AddString(s.ShopName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Skills : array : SkillLearn
 	for ndx := 0; ndx < len(s.Skills); ndx++ {
@@ -5909,7 +5757,6 @@ func (s *StatSkillReplyReplyCodeDataWrongClass) Serialize(writer *data.EoWriter)
 	if err = writer.AddChar(s.ClassId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -5939,7 +5786,6 @@ func (s *StatSkillReplyServerPacket) Serialize(writer *data.EoWriter) (err error
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case SkillMasterReply_WrongClass:
 		switch s.ReplyCodeData.(type) {
@@ -5994,12 +5840,10 @@ func (s *StatSkillTakeServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// GoldAmount : field : int
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6036,7 +5880,6 @@ func (s *StatSkillRemoveServerPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6072,7 +5915,6 @@ func (s *StatSkillPlayerServerPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.StatPoints); err != nil {
 		return
 	}
-
 	// Stats : field : CharacterStatsUpdate
 	if err = s.Stats.Serialize(writer); err != nil {
 		return
@@ -6116,7 +5958,6 @@ func (s *StatSkillAcceptServerPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.SkillPoints); err != nil {
 		return
 	}
-
 	// Spell : field : Spell
 	if err = s.Spell.Serialize(writer); err != nil {
 		return
@@ -6200,17 +6041,14 @@ func (s *ItemReplyItemTypeDataHeal) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddInt(s.HpGain); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6240,7 +6078,6 @@ func (s *ItemReplyItemTypeDataHairDye) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddChar(s.HairColor); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6266,7 +6103,6 @@ func (s *ItemReplyItemTypeDataEffectPotion) Serialize(writer *data.EoWriter) (er
 	if err = writer.AddShort(s.EffectId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6325,37 +6161,30 @@ func (s *ItemReplyItemTypeDataExpReward) Serialize(writer *data.EoWriter) (err e
 	if err = writer.AddInt(s.Experience); err != nil {
 		return
 	}
-
 	// LevelUp : field : char
 	if err = writer.AddChar(s.LevelUp); err != nil {
 		return
 	}
-
 	// StatPoints : field : short
 	if err = writer.AddShort(s.StatPoints); err != nil {
 		return
 	}
-
 	// SkillPoints : field : short
 	if err = writer.AddShort(s.SkillPoints); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// MaxSp : field : short
 	if err = writer.AddShort(s.MaxSp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6397,7 +6226,6 @@ func (s *ItemReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.ItemType)); err != nil {
 		return
 	}
-
 	// UsedItem : field : Item
 	if err = s.UsedItem.Serialize(writer); err != nil {
 		return
@@ -6535,12 +6363,10 @@ func (s *ItemDropServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.RemainingAmount); err != nil {
 		return
 	}
-
 	// ItemIndex : field : short
 	if err = writer.AddShort(s.ItemIndex); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -6600,17 +6426,14 @@ func (s *ItemAddServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	// ItemIndex : field : short
 	if err = writer.AddShort(s.ItemIndex); err != nil {
 		return
 	}
-
 	// ItemAmount : field : three
 	if err = writer.AddThree(s.ItemAmount); err != nil {
 		return
 	}
-
 	// Coords : field : Coords
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
@@ -6657,7 +6480,6 @@ func (s *ItemRemoveServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.ItemIndex); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6698,7 +6520,6 @@ func (s *ItemJunkServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.RemainingAmount); err != nil {
 		return
 	}
-
 	// Weight : field : Weight
 	if err = s.Weight.Serialize(writer); err != nil {
 		return
@@ -6747,7 +6568,6 @@ func (s *ItemGetServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.TakenItemIndex); err != nil {
 		return
 	}
-
 	// TakenItem : field : ThreeItem
 	if err = s.TakenItem.Serialize(writer); err != nil {
 		return
@@ -6803,7 +6623,6 @@ func (s *ItemObtainServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.CurrentWeight); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6847,7 +6666,6 @@ func (s *ItemKickServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.CurrentWeight); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6886,7 +6704,6 @@ func (s *ItemAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6920,7 +6737,6 @@ func (s *ItemSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(2); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -6957,12 +6773,10 @@ func (s *BoardPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PostId); err != nil {
 		return
 	}
-
 	// PostBody : field : string
 	if err = writer.AddString(s.PostBody); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -7008,12 +6822,10 @@ func (s *BoardOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.BoardId); err != nil {
 		return
 	}
-
 	// PostsCount : length : char
 	if err = writer.AddChar(s.PostsCount); err != nil {
 		return
 	}
-
 	// Posts : array : BoardPostListing
 	for ndx := 0; ndx < s.PostsCount; ndx++ {
 		if err = s.Posts[ndx].Serialize(writer); err != nil {
@@ -7072,7 +6884,6 @@ func (s *JukeboxAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7106,7 +6917,6 @@ func (s *JukeboxReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(1); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7142,12 +6952,10 @@ func (s *JukeboxOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.MapId); err != nil {
 		return
 	}
-
 	// JukeboxPlayer : field : string
 	if err = writer.AddString(s.JukeboxPlayer); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7189,22 +6997,18 @@ func (s *JukeboxMsgServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	// InstrumentId : field : char
 	if err = writer.AddChar(s.InstrumentId); err != nil {
 		return
 	}
-
 	// NoteId : field : char
 	if err = writer.AddChar(s.NoteId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7245,7 +7049,6 @@ func (s *JukeboxPlayerServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddChar(s.MfxId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7280,7 +7083,6 @@ func (s *JukeboxUseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.TrackId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7320,14 +7122,12 @@ func (s *WarpRequestWarpTypeDataMapSwitch) Serialize(writer *data.EoWriter) (err
 		if err = writer.AddShort(s.MapRid[ndx]); err != nil {
 			return
 		}
-
 	}
 
 	// MapFileSize : field : three
 	if err = writer.AddThree(s.MapFileSize); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7337,6 +7137,7 @@ func (s *WarpRequestWarpTypeDataMapSwitch) Deserialize(reader *data.EoReader) (e
 
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		s.MapRid = append(s.MapRid, 0)
 		s.MapRid[ndx] = reader.GetShort()
 	}
 
@@ -7362,12 +7163,10 @@ func (s *WarpRequestServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.WarpType)); err != nil {
 		return
 	}
-
 	// MapId : field : short
 	if err = writer.AddShort(s.MapId); err != nil {
 		return
 	}
-
 	switch s.WarpType {
 	case Warp_MapSwitch:
 		switch s.WarpTypeData.(type) {
@@ -7384,7 +7183,6 @@ func (s *WarpRequestServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7433,12 +7231,10 @@ func (s *WarpAgreeWarpTypeDataMapSwitch) Serialize(writer *data.EoWriter) (err e
 	if err = writer.AddShort(s.MapId); err != nil {
 		return
 	}
-
 	// WarpEffect : field : WarpEffect
 	if err = writer.AddChar(int(s.WarpEffect)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7471,7 +7267,6 @@ func (s *WarpAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.WarpType)); err != nil {
 		return
 	}
-
 	switch s.WarpType {
 	case Warp_MapSwitch:
 		switch s.WarpTypeData.(type) {
@@ -7547,7 +7342,6 @@ func (s *PaperdollReplyServerPacket) Serialize(writer *data.EoWriter) (err error
 	if err = writer.AddChar(int(s.Icon)); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -7593,7 +7387,6 @@ func (s *PaperdollPingServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddChar(s.ClassId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7635,12 +7428,10 @@ func (s *PaperdollRemoveServerPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	// SubLoc : field : char
 	if err = writer.AddChar(s.SubLoc); err != nil {
 		return
 	}
-
 	// Stats : field : CharacterStatsEquipmentChange
 	if err = s.Stats.Serialize(writer); err != nil {
 		return
@@ -7697,17 +7488,14 @@ func (s *PaperdollAgreeServerPacket) Serialize(writer *data.EoWriter) (err error
 	if err = writer.AddShort(s.ItemId); err != nil {
 		return
 	}
-
 	// RemainingAmount : field : three
 	if err = writer.AddThree(s.RemainingAmount); err != nil {
 		return
 	}
-
 	// SubLoc : field : char
 	if err = writer.AddChar(s.SubLoc); err != nil {
 		return
 	}
-
 	// Stats : field : CharacterStatsEquipmentChange
 	if err = s.Stats.Serialize(writer); err != nil {
 		return
@@ -7801,14 +7589,12 @@ func (s *BookReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Icon)); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// QuestNames : array : string
 	for ndx := 0; ndx < len(s.QuestNames); ndx++ {
 		if err = writer.AddString(s.QuestNames[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -7832,6 +7618,7 @@ func (s *BookReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	}
 	// QuestNames : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.QuestNames = append(s.QuestNames, "")
 		if s.QuestNames[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -7866,7 +7653,6 @@ func (s *MessagePongServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(2); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7901,7 +7687,6 @@ func (s *PlayersPingServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7938,7 +7723,6 @@ func (s *PlayersPongServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -7975,7 +7759,6 @@ func (s *PlayersNet242ServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8016,7 +7799,6 @@ func (s *DoorOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8055,7 +7837,6 @@ func (s *DoorCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Key); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8144,12 +7925,10 @@ func (s *ChestReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.AddedItemId); err != nil {
 		return
 	}
-
 	// RemainingAmount : field : int
 	if err = writer.AddInt(s.RemainingAmount); err != nil {
 		return
 	}
-
 	// Weight : field : Weight
 	if err = s.Weight.Serialize(writer); err != nil {
 		return
@@ -8309,7 +8088,6 @@ func (s *ChestSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(0); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8325,7 +8103,7 @@ func (s *ChestSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 
 // ChestCloseServerPacket ::  Reply to trying to interact with a locked or "broken" chest. The official client assumes a broken chest if the packet is under 2 bytes in length.
 type ChestCloseServerPacket struct {
-	Key int // Sent if the player is trying to interact with a locked chest.
+	Key *int // Sent if the player is trying to interact with a locked chest.
 
 }
 
@@ -8342,15 +8120,15 @@ func (s *ChestCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// Key : field : short
-	if err = writer.AddShort(s.Key); err != nil {
-		return
+	if s.Key != nil {
+		if err = writer.AddShort(*s.Key); err != nil {
+			return
+		}
 	}
-
 	//  : dummy : string
 	if err = writer.AddString("N"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8359,7 +8137,10 @@ func (s *ChestCloseServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	// Key : field : short
-	s.Key = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Key = new(int)
+		*s.Key = reader.GetShort()
+	}
 	//  : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
@@ -8427,17 +8208,14 @@ func (s *PartyRequestServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddChar(int(s.RequestType)); err != nil {
 		return
 	}
-
 	// InviterPlayerId : field : short
 	if err = writer.AddShort(s.InviterPlayerId); err != nil {
 		return
 	}
-
 	// PlayerName : field : string
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8479,7 +8257,6 @@ func (s *PartyReplyReplyCodeDataAlreadyInAnotherParty) Serialize(writer *data.Eo
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8507,7 +8284,6 @@ func (s *PartyReplyReplyCodeDataAlreadyInYourParty) Serialize(writer *data.EoWri
 	if err = writer.AddString(s.PlayerName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8539,7 +8315,6 @@ func (s *PartyReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case PartyReplyCode_AlreadyInAnotherParty:
 		switch s.ReplyCodeData.(type) {
@@ -8695,7 +8470,6 @@ func (s *PartyRemoveServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8729,7 +8503,6 @@ func (s *PartyCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8816,12 +8589,10 @@ func (s *PartyAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8901,7 +8672,6 @@ func (s *GuildReplyReplyCodeDataCreateAdd) Serialize(writer *data.EoWriter) (err
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8929,7 +8699,6 @@ func (s *GuildReplyReplyCodeDataCreateAddConfirm) Serialize(writer *data.EoWrite
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8958,12 +8727,10 @@ func (s *GuildReplyReplyCodeDataJoinRequest) Serialize(writer *data.EoWriter) (e
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -8997,7 +8764,6 @@ func (s *GuildReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case GuildReply_CreateAdd:
 		switch s.ReplyCodeData.(type) {
@@ -9082,12 +8848,10 @@ func (s *GuildRequestServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// GuildIdentity : field : string
 	if err = writer.AddString(s.GuildIdentity); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9131,31 +8895,26 @@ func (s *GuildCreateServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.LeaderPlayerId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildTag : field : string
 	if err = writer.AddString(s.GuildTag); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildName : field : string
 	if err = writer.AddString(s.GuildName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// RankName : field : string
 	if err = writer.AddString(s.RankName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GoldAmount : field : int
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -9222,7 +8981,6 @@ func (s *GuildTakeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Description); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9261,7 +9019,6 @@ func (s *GuildRankServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = writer.AddString(s.Ranks[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -9276,6 +9033,7 @@ func (s *GuildRankServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	reader.SetIsChunked(true)
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.Ranks = append(s.Ranks, "")
 		if s.Ranks[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -9311,7 +9069,6 @@ func (s *GuildSellServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9346,7 +9103,6 @@ func (s *GuildBuyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9381,7 +9137,6 @@ func (s *GuildOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddThree(s.SessionId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9418,7 +9173,6 @@ func (s *GuildTellServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.MembersCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Members : array : GuildMember
 	for ndx := 0; ndx < s.MembersCount; ndx++ {
@@ -9487,38 +9241,32 @@ func (s *GuildReportServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Tag : field : string
 	if err = writer.AddString(s.Tag); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// CreateDate : field : string
 	if err = writer.AddString(s.CreateDate); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Description : field : string
 	if err = writer.AddString(s.Description); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Wealth : field : string
 	if err = writer.AddString(s.Wealth); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
 		if err = writer.AddString(s.Ranks[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -9526,7 +9274,6 @@ func (s *GuildReportServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.StaffCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Staff : array : GuildStaff
 	for ndx := 0; ndx < s.StaffCount; ndx++ {
@@ -9587,6 +9334,7 @@ func (s *GuildReportServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		s.Ranks = append(s.Ranks, "")
 		if s.Ranks[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -9642,25 +9390,21 @@ func (s *GuildAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.RecruiterId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildTag : field : string
 	if err = writer.AddString(s.GuildTag); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// GuildName : field : string
 	if err = writer.AddString(s.GuildName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// RankName : field : string
 	if err = writer.AddString(s.RankName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	writer.SanitizeStrings = false
 	return
@@ -9726,7 +9470,6 @@ func (s *GuildAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Rank); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9760,7 +9503,6 @@ func (s *GuildKickServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9796,12 +9538,10 @@ func (s *SpellRequestServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// SpellId : field : short
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9823,8 +9563,8 @@ type SpellTargetSelfServerPacket struct {
 	SpellId      int
 	SpellHealHp  int
 	HpPercentage int
-	Hp           int // The official client reads this if the packet is larger than 12 bytes.
-	Tp           int // The official client reads this if the packet is larger than 12 bytes.
+	Hp           *int // The official client reads this if the packet is larger than 12 bytes.
+	Tp           *int // The official client reads this if the packet is larger than 12 bytes.
 }
 
 func (s SpellTargetSelfServerPacket) Family() net.PacketFamily {
@@ -9843,32 +9583,30 @@ func (s *SpellTargetSelfServerPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// SpellId : field : short
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// SpellHealHp : field : int
 	if err = writer.AddInt(s.SpellHealHp); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Hp : field : short
-	if err = writer.AddShort(s.Hp); err != nil {
-		return
+	if s.Hp != nil {
+		if err = writer.AddShort(*s.Hp); err != nil {
+			return
+		}
 	}
-
 	// Tp : field : short
-	if err = writer.AddShort(s.Tp); err != nil {
-		return
+	if s.Tp != nil {
+		if err = writer.AddShort(*s.Tp); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -9885,9 +9623,15 @@ func (s *SpellTargetSelfServerPacket) Deserialize(reader *data.EoReader) (err er
 	// HpPercentage : field : char
 	s.HpPercentage = reader.GetChar()
 	// Hp : field : short
-	s.Hp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Hp = new(int)
+		*s.Hp = reader.GetShort()
+	}
 	// Tp : field : short
-	s.Tp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Tp = new(int)
+		*s.Tp = reader.GetShort()
+	}
 
 	return
 }
@@ -9914,12 +9658,10 @@ func (s *SpellPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9955,7 +9697,6 @@ func (s *SpellErrorServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -9996,27 +9737,22 @@ func (s *AvatarAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.CasterId); err != nil {
 		return
 	}
-
 	// VictimId : field : short
 	if err = writer.AddShort(s.VictimId); err != nil {
 		return
 	}
-
 	// CasterDirection : field : Direction
 	if err = writer.AddChar(int(s.CasterDirection)); err != nil {
 		return
 	}
-
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// VictimDied : field : bool
 	if s.VictimDied {
 		err = writer.AddChar(1)
@@ -10031,7 +9767,6 @@ func (s *AvatarAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -10086,22 +9821,18 @@ func (s *SpellTargetGroupServerPacket) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// CasterId : field : short
 	if err = writer.AddShort(s.CasterId); err != nil {
 		return
 	}
-
 	// CasterTp : field : short
 	if err = writer.AddShort(s.CasterTp); err != nil {
 		return
 	}
-
 	// SpellHealHp : field : short
 	if err = writer.AddShort(s.SpellHealHp); err != nil {
 		return
 	}
-
 	// Players : array : GroupHealTargetPlayer
 	for ndx := 0; ndx < len(s.Players); ndx++ {
 		if err = s.Players[ndx].Serialize(writer); err != nil {
@@ -10143,7 +9874,7 @@ type SpellTargetOtherServerPacket struct {
 	SpellId         int
 	SpellHealHp     int
 	HpPercentage    int
-	Hp              int
+	Hp              *int
 }
 
 func (s SpellTargetOtherServerPacket) Family() net.PacketFamily {
@@ -10162,37 +9893,32 @@ func (s *SpellTargetOtherServerPacket) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddShort(s.VictimId); err != nil {
 		return
 	}
-
 	// CasterId : field : short
 	if err = writer.AddShort(s.CasterId); err != nil {
 		return
 	}
-
 	// CasterDirection : field : Direction
 	if err = writer.AddChar(int(s.CasterDirection)); err != nil {
 		return
 	}
-
 	// SpellId : field : short
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// SpellHealHp : field : int
 	if err = writer.AddInt(s.SpellHealHp); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Hp : field : short
-	if err = writer.AddShort(s.Hp); err != nil {
-		return
+	if s.Hp != nil {
+		if err = writer.AddShort(*s.Hp); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -10213,7 +9939,10 @@ func (s *SpellTargetOtherServerPacket) Deserialize(reader *data.EoReader) (err e
 	// HpPercentage : field : char
 	s.HpPercentage = reader.GetChar()
 	// Hp : field : short
-	s.Hp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Hp = new(int)
+		*s.Hp = reader.GetShort()
+	}
 
 	return
 }
@@ -10240,17 +9969,14 @@ func (s *TradeRequestServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddChar(138); err != nil {
 		return
 	}
-
 	// PartnerPlayerId : field : short
 	if err = writer.AddShort(s.PartnerPlayerId); err != nil {
 		return
 	}
-
 	// PartnerPlayerName : field : string
 	if err = writer.AddString(s.PartnerPlayerName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -10295,23 +10021,19 @@ func (s *TradeOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PartnerPlayerId); err != nil {
 		return
 	}
-
 	// PartnerPlayerName : field : string
 	if err = writer.AddString(s.PartnerPlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// YourPlayerId : field : short
 	if err = writer.AddShort(s.YourPlayerId); err != nil {
 		return
 	}
-
 	// YourPlayerName : field : string
 	if err = writer.AddString(s.YourPlayerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	writer.SanitizeStrings = false
 	return
@@ -10521,7 +10243,6 @@ func (s *TradeAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PartnerPlayerId); err != nil {
 		return
 	}
-
 	// Agree : field : bool
 	if s.Agree {
 		err = writer.AddChar(1)
@@ -10572,7 +10293,6 @@ func (s *TradeCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PartnerPlayerId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -10593,7 +10313,7 @@ type NpcReplyServerPacket struct {
 	NpcIndex            int
 	Damage              int
 	HpPercentage        int
-	KillStealProtection NpcKillStealProtectionState
+	KillStealProtection *NpcKillStealProtectionState
 }
 
 func (s NpcReplyServerPacket) Family() net.PacketFamily {
@@ -10612,32 +10332,28 @@ func (s *NpcReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// PlayerDirection : field : Direction
 	if err = writer.AddChar(int(s.PlayerDirection)); err != nil {
 		return
 	}
-
 	// NpcIndex : field : short
 	if err = writer.AddShort(s.NpcIndex); err != nil {
 		return
 	}
-
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	// HpPercentage : field : short
 	if err = writer.AddShort(s.HpPercentage); err != nil {
 		return
 	}
-
 	// KillStealProtection : field : NpcKillStealProtectionState
-	if err = writer.AddChar(int(s.KillStealProtection)); err != nil {
-		return
+	if s.KillStealProtection != nil {
+		if err = writer.AddChar(int(*s.KillStealProtection)); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -10656,7 +10372,10 @@ func (s *NpcReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// HpPercentage : field : short
 	s.HpPercentage = reader.GetShort()
 	// KillStealProtection : field : NpcKillStealProtectionState
-	s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.KillStealProtection = new(NpcKillStealProtectionState)
+		*s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	}
 
 	return
 }
@@ -10670,7 +10389,7 @@ type CastReplyServerPacket struct {
 	Damage              int
 	HpPercentage        int
 	CasterTp            int
-	KillStealProtection NpcKillStealProtectionState
+	KillStealProtection *NpcKillStealProtectionState
 }
 
 func (s CastReplyServerPacket) Family() net.PacketFamily {
@@ -10689,42 +10408,36 @@ func (s *CastReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// CasterId : field : short
 	if err = writer.AddShort(s.CasterId); err != nil {
 		return
 	}
-
 	// CasterDirection : field : Direction
 	if err = writer.AddChar(int(s.CasterDirection)); err != nil {
 		return
 	}
-
 	// NpcIndex : field : short
 	if err = writer.AddShort(s.NpcIndex); err != nil {
 		return
 	}
-
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	// HpPercentage : field : short
 	if err = writer.AddShort(s.HpPercentage); err != nil {
 		return
 	}
-
 	// CasterTp : field : short
 	if err = writer.AddShort(s.CasterTp); err != nil {
 		return
 	}
-
 	// KillStealProtection : field : NpcKillStealProtectionState
-	if err = writer.AddChar(int(s.KillStealProtection)); err != nil {
-		return
+	if s.KillStealProtection != nil {
+		if err = writer.AddChar(int(*s.KillStealProtection)); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -10747,7 +10460,10 @@ func (s *CastReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// CasterTp : field : short
 	s.CasterTp = reader.GetShort()
 	// KillStealProtection : field : NpcKillStealProtectionState
-	s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	if reader.Remaining() > 0 {
+		s.KillStealProtection = new(NpcKillStealProtectionState)
+		*s.KillStealProtection = NpcKillStealProtectionState(reader.GetChar())
+	}
 
 	return
 }
@@ -10755,7 +10471,7 @@ func (s *CastReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 // NpcSpecServerPacket :: Nearby NPC killed by player.
 type NpcSpecServerPacket struct {
 	NpcKilledData NpcKilledData
-	Experience    int
+	Experience    *int
 }
 
 func (s NpcSpecServerPacket) Family() net.PacketFamily {
@@ -10775,10 +10491,11 @@ func (s *NpcSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// Experience : field : int
-	if err = writer.AddInt(s.Experience); err != nil {
-		return
+	if s.Experience != nil {
+		if err = writer.AddInt(*s.Experience); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -10791,7 +10508,10 @@ func (s *NpcSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Experience : field : int
-	s.Experience = reader.GetInt()
+	if reader.Remaining() > 0 {
+		s.Experience = new(int)
+		*s.Experience = reader.GetInt()
+	}
 
 	return
 }
@@ -10823,7 +10543,6 @@ func (s *NpcAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.Experience); err != nil {
 		return
 	}
-
 	// LevelUp : field : LevelUpStats
 	if err = s.LevelUp.Serialize(writer); err != nil {
 		return
@@ -10854,7 +10573,7 @@ type CastSpecServerPacket struct {
 	SpellId       int
 	NpcKilledData NpcKilledData
 	CasterTp      int
-	Experience    int
+	Experience    *int
 }
 
 func (s CastSpecServerPacket) Family() net.PacketFamily {
@@ -10873,7 +10592,6 @@ func (s *CastSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// NpcKilledData : field : NpcKilledData
 	if err = s.NpcKilledData.Serialize(writer); err != nil {
 		return
@@ -10882,12 +10600,12 @@ func (s *CastSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.CasterTp); err != nil {
 		return
 	}
-
 	// Experience : field : int
-	if err = writer.AddInt(s.Experience); err != nil {
-		return
+	if s.Experience != nil {
+		if err = writer.AddInt(*s.Experience); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -10904,7 +10622,10 @@ func (s *CastSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// CasterTp : field : short
 	s.CasterTp = reader.GetShort()
 	// Experience : field : int
-	s.Experience = reader.GetInt()
+	if reader.Remaining() > 0 {
+		s.Experience = new(int)
+		*s.Experience = reader.GetInt()
+	}
 
 	return
 }
@@ -10934,7 +10655,6 @@ func (s *CastAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.SpellId); err != nil {
 		return
 	}
-
 	// NpcKilledData : field : NpcKilledData
 	if err = s.NpcKilledData.Serialize(writer); err != nil {
 		return
@@ -10943,12 +10663,10 @@ func (s *CastAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.CasterTp); err != nil {
 		return
 	}
-
 	// Experience : field : int
 	if err = writer.AddInt(s.Experience); err != nil {
 		return
 	}
-
 	// LevelUp : field : LevelUpStats
 	if err = s.LevelUp.Serialize(writer); err != nil {
 		return
@@ -10999,7 +10717,6 @@ func (s *NpcJunkServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.NpcId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11018,8 +10735,8 @@ type NpcPlayerServerPacket struct {
 	Positions []NpcUpdatePosition
 	Attacks   []NpcUpdateAttack
 	Chats     []NpcUpdateChat
-	Hp        int
-	Tp        int
+	Hp        *int
+	Tp        *int
 }
 
 func (s NpcPlayerServerPacket) Family() net.PacketFamily {
@@ -11060,15 +10777,17 @@ func (s *NpcPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 
 	writer.AddByte(0xFF)
 	// Hp : field : short
-	if err = writer.AddShort(s.Hp); err != nil {
-		return
+	if s.Hp != nil {
+		if err = writer.AddShort(*s.Hp); err != nil {
+			return
+		}
 	}
-
 	// Tp : field : short
-	if err = writer.AddShort(s.Tp); err != nil {
-		return
+	if s.Tp != nil {
+		if err = writer.AddShort(*s.Tp); err != nil {
+			return
+		}
 	}
-
 	writer.SanitizeStrings = false
 	return
 }
@@ -11112,9 +10831,15 @@ func (s *NpcPlayerServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Hp : field : short
-	s.Hp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Hp = new(int)
+		*s.Hp = reader.GetShort()
+	}
 	// Tp : field : short
-	s.Tp = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.Tp = new(int)
+		*s.Tp = reader.GetShort()
+	}
 	reader.SetIsChunked(false)
 
 	return
@@ -11142,12 +10867,10 @@ func (s *NpcDialogServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.NpcIndex); err != nil {
 		return
 	}
-
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11188,14 +10911,12 @@ func (s *QuestReportServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.NpcId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Messages : array : string
 	for ndx := 0; ndx < len(s.Messages); ndx++ {
 		if err = writer.AddString(s.Messages[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -11215,6 +10936,7 @@ func (s *QuestReportServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 	// Messages : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.Messages = append(s.Messages, "")
 		if s.Messages[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -11257,27 +10979,22 @@ func (s *QuestDialogServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.QuestCount); err != nil {
 		return
 	}
-
 	// BehaviorId : field : short
 	if err = writer.AddShort(s.BehaviorId); err != nil {
 		return
 	}
-
 	// QuestId : field : short
 	if err = writer.AddShort(s.QuestId); err != nil {
 		return
 	}
-
 	// SessionId : field : short
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	// DialogId : field : short
 	if err = writer.AddShort(s.DialogId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// QuestEntries : array : DialogQuestEntry
 	for ndx := 0; ndx < s.QuestCount; ndx++ {
@@ -11402,7 +11119,6 @@ func (s *QuestListPageDataHistory) Serialize(writer *data.EoWriter) (err error) 
 		if err = writer.AddString(s.CompletedQuests[ndx]); err != nil {
 			return
 		}
-
 		writer.AddByte(0xFF)
 	}
 
@@ -11415,6 +11131,7 @@ func (s *QuestListPageDataHistory) Deserialize(reader *data.EoReader) (err error
 
 	// CompletedQuests : array : string
 	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.CompletedQuests = append(s.CompletedQuests, "")
 		if s.CompletedQuests[ndx], err = reader.GetString(); err != nil {
 			return
 		}
@@ -11441,12 +11158,10 @@ func (s *QuestListServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Page)); err != nil {
 		return
 	}
-
 	// QuestsCount : field : short
 	if err = writer.AddShort(s.QuestsCount); err != nil {
 		return
 	}
-
 	switch s.Page {
 	case net.QuestPage_Progress:
 		switch s.PageData.(type) {
@@ -11520,7 +11235,6 @@ func (s *ItemAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11554,7 +11268,6 @@ func (s *ArenaDropServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString("N"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11591,7 +11304,6 @@ func (s *ArenaUseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.PlayersCount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11631,31 +11343,26 @@ func (s *ArenaSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// Direction : field : Direction
 	if err = writer.AddChar(int(s.Direction)); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// KillsCount : field : int
 	if err = writer.AddInt(s.KillsCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// KillerName : field : string
 	if err = writer.AddString(s.KillerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// VictimName : field : string
 	if err = writer.AddString(s.VictimName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	writer.SanitizeStrings = false
 	return
@@ -11727,25 +11434,21 @@ func (s *ArenaAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.WinnerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// KillsCount : field : int
 	if err = writer.AddInt(s.KillsCount); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// KillerName : field : string
 	if err = writer.AddString(s.KillerName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	// VictimName : field : string
 	if err = writer.AddString(s.VictimName); err != nil {
 		return
 	}
-
 	writer.AddByte(0xFF)
 	writer.SanitizeStrings = false
 	return
@@ -11811,7 +11514,6 @@ func (s *MarriageOpenServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddThree(s.SessionId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11847,7 +11549,6 @@ func (s *MarriageReplyReplyCodeDataSuccess) Serialize(writer *data.EoWriter) (er
 	if err = writer.AddInt(s.GoldAmount); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11877,7 +11578,6 @@ func (s *MarriageReplyServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	switch s.ReplyCode {
 	case MarriageReply_Success:
 		switch s.ReplyCodeData.(type) {
@@ -11931,7 +11631,6 @@ func (s *PriestOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -11966,7 +11665,6 @@ func (s *PriestReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.ReplyCode)); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12002,12 +11700,10 @@ func (s *PriestRequestServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-
 	// PartnerName : field : string
 	if err = writer.AddString(s.PartnerName); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12047,12 +11743,10 @@ func (s *RecoverPlayerServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12091,17 +11785,14 @@ func (s *RecoverAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// HealHp : field : int
 	if err = writer.AddInt(s.HealHp); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12141,7 +11832,6 @@ func (s *RecoverListServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.ClassId); err != nil {
 		return
 	}
-
 	// Stats : field : CharacterStatsUpdate
 	if err = s.Stats.Serialize(writer); err != nil {
 		return
@@ -12167,9 +11857,9 @@ func (s *RecoverListServerPacket) Deserialize(reader *data.EoReader) (err error)
 type RecoverReplyServerPacket struct {
 	Experience  int
 	Karma       int
-	LevelUp     int //  A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
-	StatPoints  int // The official client reads this if the player leveled up.
-	SkillPoints int // The official client reads this if the player leveled up.
+	LevelUp     *int //  A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
+	StatPoints  *int // The official client reads this if the player leveled up.
+	SkillPoints *int // The official client reads this if the player leveled up.
 }
 
 func (s RecoverReplyServerPacket) Family() net.PacketFamily {
@@ -12188,27 +11878,28 @@ func (s *RecoverReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddInt(s.Experience); err != nil {
 		return
 	}
-
 	// Karma : field : short
 	if err = writer.AddShort(s.Karma); err != nil {
 		return
 	}
-
 	// LevelUp : field : char
-	if err = writer.AddChar(s.LevelUp); err != nil {
-		return
+	if s.LevelUp != nil {
+		if err = writer.AddChar(*s.LevelUp); err != nil {
+			return
+		}
 	}
-
 	// StatPoints : field : short
-	if err = writer.AddShort(s.StatPoints); err != nil {
-		return
+	if s.StatPoints != nil {
+		if err = writer.AddShort(*s.StatPoints); err != nil {
+			return
+		}
 	}
-
 	// SkillPoints : field : short
-	if err = writer.AddShort(s.SkillPoints); err != nil {
-		return
+	if s.SkillPoints != nil {
+		if err = writer.AddShort(*s.SkillPoints); err != nil {
+			return
+		}
 	}
-
 	return
 }
 
@@ -12221,11 +11912,20 @@ func (s *RecoverReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 	// Karma : field : short
 	s.Karma = reader.GetShort()
 	// LevelUp : field : char
-	s.LevelUp = reader.GetChar()
+	if reader.Remaining() > 0 {
+		s.LevelUp = new(int)
+		*s.LevelUp = reader.GetChar()
+	}
 	// StatPoints : field : short
-	s.StatPoints = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.StatPoints = new(int)
+		*s.StatPoints = reader.GetShort()
+	}
 	// SkillPoints : field : short
-	s.SkillPoints = reader.GetShort()
+	if reader.Remaining() > 0 {
+		s.SkillPoints = new(int)
+		*s.SkillPoints = reader.GetShort()
+	}
 
 	return
 }
@@ -12255,27 +11955,22 @@ func (s *RecoverTargetGroupServerPacket) Serialize(writer *data.EoWriter) (err e
 	if err = writer.AddShort(s.StatPoints); err != nil {
 		return
 	}
-
 	// SkillPoints : field : short
 	if err = writer.AddShort(s.SkillPoints); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	// MaxSp : field : short
 	if err = writer.AddShort(s.MaxSp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12319,7 +12014,6 @@ func (s *EffectUseEffectDataQuake) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddChar(s.QuakeStrength); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12349,7 +12043,6 @@ func (s *EffectUseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Effect)); err != nil {
 		return
 	}
-
 	switch s.Effect {
 	case MapEffect_Quake:
 		switch s.EffectData.(type) {
@@ -12408,7 +12101,6 @@ func (s *EffectAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.EffectId); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12450,17 +12142,14 @@ func (s *EffectTargetOtherServerPacket) Serialize(writer *data.EoWriter) (err er
 	if err = writer.AddShort(s.Damage); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	// Others : array : MapDrainDamageOther
 	for ndx := 0; ndx < len(s.Others); ndx++ {
 		if err = s.Others[ndx].Serialize(writer); err != nil {
@@ -12512,7 +12201,6 @@ func (s *EffectReportServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddString("S"); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12552,17 +12240,14 @@ func (s *EffectSpecMapDamageTypeDataTpDrain) Serialize(writer *data.EoWriter) (e
 	if err = writer.AddShort(s.TpDamage); err != nil {
 		return
 	}
-
 	// Tp : field : short
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
-
 	// MaxTp : field : short
 	if err = writer.AddShort(s.MaxTp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12594,17 +12279,14 @@ func (s *EffectSpecMapDamageTypeDataSpikes) Serialize(writer *data.EoWriter) (er
 	if err = writer.AddShort(s.HpDamage); err != nil {
 		return
 	}
-
 	// Hp : field : short
 	if err = writer.AddShort(s.Hp); err != nil {
 		return
 	}
-
 	// MaxHp : field : short
 	if err = writer.AddShort(s.MaxHp); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12638,7 +12320,6 @@ func (s *EffectSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.MapDamageType)); err != nil {
 		return
 	}
-
 	switch s.MapDamageType {
 	case MapDamage_TpDrain:
 		switch s.MapDamageTypeData.(type) {
@@ -12710,12 +12391,10 @@ func (s *EffectAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-
 	// HpPercentage : field : char
 	if err = writer.AddChar(s.HpPercentage); err != nil {
 		return
 	}
-
 	// Died : field : bool
 	if s.Died {
 		err = writer.AddChar(1)
@@ -12730,7 +12409,6 @@ func (s *EffectAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddThree(s.Damage); err != nil {
 		return
 	}
-
 	return
 }
 
@@ -12775,7 +12453,6 @@ func (s *MusicPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.SoundId); err != nil {
 		return
 	}
-
 	return
 }
 
