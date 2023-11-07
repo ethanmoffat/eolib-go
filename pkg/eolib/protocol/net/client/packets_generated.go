@@ -1993,7 +1993,8 @@ func (s *BankOpenClientPacket) Deserialize(reader *data.EoReader) (err error) {
 
 // BankAddClientPacket :: Depositing gold.
 type BankAddClientPacket struct {
-	Amount int
+	Amount    int
+	SessionId int
 }
 
 func (s BankAddClientPacket) Family() net.PacketFamily {
@@ -2012,6 +2013,10 @@ func (s *BankAddClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.Amount); err != nil {
 		return
 	}
+	// SessionId : field : three
+	if err = writer.AddThree(s.SessionId); err != nil {
+		return
+	}
 	return
 }
 
@@ -2021,13 +2026,16 @@ func (s *BankAddClientPacket) Deserialize(reader *data.EoReader) (err error) {
 
 	// Amount : field : int
 	s.Amount = reader.GetInt()
+	// SessionId : field : three
+	s.SessionId = reader.GetThree()
 
 	return
 }
 
 // BankTakeClientPacket :: Withdrawing gold.
 type BankTakeClientPacket struct {
-	Amount int
+	Amount    int
+	SessionId int
 }
 
 func (s BankTakeClientPacket) Family() net.PacketFamily {
@@ -2046,6 +2054,10 @@ func (s *BankTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.Amount); err != nil {
 		return
 	}
+	// SessionId : field : three
+	if err = writer.AddThree(s.SessionId); err != nil {
+		return
+	}
 	return
 }
 
@@ -2055,6 +2067,8 @@ func (s *BankTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 
 	// Amount : field : int
 	s.Amount = reader.GetInt()
+	// SessionId : field : three
+	s.SessionId = reader.GetThree()
 
 	return
 }
