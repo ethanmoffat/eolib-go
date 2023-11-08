@@ -1,4 +1,4 @@
-// eolib-go is the top-level directory for the eolib-go go repository.
+// eolibgo is the top-level package for the Go implementation of eolib.
 //
-// More information is available in the eolib package: [pkg/github.com/ethanmoffat/eolib-go/pkg/eolib]
+// More details are available in the eolib subdirectory: [pkg/github.com/ethanmoffat/eolib-go/pkg/eolib]
 package eolibgo
