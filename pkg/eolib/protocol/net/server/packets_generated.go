@@ -4549,8 +4549,8 @@ func (s *NpcAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// NpcsCount : length : short
-	if err = writer.AddShort(s.NpcsCount); err != nil {
+	// NpcsCount : length : char
+	if err = writer.AddChar(s.NpcsCount); err != nil {
 		return
 	}
 	// Npcs : array : NpcMapInfo
@@ -4567,8 +4567,8 @@ func (s *NpcAgreeServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	// NpcsCount : length : short
-	s.NpcsCount = reader.GetShort()
+	// NpcsCount : length : char
+	s.NpcsCount = reader.GetChar()
 	// Npcs : array : NpcMapInfo
 	for ndx := 0; ndx < s.NpcsCount; ndx++ {
 		s.Npcs = append(s.Npcs, NpcMapInfo{})
@@ -11363,7 +11363,6 @@ func (s *ArenaSpecServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.VictimName); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
 	writer.SanitizeStrings = false
 	return
 }
@@ -11401,9 +11400,6 @@ func (s *ArenaSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
 	reader.SetIsChunked(false)
 
 	return
@@ -11449,7 +11445,6 @@ func (s *ArenaAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.VictimName); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
 	writer.SanitizeStrings = false
 	return
 }
@@ -11485,9 +11480,6 @@ func (s *ArenaAcceptServerPacket) Deserialize(reader *data.EoReader) (err error)
 		return
 	}
 
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
 	reader.SetIsChunked(false)
 
 	return
