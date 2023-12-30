@@ -9,10 +9,11 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/dave/jennifer/jen"
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
 
-func getPackageName(outputDir string) (string, error) {
+func getPackageStatement(outputDir string) (string, error) {
 	packageFileName := path.Join(outputDir, "package.go")
 	fp, err := os.Open(packageFileName)
 	if err != nil {
@@ -33,6 +34,22 @@ func getPackageName(outputDir string) (string, error) {
 	}
 
 	return "", fmt.Errorf("package name not found in %s", outputDir)
+}
+
+func getPackageName(outputDir string) (packageDeclaration string, err error) {
+	if packageDeclaration, err = getPackageStatement(outputDir); err != nil {
+		return
+	}
+
+	split := strings.Split(packageDeclaration, " ")
+	if len(split) < 2 {
+		packageDeclaration = ""
+		err = fmt.Errorf("unable to determine package name from package declaration")
+		return
+	}
+
+	packageDeclaration = split[1]
+	return
 }
 
 func sanitizeComment(comment string) string {
@@ -56,9 +73,21 @@ func sanitizeTypeName(typeName string) string {
 	return typeName
 }
 
+func writeTypeCommentJen(f *jen.File, typeName string, comment string) {
+	if comment = sanitizeComment(comment); len(comment) > 0 {
+		f.Commentf("// %s :: %s", typeName, comment)
+	}
+}
+
 func writeTypeComment(output *strings.Builder, typeName string, comment string) {
 	if comment = sanitizeComment(comment); len(comment) > 0 {
 		output.WriteString(fmt.Sprintf("// %s :: %s\n", typeName, comment))
+	}
+}
+
+func writeInlineCommentJen(s *jen.Statement, comment string) {
+	if comment = sanitizeComment(comment); len(comment) > 0 {
+		s.Commentf("%s", comment)
 	}
 }
 
@@ -66,6 +95,10 @@ func writeInlineComment(output *strings.Builder, comment string) {
 	if comment = sanitizeComment(comment); len(comment) > 0 {
 		output.WriteString(fmt.Sprintf(" // %s", comment))
 	}
+}
+
+func writeToFileJen(f *jen.File, outFileName string) error {
+	return f.Save(outFileName)
 }
 
 func writeToFile(outFileName string, outputText string) error {

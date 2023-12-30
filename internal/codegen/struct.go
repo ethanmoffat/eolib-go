@@ -21,7 +21,7 @@ func GenerateStructs(outputDir string, structs []xml.ProtocolStruct, fullSpec xm
 }
 
 func generateStructsShared(outputDir string, outputFileName string, typeNames []string, fullSpec xml.Protocol) error {
-	packageDeclaration, err := getPackageName(outputDir)
+	packageDeclaration, err := getPackageStatement(outputDir)
 	if err != nil {
 		return err
 	}

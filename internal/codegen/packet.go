@@ -9,13 +9,13 @@ import (
 )
 
 func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xml.Protocol) error {
-	packageName, err := getPackageName(outputDir)
+	packageDeclaration, err := getPackageStatement(outputDir)
 	if err != nil {
 		return err
 	}
 
 	output := strings.Builder{}
-	output.WriteString(packageName + "\n\n")
+	output.WriteString(packageDeclaration + "\n\n")
 	output.WriteString("import (\n\t\"fmt\"\n\t\"reflect\"\n\t\"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net\"\n)\n\n")
 	output.WriteString("var packetMap = map[int]reflect.Type{\n")
 
