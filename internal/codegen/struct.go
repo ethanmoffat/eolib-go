@@ -7,6 +7,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/dave/jennifer/jen"
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
 
@@ -21,120 +22,95 @@ func GenerateStructs(outputDir string, structs []xml.ProtocolStruct, fullSpec xm
 }
 
 func generateStructsShared(outputDir string, outputFileName string, typeNames []string, fullSpec xml.Protocol) error {
-	packageDeclaration, err := getPackageStatement(outputDir)
+	packageName, err := getPackageName(outputDir)
 	if err != nil {
 		return err
 	}
 
-	output := strings.Builder{}
-	output.WriteString(packageDeclaration + "\n\n")
-	var outputText string
+	f := jen.NewFile(packageName)
+	for k, v := range packageAliases {
+		f.ImportName(v, k)
+	}
+
 	if len(typeNames) > 0 {
-		output.WriteString("import (\n\t\"fmt\"\n\t\"github.com/ethanmoffat/eolib-go/pkg/eolib/data\"\n<REPLACE>)\n\n// Ensure fmt import is referenced in generated code\nvar _ = fmt.Printf\n\n")
-
-		var imports []importInfo
 		for _, typeName := range typeNames {
-			if nextImports, err := writeStruct(&output, typeName, fullSpec); err != nil {
+			if err := writeStruct(f, typeName, fullSpec); err != nil {
 				return err
-			} else {
-				imports = append(imports, nextImports...)
 			}
 		}
-
-		outputText = output.String()
-
-		var matches map[string]bool = make(map[string]bool)
-		var importText string
-		for _, imp := range imports {
-			if _, ok := matches[imp.Package]; !ok && strings.Split(packageDeclaration, " ")[1] != imp.Package {
-				importText = importText + fmt.Sprintf("\t%s \"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol%s\"\n", imp.Package, imp.Path)
-				matches[imp.Package] = true
-			}
-		}
-		outputText = strings.ReplaceAll(outputText, "<REPLACE>", importText)
-	} else {
-		outputText = output.String()
 	}
 
 	outFileName := path.Join(outputDir, outputFileName)
-	return writeToFile(outFileName, outputText)
+	return writeToFileJen(f, outFileName)
 }
 
-func writeStruct(output *strings.Builder, typeName string, fullSpec xml.Protocol) (importPaths []importInfo, err error) {
-	var name string
-	var comment string
-	var instructions []xml.ProtocolInstruction
-	var packageName string
-
-	var family string
-	var action string
-
-	switchStructQualifier := ""
-	if structInfo, ok := fullSpec.IsStruct(typeName); ok {
-		name = structInfo.Name
-		comment = structInfo.Comment
-		instructions = structInfo.Instructions
-		packageName = structInfo.Package
-	} else if packetInfo, ok := fullSpec.IsPacket(typeName); ok {
-		name = packetInfo.GetTypeName()
-		comment = packetInfo.Comment
-		instructions = packetInfo.Instructions
-		packageName = packetInfo.Package
-		switchStructQualifier = packetInfo.Family + packetInfo.Action
-		family = packetInfo.Family
-		action = packetInfo.Action
-	} else {
-		return nil, fmt.Errorf("type %s is not a struct or packet in the spec", typeName)
+func writeStruct(f *jen.File, typeName string, fullSpec xml.Protocol) (err error) {
+	var si *structInfo
+	if si, err = getStructInfo(typeName, fullSpec); err != nil {
+		return err
 	}
 
-	structName := snakeCaseToPascalCase(name)
-	writeTypeComment(output, structName, comment)
+	err = writeStructShared(f, si, fullSpec)
+	return
+}
+
+func writeStructShared(f *jen.File, si *structInfo, fullSpec xml.Protocol) (err error) {
+	structName := snakeCaseToPascalCase(si.Name)
+	writeTypeCommentJen(f, structName, si.Comment)
 
 	// write out fields
-	output.WriteString(fmt.Sprintf("type %s struct {\n", structName))
-	switches, nextImports := writeStructFields(output, instructions, switchStructQualifier, packageName, fullSpec)
-	importPaths = append(importPaths, nextImports...)
-	output.WriteString("}\n\n")
+	var switches []*xml.ProtocolInstruction
+	f.Type().Id(structName).StructFunc(func(g *jen.Group) {
+		switches = writeStructFields(g, si, fullSpec)
+	}).Line()
 
 	for _, sw := range switches {
-		if nextImports, err = writeSwitchStructs(output, *sw, switchStructQualifier, packageName, fullSpec); err != nil {
-			return nil, err
+		if err = writeSwitchStructs(f, *sw, si, fullSpec); err != nil {
+			return
 		}
-		importPaths = append(importPaths, nextImports...)
 	}
 
-	if len(family) > 0 && len(action) > 0 {
+	if len(si.Family) > 0 && len(si.Action) > 0 {
 		// write out family/action methods
-		output.WriteString(fmt.Sprintf("func (s %s) Family() net.PacketFamily {\n\treturn net.PacketFamily_%s\n}\n\n", structName, family))
-		output.WriteString(fmt.Sprintf("func (s %s) Action() net.PacketAction {\n\treturn net.PacketAction_%s\n}\n\n", structName, action))
+		f.Func().Params(jen.Id("s").Id(structName)).Id("Family").Params().Qual(packageAliases["net"], "PacketFamily").Block(
+			jen.Return(jen.Qual(packageAliases["net"], fmt.Sprintf("PacketFamily_%s", si.Family))),
+		).Line()
+		f.Func().Params(jen.Id("s").Id(structName)).Id("Action").Params().Qual(packageAliases["net"], "PacketAction").Block(
+			jen.Return(jen.Qual(packageAliases["net"], fmt.Sprintf("PacketAction_%s", si.Action))),
+		).Line()
 	}
 
 	// write out serialize method
-	output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer *data.EoWriter) (err error) {\n", structName))
-	output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
-	output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
-	if nextImports, err = writeSerializeBody(output, instructions, switchStructQualifier, packageName, fullSpec); err != nil {
-		return nil, err
+	f.Func().Params(jen.Id("s").Op("*").Id(structName)).Id("Serialize").Params(jen.Id("writer").Op("*").Qual(packageAliases["data"], "EoWriter")).Params(jen.Id("err").Id("error")).BlockFunc(func(g *jen.Group) {
+		g.Id("oldSanitizeStrings").Op(":=").Id("writer").Dot("SanitizeStrings")
+		// defer here uses 'Values' instead of 'Block' so the deferred function is single-line style
+		g.Defer().Func().Params().Values(jen.Id("writer").Dot("SanitizeStrings").Op("=").Id("oldSanitizeStrings")).Call().Line()
+
+		// err = writeSerializeBody(g, si, fullSpec)
+
+		g.Line().Return()
+	}).Line()
+
+	if err != nil {
+		return
 	}
-	importPaths = append(importPaths, nextImports...)
-	output.WriteString("\treturn\n")
-	output.WriteString("}\n\n")
 
 	// write out deserialize method
-	output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader *data.EoReader) (err error) {\n", structName))
-	output.WriteString("\toldIsChunked := reader.IsChunked()\n")
-	output.WriteString("\tdefer func() { reader.SetIsChunked(oldIsChunked) }()\n\n")
-	if nextImports, err = writeDeserializeBody(output, instructions, switchStructQualifier, packageName, fullSpec); err != nil {
-		return nil, err
-	}
-	importPaths = append(importPaths, nextImports...)
-	output.WriteString("\n\treturn\n}\n\n")
+	f.Func().Params(jen.Id("s").Op("*").Id(structName)).Id("Deserialize").Params(jen.Id("reader").Op("*").Qual(packageAliases["data"], "EoReader")).Params(jen.Id("err").Id("error")).BlockFunc(func(g *jen.Group) {
+		g.Id("oldIsChunked").Op(":=").Id("reader").Dot("IsChunked").Call()
+		// defer here uses 'Values' instead of 'Block' so the deferred function is single-line style
+		g.Defer().Func().Params().Values(jen.Id("reader").Dot("SetIsChunked").Call(jen.Id("oldIsChunked"))).Call().Line()
+
+		// err = writeDeserializeBody(g, si, fullSpec)
+
+		g.Line().Return()
+	}).Line()
 
 	return
 }
 
-func writeStructFields(output *strings.Builder, instructions []xml.ProtocolInstruction, switchStructQualifier string, packageName string, fullSpec xml.Protocol) (switches []*xml.ProtocolInstruction, imports []importInfo) {
-	for i, inst := range instructions {
+func writeStructFields(g *jen.Group, si *structInfo, fullSpec xml.Protocol) (switches []*xml.ProtocolInstruction) {
+	for i, inst := range si.Instructions {
 		var instName string
 
 		if inst.Name != nil {
@@ -143,71 +119,85 @@ func writeStructFields(output *strings.Builder, instructions []xml.ProtocolInstr
 			instName = snakeCaseToPascalCase(*inst.Field)
 		}
 
-		var typeName string
+		var fieldTypeInfo struct {
+			typeName   string
+			nextImport *importInfo
+			isPointer  bool
+		}
 		if inst.Type != nil {
-			var nextImport *importInfo
-			if typeName, nextImport = eoTypeToGoType(*inst.Type, packageName, fullSpec); nextImport != nil {
-				imports = append(imports, *nextImport)
-			}
-
+			fieldTypeInfo.typeName, fieldTypeInfo.nextImport = eoTypeToGoType(*inst.Type, si.PackageName, fullSpec)
 			if inst.Optional != nil && *inst.Optional {
 				switch inst.XMLName.Local {
-				// these are the only supported values where the type needs to be modified to a pointer
-				// arrays also support the "optional" attribute in the spec but can be nil because they're defined as slices in the structs
+				// these are the only supported values where the type of the rendered field needs to be modified to a pointer
+				// arrays also support the "optional" attribute in the spec but default to nil since they are rendered as slices
 				case "field":
 					fallthrough
 				case "length":
-					typeName = "*" + typeName
+					fieldTypeInfo.isPointer = true
 				}
+			}
+		}
+
+		qualifiedTypeName := func(s *jen.Statement) {
+			if fieldTypeInfo.isPointer {
+				s.Op("*")
+			}
+
+			writeComment := func(ss *jen.Statement) {
+				if inst.Comment != nil {
+					writeInlineCommentJen(ss, *inst.Comment)
+				}
+			}
+
+			if fieldTypeInfo.nextImport != nil && fieldTypeInfo.nextImport.Package != si.PackageName {
+				s.Qual(fieldTypeInfo.nextImport.Path, fieldTypeInfo.typeName).Do(writeComment)
+			} else {
+				s.Id(fieldTypeInfo.typeName).Do(writeComment)
 			}
 		}
 
 		switch inst.XMLName.Local {
 		case "field":
 			if len(instName) > 0 {
-				output.WriteString(fmt.Sprintf("\t%s %s", instName, typeName))
+				g.Id(instName).Do(qualifiedTypeName)
 			}
 		case "array":
-			output.WriteString(fmt.Sprintf("\t%s []%s", instName, typeName))
+			g.Id(instName).Index().Do(qualifiedTypeName)
 		case "length":
-			output.WriteString(fmt.Sprintf("\t%s %s", instName, typeName))
+			g.Id(instName).Do(qualifiedTypeName)
 		case "switch":
-			output.WriteString(fmt.Sprintf("\t%sData %s%sData", instName, switchStructQualifier, instName))
-			switches = append(switches, &instructions[i])
+			g.Id(fmt.Sprintf("%sData", instName)).Id(fmt.Sprintf("%s%sData", si.SwitchStructQualifier, instName))
+			switches = append(switches, &si.Instructions[i])
 		case "chunked":
-			nextSwitches, nextImports := writeStructFields(output, inst.Chunked, switchStructQualifier, packageName, fullSpec)
-			switches = append(switches, nextSwitches...)
-			imports = append(imports, nextImports...)
+			nestedStructInfo := &structInfo{
+				PackageName:           si.PackageName,
+				Instructions:          inst.Chunked,
+				SwitchStructQualifier: si.SwitchStructQualifier,
+			}
+			switches = append(switches, writeStructFields(g, nestedStructInfo, fullSpec)...)
 		case "dummy":
 		case "break":
 			continue // no data to write
 		}
-
-		if inst.Comment != nil {
-			writeInlineComment(output, *inst.Comment)
-		}
-
-		output.WriteString("\n")
 	}
 
 	return
 }
 
-func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruction, switchStructQualifier string, packageName string, fullSpec xml.Protocol) (imports []importInfo, err error) {
+func writeSwitchStructs(f *jen.File, switchInst xml.ProtocolInstruction, si *structInfo, fullSpec xml.Protocol) (err error) {
 	if switchInst.XMLName.Local != "switch" {
 		return
 	}
 
 	switchInterfaceName := fmt.Sprintf("%sData", snakeCaseToPascalCase(*switchInst.Field))
-	if len(switchStructQualifier) > 0 {
-		switchInterfaceName = switchStructQualifier + switchInterfaceName
+	if len(si.SwitchStructQualifier) > 0 {
+		switchInterfaceName = si.SwitchStructQualifier + switchInterfaceName
 	}
 
 	if switchInst.Comment != nil {
-		writeTypeComment(output, switchInterfaceName, *switchInst.Comment)
+		writeTypeCommentJen(f, switchInterfaceName, *switchInst.Comment)
 	}
-
-	output.WriteString(fmt.Sprintf("type %s interface {\n\tprotocol.EoData\n}\n\n", switchInterfaceName))
+	f.Type().Id(switchInterfaceName).Interface(jen.Qual(packageAliases["protocol"], "EoData")).Line()
 
 	for _, c := range switchInst.Cases {
 		if len(c.Instructions) == 0 {
@@ -222,40 +212,16 @@ func writeSwitchStructs(output *strings.Builder, switchInst xml.ProtocolInstruct
 		}
 		caseStructName := fmt.Sprintf("%s%s", switchInterfaceName, caseName)
 
-		writeTypeComment(output, caseStructName, c.Comment)
-
-		output.WriteString(fmt.Sprintf("type %s struct {\n", caseStructName))
-		switches, nextImports := writeStructFields(output, c.Instructions, switchStructQualifier, packageName, fullSpec)
-		imports = append(imports, nextImports...)
-		output.WriteString("}\n\n")
-
-		for _, sw := range switches {
-			if nextImports, err = writeSwitchStructs(output, *sw, switchStructQualifier, packageName, fullSpec); err != nil {
-				return nil, err
-			}
-			imports = append(imports, nextImports...)
+		nestedStructInfo := &structInfo{
+			Name:         caseStructName,
+			Comment:      c.Comment,
+			Instructions: c.Instructions,
+			PackageName:  si.PackageName,
 		}
-
-		// write out serialize method
-		output.WriteString(fmt.Sprintf("func (s *%s) Serialize(writer *data.EoWriter) (err error) {\n", caseStructName))
-		output.WriteString("\toldSanitizeStrings := writer.SanitizeStrings\n")
-		output.WriteString("\tdefer func() {writer.SanitizeStrings = oldSanitizeStrings}()\n\n")
-		if nextImports, err = writeSerializeBody(output, c.Instructions, switchStructQualifier, packageName, fullSpec); err != nil {
-			return nil, err
+		err = writeStructShared(f, nestedStructInfo, fullSpec)
+		if err != nil {
+			return
 		}
-		imports = append(imports, nextImports...)
-		output.WriteString("\treturn\n")
-		output.WriteString("}\n\n")
-
-		// write out deserialize method
-		output.WriteString(fmt.Sprintf("func (s *%s) Deserialize(reader *data.EoReader) (err error) {\n", caseStructName))
-		output.WriteString("\toldIsChunked := reader.IsChunked()\n")
-		output.WriteString("\tdefer func() { reader.SetIsChunked(oldIsChunked) }()\n\n")
-		if nextImports, err = writeDeserializeBody(output, c.Instructions, switchStructQualifier, packageName, fullSpec); err != nil {
-			return nil, err
-		}
-		imports = append(imports, nextImports...)
-		output.WriteString("\n\treturn\n}\n\n")
 	}
 
 	return

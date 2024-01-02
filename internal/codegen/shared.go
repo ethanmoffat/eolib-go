@@ -93,9 +93,14 @@ func writeTypeComment(output *strings.Builder, typeName string, comment string) 
 	}
 }
 
-func writeInlineCommentJen(s *jen.Statement, comment string) {
+func writeInlineCommentJen(c jen.Code, comment string) {
 	if comment = sanitizeComment(comment); len(comment) > 0 {
-		s.Commentf("%s", comment)
+		switch v := c.(type) {
+		case *jen.Statement:
+			v.Comment(comment)
+		case *jen.Group:
+			v.Comment(comment)
+		}
 	}
 }
 
@@ -158,22 +163,20 @@ func eoTypeToGoType(eoType string, currentPackage string, fullSpec xml.Protocol)
 		return "string", nil
 	default:
 		match := fullSpec.FindType(eoType)
+		goType = eoType
 
-		if structMatch, ok := match.(*xml.ProtocolStruct); ok {
-			if structMatch.Package != currentPackage {
-				goType = structMatch.Package + "." + eoType
-				nextImport = &importInfo{structMatch.Package, structMatch.PackagePath}
-			} else {
-				goType = eoType
-			}
-		} else if enumMatch, ok := match.(*xml.ProtocolEnum); ok {
-			if enumMatch.Package != currentPackage {
-				goType = enumMatch.Package + "." + eoType
-				nextImport = &importInfo{enumMatch.Package, enumMatch.PackagePath}
-			} else {
-				goType = eoType
+		if structMatch, ok := match.(*xml.ProtocolStruct); ok && structMatch.Package != currentPackage {
+			nextImport = &importInfo{structMatch.Package, structMatch.PackagePath}
+		} else if enumMatch, ok := match.(*xml.ProtocolEnum); ok && enumMatch.Package != currentPackage {
+			nextImport = &importInfo{enumMatch.Package, enumMatch.PackagePath}
+		}
+
+		if nextImport != nil {
+			if val, ok := packageAliases[nextImport.Package]; ok {
+				nextImport.Path = val
 			}
 		}
+
 		return
 	}
 }
@@ -309,4 +312,42 @@ func getPrimitiveTypeSize(fieldTypeName string, fullSpec xml.Protocol) (int, err
 			return 0, fmt.Errorf("cannot get fixed size of unrecognized type %s", fieldTypeName)
 		}
 	}
+}
+
+// structInfo is a type representing the metadata about a struct that should be rendered as generated code.
+// It represents the common properties of either a ProtocolPacket or a ProtocolStruct.
+type structInfo struct {
+	Name         string                    // Name is the name of the type. It is not converted from protocol naming convention (snake_case).
+	Comment      string                    // Comment is an optional type comment for the struct.
+	Instructions []xml.ProtocolInstruction // Instructions is a collection of instructions for the struct.
+	PackageName  string                    // PackageName is the containing package name for the struct.
+
+	Family                string // Family is the Packet Family of the struct, if the struct is a packet struct.
+	Action                string // Action is the Packet Action of the struct, if the struct is a packet struct.
+	SwitchStructQualifier string // SwitchStructQualifier is an additional qualifier prepended to structs used in switch cases in packets.
+}
+
+func getStructInfo(typeName string, fullSpec xml.Protocol) (si *structInfo, err error) {
+	si = &structInfo{SwitchStructQualifier: ""}
+	err = nil
+
+	if structInfo, ok := fullSpec.IsStruct(typeName); ok {
+		si.Name = structInfo.Name
+		si.Comment = structInfo.Comment
+		si.Instructions = structInfo.Instructions
+		si.PackageName = structInfo.Package
+	} else if packetInfo, ok := fullSpec.IsPacket(typeName); ok {
+		si.Name = packetInfo.GetTypeName()
+		si.Comment = packetInfo.Comment
+		si.Instructions = packetInfo.Instructions
+		si.PackageName = packetInfo.Package
+		si.SwitchStructQualifier = packetInfo.Family + packetInfo.Action
+		si.Family = packetInfo.Family
+		si.Action = packetInfo.Action
+	} else {
+		si = nil
+		err = fmt.Errorf("type %s is not a struct or packet in the spec", typeName)
+	}
+
+	return
 }
