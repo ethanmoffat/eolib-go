@@ -110,6 +110,8 @@ func writeStructShared(f *jen.File, si *structInfo, fullSpec xml.Protocol) (err 
 }
 
 func writeStructFields(g *jen.Group, si *structInfo, fullSpec xml.Protocol) (switches []*xml.ProtocolInstruction) {
+	isEmpty := true
+
 	for i, inst := range si.Instructions {
 		var instName string
 
@@ -160,14 +162,20 @@ func writeStructFields(g *jen.Group, si *structInfo, fullSpec xml.Protocol) (swi
 		case "field":
 			if len(instName) > 0 {
 				g.Id(instName).Do(qualifiedTypeName)
+			} else {
+				g.Line()
 			}
+			isEmpty = false
 		case "array":
 			g.Id(instName).Index().Do(qualifiedTypeName)
+			isEmpty = false
 		case "length":
 			g.Id(instName).Do(qualifiedTypeName)
+			isEmpty = false
 		case "switch":
 			g.Id(fmt.Sprintf("%sData", instName)).Id(fmt.Sprintf("%s%sData", si.SwitchStructQualifier, instName))
 			switches = append(switches, &si.Instructions[i])
+			isEmpty = false
 		case "chunked":
 			nestedStructInfo := &structInfo{
 				PackageName:           si.PackageName,
@@ -179,6 +187,10 @@ func writeStructFields(g *jen.Group, si *structInfo, fullSpec xml.Protocol) (swi
 		case "break":
 			continue // no data to write
 		}
+	}
+
+	if isEmpty {
+		g.Line()
 	}
 
 	return
