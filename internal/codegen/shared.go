@@ -235,7 +235,7 @@ func calculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 	var structInfo *xml.ProtocolStruct
 	var isStruct bool
 	if structInfo, isStruct = fullSpec.IsStruct(typeName); !isStruct {
-		return getPrimitizeTypeSize(typeName, fullSpec)
+		return getPrimitiveTypeSize(typeName, fullSpec)
 	}
 
 	var flattenedInstList []xml.ProtocolInstruction
@@ -263,7 +263,7 @@ func calculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 					return 0, fmt.Errorf("instruction length %s must be a fixed size for %s (%s)", *instruction.Length, *instruction.Name, instruction.XMLName.Local)
 				}
 			} else {
-				if nestedSize, err := getPrimitizeTypeSize(fieldTypeName, fullSpec); err != nil {
+				if nestedSize, err := getPrimitiveTypeSize(fieldTypeName, fullSpec); err != nil {
 					return 0, err
 				} else {
 					res += nestedSize
@@ -279,7 +279,7 @@ func calculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 	return
 }
 
-func getPrimitizeTypeSize(fieldTypeName string, fullSpec xml.Protocol) (int, error) {
+func getPrimitiveTypeSize(fieldTypeName string, fullSpec xml.Protocol) (int, error) {
 	switch fieldTypeName {
 	case "byte":
 		fallthrough
@@ -304,7 +304,7 @@ func getPrimitizeTypeSize(fieldTypeName string, fullSpec xml.Protocol) (int, err
 			return calculateTypeSize(fieldTypeName, fullSpec)
 		} else if e, isEnum := fullSpec.IsEnum(fieldTypeName); isEnum {
 			enumTypeName := sanitizeTypeName(e.Type)
-			return getPrimitizeTypeSize(enumTypeName, fullSpec)
+			return getPrimitiveTypeSize(enumTypeName, fullSpec)
 		} else {
 			return 0, fmt.Errorf("cannot get fixed size of unrecognized type %s", fieldTypeName)
 		}
