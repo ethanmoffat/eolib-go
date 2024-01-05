@@ -5,6 +5,7 @@ import (
 	"path"
 
 	"github.com/dave/jennifer/jen"
+	"github.com/ethanmoffat/eolib-go/internal/codegen/types"
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
 
@@ -28,14 +29,14 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 		for i, v := range e.Values {
 			var s *jen.Statement
 			if i == 0 {
-				s = jen.Id(fmt.Sprintf("%s_%s", sanitizeTypeName(e.Name), v.Name)).Qual("", e.Name).Op("=").Iota()
+				s = jen.Id(fmt.Sprintf("%s_%s", types.SanitizeTypeName(e.Name), v.Name)).Qual("", e.Name).Op("=").Iota()
 
 				if v.Value > 0 {
 					expected = int(v.Value)
 					s.Op("+").Lit(expected)
 				}
 			} else {
-				s = jen.Id(fmt.Sprintf("%s_%s", sanitizeTypeName(e.Name), v.Name))
+				s = jen.Id(fmt.Sprintf("%s_%s", types.SanitizeTypeName(e.Name), v.Name))
 				actual := int(v.Value)
 				if expected != actual {
 					s.Op("=").Lit(actual)
@@ -51,7 +52,7 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 
 		caseList := make([]jen.Code, len(e.Values)+1)
 		for ndx, v := range e.Values {
-			caseList[ndx] = jen.Case(jen.Id(fmt.Sprintf("%s_%s", sanitizeTypeName(e.Name), v.Name))).Block(jen.Return(jen.Lit(v.Name), jen.Nil()))
+			caseList[ndx] = jen.Case(jen.Id(fmt.Sprintf("%s_%s", types.SanitizeTypeName(e.Name), v.Name))).Block(jen.Return(jen.Lit(v.Name), jen.Nil()))
 		}
 		caseList[len(e.Values)] = jen.Default().Block().Return(
 			jen.Lit(""), jen.Qual("fmt", "Errorf").Call(jen.Lit(fmt.Sprintf("could not convert value %%d of type %s to string", e.Name)), jen.Id("e")),

@@ -5,6 +5,7 @@ import (
 	"path"
 
 	"github.com/dave/jennifer/jen"
+	"github.com/ethanmoffat/eolib-go/internal/codegen/types"
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
 
@@ -19,9 +20,7 @@ func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xm
 	}
 
 	f := jen.NewFile(packageName)
-	for k, v := range packageAliases {
-		f.ImportName(v, k)
-	}
+	types.AddImports(f)
 
 	// collect type names to generate packet structs
 	var typeNames []string
@@ -32,9 +31,9 @@ func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xm
 		for _, p := range packets {
 			typeNames = append(typeNames, p.GetTypeName())
 
-			g.Qual(packageAliases["net"], "PacketId").Call(
-				jen.Qual(packageAliases["net"], fmt.Sprintf("PacketFamily_%s", p.Family)),
-				jen.Qual(packageAliases["net"], fmt.Sprintf("PacketAction_%s", p.Action)),
+			g.Qual(types.PackagePath("net"), "PacketId").Call(
+				jen.Qual(types.PackagePath("net"), fmt.Sprintf("PacketFamily_%s", p.Family)),
+				jen.Qual(types.PackagePath("net"), fmt.Sprintf("PacketAction_%s", p.Action)),
 			).Op(":").Qual("reflect", "TypeOf").Call(
 				jen.Id(snakeCaseToCamelCase(p.GetTypeName())).Values(),
 			).Op(",")
@@ -45,14 +44,14 @@ func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xm
 	f.Comment("This function calls [PacketFromIntegerId] internally.")
 
 	f.Func().Id("PacketFromId").Params(
-		jen.Id("family").Qual(packageAliases["net"], "PacketFamily"),
-		jen.Id("action").Qual(packageAliases["net"], "PacketAction"),
+		jen.Id("family").Qual(types.PackagePath("net"), "PacketFamily"),
+		jen.Id("action").Qual(types.PackagePath("net"), "PacketAction"),
 	).Params(
-		jen.Qual(packageAliases["net"], "Packet"),
+		jen.Qual(types.PackagePath("net"), "Packet"),
 		jen.Error(),
 	).Block(
 		jen.Return(jen.Id("PacketFromIntegerId").Call(
-			jen.Qual(packageAliases["net"], "PacketId").Call(jen.Id("family"), jen.Id("action")),
+			jen.Qual(types.PackagePath("net"), "PacketId").Call(jen.Id("family"), jen.Id("action")),
 		)),
 	)
 
@@ -78,7 +77,7 @@ func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xm
 	f.Func().Id("PacketFromIntegerId").Params(
 		jen.Id("id").Int(), // func declaration: int parameter 'id'
 	).Params(
-		jen.Qual(packageAliases["net"], "Packet"), // func declaration: return types (net.Packet, error)
+		jen.Qual(types.PackagePath("net"), "Packet"), // func declaration: return types (net.Packet, error)
 		jen.Error(),
 	).Block(
 		// try to get the packet type out of the map (indexed by the id)
@@ -91,7 +90,7 @@ func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xm
 		jen.List(jen.Id("packetInstance"), jen.Id("typeOk").Op(":=").Qual("reflect", "New").Call(
 			jen.Id("packetType"),
 		).Dot("Interface").Call().Assert(
-			jen.Qual(packageAliases["net"], "Packet"),
+			jen.Qual(types.PackagePath("net"), "Packet"),
 		)),
 		// check that type is ok, return error otherwise
 		jen.If(jen.Op("!").Id("typeOk")).Block(

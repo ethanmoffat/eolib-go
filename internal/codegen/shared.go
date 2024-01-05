@@ -13,14 +13,6 @@ import (
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
 
-// packageAliases is a map of package short names to package paths. For use with Jennifer.
-var packageAliases = map[string]string{
-	"data":     "github.com/ethanmoffat/eolib-go/pkg/eolib/data",
-	"net":      "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net",
-	"protocol": "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol",
-	"pub":      "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/pub",
-}
-
 func getPackageStatement(outputDir string) (string, error) {
 	packageFileName := path.Join(outputDir, "package.go")
 	fp, err := os.Open(packageFileName)
