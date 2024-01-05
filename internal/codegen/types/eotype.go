@@ -1,13 +1,13 @@
-package eotype
+package types
 
-type SerializationType int
+type EoType int
 
 const (
-	Invalid SerializationType = 0
+	Invalid EoType = 0
 )
 
 const (
-	Primitive SerializationType = iota + 0x0100 // flag indicating type is a primitive (supported for bool)
+	Primitive EoType = iota + 0x0100 // flag indicating type is a primitive (supported for bool)
 	Byte
 	Char
 	Short
@@ -17,30 +17,30 @@ const (
 )
 
 const (
-	Complex SerializationType = iota + 0x0200 // flag indicating type is complex (not supported for bool)
+	Complex EoType = iota + 0x0200 // flag indicating type is complex (not supported for bool)
 	Bytes
 )
 
 const (
-	String SerializationType = iota + 0x0400 // flag indicating type is a string type
+	String EoType = iota + 0x0400 // flag indicating type is a string type
 	PaddedString
 	FixedString
 )
 
 const (
-	EncodedString SerializationType = iota + 0x0800 // flag indicating type is an encoded string type
+	EncodedString EoType = iota + 0x0800 // flag indicating type is an encoded string type
 	PaddedEncodedString
 	FixedEncodedString
 )
 
 // offsets from String or EncodedString to the other string method types
 const (
-	_ SerializationType = iota
+	_ EoType = iota
 	Padded
 	Fixed
 )
 
-func (t SerializationType) String() string {
+func (t EoType) String() string {
 	switch t {
 	case Byte:
 		return "Byte"
@@ -73,7 +73,7 @@ func (t SerializationType) String() string {
 	return ""
 }
 
-func NewSerializationType(str string) SerializationType {
+func NewSerializationType(str string) EoType {
 	switch str {
 	case "byte":
 		return Byte
