@@ -586,7 +586,7 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : string
+	// EMF : field : string
 	if err = writer.AddFixedString("EMF", 3); err != nil {
 		return
 	}
@@ -661,7 +661,7 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.RelogY); err != nil {
 		return
 	}
-	//  : field : char
+	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -745,7 +745,7 @@ func (s *Emf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : string
+	// EMF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -792,7 +792,7 @@ func (s *Emf) Deserialize(reader *data.EoReader) (err error) {
 	s.RelogX = reader.GetChar()
 	// RelogY : field : char
 	s.RelogY = reader.GetChar()
-	//  : field : char
+	// 0 : field : char
 	reader.GetChar()
 	// NpcsCount : length : char
 	s.NpcsCount = reader.GetChar()

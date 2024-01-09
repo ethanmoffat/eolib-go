@@ -218,7 +218,7 @@ func (s *EifRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Weight); err != nil {
 		return
 	}
-	//  : field : char
+	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -316,7 +316,7 @@ func (s *EifRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.ElementDamage = reader.GetChar()
 	// Weight : field : char
 	s.Weight = reader.GetChar()
-	//  : field : char
+	// 0 : field : char
 	reader.GetChar()
 	// Size : field : ItemSize
 	s.Size = ItemSize(reader.GetChar())
@@ -336,7 +336,7 @@ func (s *Eif) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : string
+	// EIF : field : string
 	if err = writer.AddFixedString("EIF", 3); err != nil {
 		return
 	}
@@ -369,7 +369,7 @@ func (s *Eif) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : string
+	// EIF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -602,7 +602,7 @@ func (s *Enf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : string
+	// ENF : field : string
 	if err = writer.AddFixedString("ENF", 3); err != nil {
 		return
 	}
@@ -635,7 +635,7 @@ func (s *Enf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : string
+	// ENF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -764,7 +764,7 @@ func (s *Ecf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : string
+	// ECF : field : string
 	if err = writer.AddFixedString("ECF", 3); err != nil {
 		return
 	}
@@ -797,7 +797,7 @@ func (s *Ecf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : string
+	// ECF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -904,7 +904,7 @@ func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Nature)); err != nil {
 		return
 	}
-	//  : field : char
+	// 1 : field : char
 	if err = writer.AddChar(1); err != nil {
 		return
 	}
@@ -932,7 +932,7 @@ func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.TargetTime); err != nil {
 		return
 	}
-	//  : field : char
+	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -1033,7 +1033,7 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.CastTime = reader.GetChar()
 	// Nature : field : SkillNature
 	s.Nature = SkillNature(reader.GetChar())
-	//  : field : char
+	// 1 : field : char
 	reader.GetChar()
 	// Type : field : SkillType
 	s.Type = SkillType(reader.GetThree())
@@ -1047,7 +1047,7 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.TargetType = SkillTargetType(reader.GetChar())
 	// TargetTime : field : char
 	s.TargetTime = reader.GetChar()
-	//  : field : char
+	// 0 : field : char
 	reader.GetChar()
 	// MaxSkillLevel : field : short
 	s.MaxSkillLevel = reader.GetShort()
@@ -1097,7 +1097,7 @@ func (s *Esf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : string
+	// ESF : field : string
 	if err = writer.AddFixedString("ESF", 3); err != nil {
 		return
 	}
@@ -1130,7 +1130,7 @@ func (s *Esf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : string
+	// ESF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}

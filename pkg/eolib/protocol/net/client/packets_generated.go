@@ -39,7 +39,7 @@ func (s *InitInitClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = s.Version.Serialize(writer); err != nil {
 		return
 	}
-	//  : field : char
+	// 112 : field : char
 	if err = writer.AddChar(112); err != nil {
 		return
 	}
@@ -64,7 +64,7 @@ func (s *InitInitClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	if err = s.Version.Deserialize(reader); err != nil {
 		return
 	}
-	//  : field : char
+	// 112 : field : char
 	reader.GetChar()
 	// HdidLength : length : char
 	s.HdidLength = reader.GetChar()
@@ -140,7 +140,7 @@ func (s *ConnectionPingClientPacket) Serialize(writer *data.EoWriter) (err error
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : string
+	// k : dummy : string
 	if err = writer.AddString("k"); err != nil {
 		return
 	}
@@ -151,7 +151,7 @@ func (s *ConnectionPingClientPacket) Deserialize(reader *data.EoReader) (err err
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : string
+	// k : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
 	}
@@ -224,42 +224,42 @@ func (s *AccountCreateClientPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Username : field : string
 	if err = writer.AddString(s.Username); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Password : field : string
 	if err = writer.AddString(s.Password); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// FullName : field : string
 	if err = writer.AddString(s.FullName); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Location : field : string
 	if err = writer.AddString(s.Location); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Email : field : string
 	if err = writer.AddString(s.Email); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Computer : field : string
 	if err = writer.AddString(s.Computer); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Hdid : field : string
 	if err = writer.AddString(s.Hdid); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -359,17 +359,17 @@ func (s *AccountAgreeClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddString(s.Username); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// OldPassword : field : string
 	if err = writer.AddString(s.OldPassword); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// NewPassword : field : string
 	if err = writer.AddString(s.NewPassword); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -430,7 +430,7 @@ func (s *CharacterRequestClientPacket) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddString(s.RequestString); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -496,12 +496,12 @@ func (s *CharacterCreateClientPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddShort(s.Skin); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -635,12 +635,12 @@ func (s *LoginRequestClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddString(s.Username); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Password : field : string
 	if err = writer.AddString(s.Password); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -1055,7 +1055,7 @@ func (s *AdminInteractReportClientPacket) Serialize(writer *data.EoWriter) (err 
 	if err = writer.AddString(s.Reportee); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
@@ -1103,7 +1103,7 @@ func (s *GlobalRemoveClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : string
+	// n : dummy : string
 	if err = writer.AddString("n"); err != nil {
 		return
 	}
@@ -1114,7 +1114,7 @@ func (s *GlobalRemoveClientPacket) Deserialize(reader *data.EoReader) (err error
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : string
+	// n : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
 	}
@@ -1138,7 +1138,7 @@ func (s *GlobalPlayerClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : string
+	// y : dummy : string
 	if err = writer.AddString("y"); err != nil {
 		return
 	}
@@ -1149,7 +1149,7 @@ func (s *GlobalPlayerClientPacket) Deserialize(reader *data.EoReader) (err error
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : string
+	// y : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
 	}
@@ -1173,7 +1173,7 @@ func (s *GlobalOpenClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : string
+	// y : dummy : string
 	if err = writer.AddString("y"); err != nil {
 		return
 	}
@@ -1184,7 +1184,7 @@ func (s *GlobalOpenClientPacket) Deserialize(reader *data.EoReader) (err error) 
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : string
+	// y : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
 	}
@@ -1208,7 +1208,7 @@ func (s *GlobalCloseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : string
+	// n : dummy : string
 	if err = writer.AddString("n"); err != nil {
 		return
 	}
@@ -1219,7 +1219,7 @@ func (s *GlobalCloseClientPacket) Deserialize(reader *data.EoReader) (err error)
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : string
+	// n : dummy : string
 	if _, err = reader.GetString(); err != nil {
 		return
 	}
@@ -1358,7 +1358,7 @@ func (s *TalkTellClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddString(s.Name); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Message : field : string
 	if err = writer.AddString(s.Message); err != nil {
 		return
@@ -2295,7 +2295,7 @@ func (s *LockerBuyClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : char
+	// 1 : dummy : char
 	if err = writer.AddChar(1); err != nil {
 		return
 	}
@@ -2306,7 +2306,7 @@ func (s *LockerBuyClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : char
+	// 1 : dummy : char
 	reader.GetChar()
 
 	return
@@ -2418,16 +2418,16 @@ func (s *CitizenReplyClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// BehaviorId : field : short
 	if err = writer.AddShort(s.BehaviorId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Answers : array : string
 	for ndx := 0; ndx < 3; ndx++ {
 		if ndx > 0 {
-			writer.AddByte(0xFF)
+			writer.AddByte(255)
 		}
 
 		if err = writer.AddString(s.Answers[ndx]); err != nil {
@@ -3189,17 +3189,17 @@ func (s *BoardCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.BoardId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// PostSubject : field : string
 	if err = writer.AddString(s.PostSubject); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// PostBody : field : string
 	if err = writer.AddString(s.PostBody); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -3364,11 +3364,11 @@ func (s *JukeboxMsgClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	writer.SanitizeStrings = true
-	//  : field : char
+	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
-	//  : field : char
+	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -3385,9 +3385,9 @@ func (s *JukeboxMsgClientPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	reader.SetIsChunked(true)
-	//  : field : char
+	// 0 : field : char
 	reader.GetChar()
-	//  : field : char
+	// 0 : field : char
 	reader.GetChar()
 	// TrackId : field : short
 	s.TrackId = reader.GetShort()
@@ -3685,7 +3685,7 @@ func (s *MessagePingClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : short
+	// 2 : dummy : short
 	if err = writer.AddShort(2); err != nil {
 		return
 	}
@@ -3696,7 +3696,7 @@ func (s *MessagePingClientPacket) Deserialize(reader *data.EoReader) (err error)
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : short
+	// 2 : dummy : short
 	reader.GetShort()
 
 	return
@@ -3754,7 +3754,7 @@ func (s *PlayersRequestClientPacket) Serialize(writer *data.EoWriter) (err error
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : byte
+	// 255 : dummy : byte
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
@@ -3765,7 +3765,7 @@ func (s *PlayersRequestClientPacket) Deserialize(reader *data.EoReader) (err err
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : byte
+	// 255 : dummy : byte
 	reader.GetByte()
 
 	return
@@ -3787,7 +3787,7 @@ func (s *PlayersListClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : byte
+	// 255 : dummy : byte
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
@@ -3798,7 +3798,7 @@ func (s *PlayersListClientPacket) Deserialize(reader *data.EoReader) (err error)
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : byte
+	// 255 : dummy : byte
 	reader.GetByte()
 
 	return
@@ -3980,7 +3980,7 @@ func (s *RefreshRequestClientPacket) Serialize(writer *data.EoWriter) (err error
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : byte
+	// 255 : dummy : byte
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
@@ -3991,7 +3991,7 @@ func (s *RefreshRequestClientPacket) Deserialize(reader *data.EoReader) (err err
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : byte
+	// 255 : dummy : byte
 	reader.GetByte()
 
 	return
@@ -4023,7 +4023,7 @@ func (s *RangeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) 
 		}
 	}
 
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// NpcIndexes : array : char
 	for ndx := 0; ndx < len(s.NpcIndexes); ndx++ {
 		if err = writer.AddChar(s.NpcIndexes[ndx]); err != nil {
@@ -4123,7 +4123,7 @@ func (s *NpcRangeRequestClientPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddChar(s.NpcIndexesLength); err != nil {
 		return
 	}
-	//  : field : byte
+	// 255 : field : byte
 	if err = writer.AddByte(255); err != nil {
 		return
 	}
@@ -4143,7 +4143,7 @@ func (s *NpcRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err er
 
 	// NpcIndexesLength : length : char
 	s.NpcIndexesLength = reader.GetChar()
-	//  : field : byte
+	// 255 : field : byte
 	reader.GetByte()
 	// NpcIndexes : array : char
 	for ndx := 0; ndx < s.NpcIndexesLength; ndx++ {
@@ -4328,17 +4328,17 @@ func (s *GuildRequestClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// GuildTag : field : string
 	if err = writer.AddString(s.GuildTag); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// GuildName : field : string
 	if err = writer.AddString(s.GuildName); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -4391,7 +4391,7 @@ func (s *GuildAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : int
+	// 20202 : field : int
 	if err = writer.AddInt(20202); err != nil {
 		return
 	}
@@ -4406,7 +4406,7 @@ func (s *GuildAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : int
+	// 20202 : field : int
 	reader.GetInt()
 	// InviterPlayerId : field : short
 	s.InviterPlayerId = reader.GetShort()
@@ -4499,7 +4499,7 @@ func (s *GuildAgreeInfoTypeDataRanks) Serialize(writer *data.EoWriter) (err erro
 		if err = writer.AddString(s.Ranks[ndx]); err != nil {
 			return
 		}
-		writer.AddByte(0xFF)
+		writer.AddByte(255)
 	}
 
 	return
@@ -4619,22 +4619,22 @@ func (s *GuildCreateClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// GuildTag : field : string
 	if err = writer.AddString(s.GuildTag); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// GuildName : field : string
 	if err = writer.AddString(s.GuildName); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Description : field : string
 	if err = writer.AddString(s.Description); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -4702,17 +4702,17 @@ func (s *GuildPlayerClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// GuildTag : field : string
 	if err = writer.AddString(s.GuildTag); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// RecruiterName : field : string
 	if err = writer.AddString(s.RecruiterName); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -5354,7 +5354,7 @@ func (s *TradeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : char
+	// 138 : field : char
 	if err = writer.AddChar(138); err != nil {
 		return
 	}
@@ -5369,7 +5369,7 @@ func (s *TradeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : char
+	// 138 : field : char
 	reader.GetChar()
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -5394,7 +5394,7 @@ func (s *TradeAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : field : char
+	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -5409,7 +5409,7 @@ func (s *TradeAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : field : char
+	// 0 : field : char
 	reader.GetChar()
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
@@ -5547,7 +5547,7 @@ func (s *TradeCloseClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	//  : dummy : char
+	// 0 : dummy : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -5558,7 +5558,7 @@ func (s *TradeCloseClientPacket) Deserialize(reader *data.EoReader) (err error) 
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	//  : dummy : char
+	// 0 : dummy : char
 	reader.GetChar()
 
 	return
@@ -5812,7 +5812,7 @@ func (s *MarriageRequestClientPacket) Serialize(writer *data.EoWriter) (err erro
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
@@ -5934,7 +5934,7 @@ func (s *PriestRequestClientPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddInt(s.SessionId); err != nil {
 		return
 	}
-	writer.AddByte(0xFF)
+	writer.AddByte(255)
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
