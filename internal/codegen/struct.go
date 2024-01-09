@@ -99,7 +99,7 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 		// defer here uses 'Values' instead of 'Block' so the deferred function is single-line style
 		g.Defer().Func().Params().Values(jen.Id("reader").Dot("SetIsChunked").Call(jen.Id("oldIsChunked"))).Call().Line()
 
-		// err = writeDeserializeBody(g, si, fullSpec)
+		err = writeDeserializeBody(g, si, fullSpec, nil, false)
 
 		g.Line().Return()
 	}).Line()
@@ -341,8 +341,8 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 		default:
 			typeName, typeSize := types.GetInstructionTypeName(instruction)
 
-			if len(instructionName) == 0 {
-				instructionName = "(no_name)"
+			if len(instructionName) == 0 && instruction.Content != nil {
+				instructionName = *instruction.Content
 			}
 			g.Commentf("// %s : %s : %s", instructionName, instructionType, *instruction.Type)
 
@@ -448,224 +448,252 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 	return
 }
 
-/*
-// flag that determines whether a chunked section is active or not
-// this is used to determine if the next chunk should be selected in array delimiters and break bytes
-var isChunked bool
+func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol, outerInstructionList []xml.ProtocolInstruction, isChunked bool) (err error) {
+	for _, instruction := range si.Instructions {
+		instructionType := instruction.XMLName.Local
+		instructionName := getInstructionName(instruction)
 
-	func writeDeserializeBody(output *strings.Builder, instructionList []xml.ProtocolInstruction, switchStructQualifier string, packageName string, fullSpec xml.Protocol) (imports []importInfo, err error) {
-		for _, instruction := range instructionList {
-			instructionType := instruction.XMLName.Local
+		switch instructionType {
+		case "chunked":
+			g.Id("reader").Dot("SetIsChunked").Call(jen.True())
 
-			if instructionType == "chunked" {
-				output.WriteString("\treader.SetIsChunked(true)\n")
-				oldChunked := isChunked
-				isChunked = true
-				oldOuterInstructionList := outerInstructionList
-				outerInstructionList = instructionList
-				defer func() { isChunked = oldChunked; outerInstructionList = oldOuterInstructionList }()
-
-				nextImports, err := writeDeserializeBody(output, instruction.Chunked, switchStructQualifier, packageName, fullSpec)
-				if err != nil {
-					return nil, err
-				}
-				imports = append(imports, nextImports...)
-
-				output.WriteString("\treader.SetIsChunked(false)\n\n")
-				continue
+			var nestedInfo *types.StructInfo
+			if nestedInfo, err = si.Nested(&instruction); err != nil {
+				return
 			}
 
-			if instructionType == "break" {
-				if isChunked {
-					output.WriteString("\tif err = reader.NextChunk(); err != nil {\n\t\treturn\n\t}\n")
+			if err = writeDeserializeBody(g, nestedInfo, fullSpec, si.Instructions, true); err != nil {
+				return
+			}
+
+			g.Id("reader").Dot("SetIsChunked").Call(jen.False())
+		case "break":
+			if isChunked {
+				g.If(
+					jen.Id("err").Op("=").Id("reader").Dot("NextChunk").Call(),
+					jen.Id("err").Op("!=").Nil(),
+				).Block(jen.Return())
+			} else {
+				g.If(
+					jen.Id("breakByte").Op(":=").Id("reader").Dot("GetByte").Call(),
+					jen.Id("breakByte").Op("!=").Lit(0xFF),
+				).Block(
+					jen.Return(jen.Qual("fmt", "Errorf").Call(jen.Lit("missing expected break byte"))),
+				)
+			}
+		case "switch":
+			// get type of Value field
+			switchFieldSanitizedType := ""
+			switchFieldEnumType := ""
+			for _, tmpInst := range append(outerInstructionList, si.Instructions...) {
+				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
+					switchFieldEnumType = *tmpInst.Type
+					switchFieldSanitizedType = types.SanitizeTypeName(switchFieldEnumType)
+					break
+				}
+			}
+
+			var switchBlock []jen.Code
+			for _, c := range instruction.Cases {
+				if len(c.Instructions) == 0 {
+					continue
+				}
+
+				var switchDataType string
+				if c.Default {
+					switchDataType = fmt.Sprintf("%sDataDefault", instructionName)
+					switchBlock = append(switchBlock, jen.Default())
 				} else {
-					output.WriteString("\tif breakByte := reader.GetByte(); breakByte != 255 {\n")
-					output.WriteString("\t\treturn fmt.Errorf(\"missing expected break byte\")\n")
-					output.WriteString("\t}\n")
-				}
-				continue
-			}
-
-			instructionName := getInstructionName(instruction)
-
-			if instructionType == "switch" {
-				// get type of Value field
-				switchFieldSanitizedType := ""
-				switchFieldEnumType := ""
-				for _, tmpInst := range append(outerInstructionList, instructionList...) {
-					if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
-						switchFieldEnumType = *tmpInst.Type
-						switchFieldSanitizedType = sanitizeTypeName(switchFieldEnumType)
-						break
-					}
-				}
-
-				output.WriteString(fmt.Sprintf("\tswitch s.%s {\n", instructionName))
-
-				for _, c := range instruction.Cases {
-					if len(c.Instructions) == 0 {
-						continue
-					}
-
-					var switchDataType string
-					if c.Default {
-						switchDataType = fmt.Sprintf("%sDataDefault", instructionName)
-						output.WriteString("\tdefault:\n")
-					} else {
-						switchDataType = fmt.Sprintf("%sData%s", instructionName, c.Value)
-						if _, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
-							// case is for an enum value
-							if enumTypeInfo, ok := fullSpec.IsEnum(switchFieldEnumType); !ok {
-								return nil, fmt.Errorf("type %s in switch is not an enum", switchFieldEnumType)
-							} else {
-								packageQualifier := ""
-								if enumTypeInfo.Package != packageName {
-									packageQualifier = enumTypeInfo.Package + "."
-									imports = append(imports, importInfo{enumTypeInfo.Package, enumTypeInfo.PackagePath})
-								}
-								output.WriteString(fmt.Sprintf("\tcase %s%s_%s:\n", packageQualifier, switchFieldSanitizedType, c.Value))
-							}
+					switchDataType = fmt.Sprintf("%sData%s", instructionName, c.Value)
+					if value, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
+						// case is for an enum value
+						if enumTypeInfo, ok := fullSpec.IsEnum(switchFieldEnumType); !ok {
+							return fmt.Errorf("type %s in switch is not an enum", switchFieldEnumType)
 						} else {
-							// case is for an integer constant
-							output.WriteString(fmt.Sprintf("\tcase %s:\n", c.Value))
+							packageQualifier := ""
+							if enumTypeInfo.Package != si.PackageName {
+								packageQualifier = enumTypeInfo.Package
+							}
+							switchBlock = append(switchBlock, jen.CaseFunc(func(g *jen.Group) {
+								if packageQualifier != "" {
+									g.Qual(types.PackagePath(packageQualifier), fmt.Sprintf("%s_%s", switchFieldSanitizedType, c.Value))
+								} else {
+									g.Id(fmt.Sprintf("%s_%s", switchFieldSanitizedType, c.Value))
+								}
+							}))
 						}
-					}
-
-					output.WriteString(fmt.Sprintf("\t\ts.%sData = &%s%s{}\n", instructionName, switchStructQualifier, switchDataType))
-					output.WriteString(fmt.Sprintf("\t\tif err = s.%sData.Deserialize(reader); err != nil {\n", instructionName))
-					output.WriteString("\t\t\treturn\n\t\t}\n")
-				}
-
-				output.WriteString("\t}\n")
-
-				continue
-			}
-
-			typeName, typeSize := getInstructionTypeName(instruction)
-
-			instructionNameComment := instructionName
-			if len(instructionNameComment) == 0 && instruction.Content != nil {
-				instructionNameComment = *instruction.Content
-			}
-			output.WriteString(fmt.Sprintf("\t// %s : %s : %s\n", instructionNameComment, instructionType, *instruction.Type))
-
-			var lenExpr string
-			if instructionType == "array" {
-				if instruction.Length != nil {
-					lenExpr = "ndx < " + getLengthExpression(*instruction.Length)
-				} else if (instruction.Delimited == nil || !*instruction.Delimited) && isChunked {
-					rawLen, err := calculateTypeSize(typeName, fullSpec)
-					if err != nil {
-						lenExpr = "reader.Remaining() > 0"
 					} else {
-						lenExpr = "ndx < reader.Remaining() / " + strconv.Itoa(rawLen)
+						// case is for an integer constant
+						switchBlock = append(switchBlock, jen.Case(jen.Lit(int(value))))
 					}
-				} else {
-					lenExpr = "reader.Remaining() > 0"
 				}
 
-				output.WriteString(fmt.Sprintf("\tfor ndx := 0; %s; ndx++ {\n\t\t", lenExpr))
+				// Deserialize call for the case structure
+				sDotData := jen.Id("s").Dot(fmt.Sprintf("%sData", instructionName))
+				caseDeserialize := sDotData.Clone().Op("=").Op("&").Id(si.SwitchStructQualifier + switchDataType).Block().Line()
+				caseDeserialize = caseDeserialize.If(
+					jen.Id("err").Op("=").Add(sDotData).Dot("Deserialize").Call(jen.Id("reader")),
+					jen.Id("err").Op("!=").Nil(),
+				).Block(jen.Return())
+
+				switchBlock = append(switchBlock, caseDeserialize)
 			}
 
+			g.Switch(jen.Id("s").Dot(instructionName)).Block(switchBlock...)
+		default:
+			typeName, typeSize := types.GetInstructionTypeName(instruction)
+
+			if len(instructionName) == 0 && instruction.Content != nil {
+				instructionName = *instruction.Content
+			}
+			g.Commentf("// %s : %s : %s", instructionName, instructionType, *instruction.Type)
+
+			stringType := types.String
+
+			var deserializeCodes []jen.Code
 			switch typeName {
 			case "byte":
-				castType := "int"
-				writeGetTypeForDeserialize(output, instructionName, instruction, "Byte", &castType)
+				deserializeCodes = getDeserializeForInstruction(instruction, types.NewEoType(typeName), jen.Id("int"))
 			case "char":
-				writeGetTypeForDeserialize(output, instructionName, instruction, "Char", nil)
+				fallthrough
 			case "short":
-				writeGetTypeForDeserialize(output, instructionName, instruction, "Short", nil)
+				fallthrough
 			case "three":
-				writeGetTypeForDeserialize(output, instructionName, instruction, "Three", nil)
+				fallthrough
 			case "int":
-				writeGetTypeForDeserialize(output, instructionName, instruction, "Int", nil)
+				fallthrough
+			case "blob":
+				deserializeCodes = getDeserializeForInstruction(instruction, types.NewEoType(typeName), nil)
 			case "bool":
 				if len(typeSize) > 0 {
 					typeName = string(unicode.ToUpper(rune(typeSize[0]))) + typeSize[1:]
 				} else {
 					typeName = "Char"
 				}
-				output.WriteString(fmt.Sprintf("\tif boolVal := reader.Get%s(); boolVal > 0 {\n", typeName))
-				output.WriteString(fmt.Sprintf("\t\ts.%s = true\n\t} else {\n\t\ts.%s = false\n\t}\n", instructionName, instructionName))
-			case "blob":
-				writeGetTypeForDeserialize(output, instructionName, instruction, "Bytes", nil)
+
+				deserializeCodes = []jen.Code{
+					jen.If(
+						jen.Id("boolVal").Op(":=").Id("reader").Dot("Get"+typeName).Call(),
+						jen.Id("boolVal").Op(">").Lit(0),
+					).Block(
+						jen.Id("s").Dot(instructionName).Op("=").True(),
+					).Else().Block(
+						jen.Id("s").Dot(instructionName).Op("=").False(),
+					),
+				}
+			case "encoded_string":
+				stringType = types.EncodedString
+				fallthrough
 			case "string":
 				if instruction.Length != nil && instructionType == "field" {
 					if instruction.Padded != nil && *instruction.Padded {
-						writeGetStringTypeForDeserialize(output, instructionName, instruction, "PaddedString")
+						deserializeCodes = getDeserializeForInstruction(instruction, stringType+types.Padded, nil)
 					} else {
-						writeGetStringTypeForDeserialize(output, instructionName, instruction, "FixedString")
+						deserializeCodes = getDeserializeForInstruction(instruction, stringType+types.Fixed, nil)
 					}
 				} else {
-					writeGetStringTypeForDeserialize(output, instructionName, instruction, "String")
-				}
-			case "encoded_string":
-				if instruction.Length != nil && instructionType == "field" {
-					if instruction.Padded != nil && *instruction.Padded {
-						writeGetStringTypeForDeserialize(output, instructionName, instruction, "PaddedEncodedString")
-					} else {
-						writeGetStringTypeForDeserialize(output, instructionName, instruction, "FixedEncodedString")
-					}
-				} else {
-					writeGetStringTypeForDeserialize(output, instructionName, instruction, "EncodedString")
+					deserializeCodes = getDeserializeForInstruction(instruction, stringType, nil)
 				}
 			default:
-				if types.StructInfo, ok := fullSpec.IsStruct(typeName); ok {
+				if s, ok := fullSpec.IsStruct(typeName); ok {
+					arrayCode := jen.Null()
 					if instructionType == "array" {
-						if packageName != types.StructInfo.Package {
-							typeName = types.StructInfo.Package + "." + typeName
-							imports = append(imports, importInfo{types.StructInfo.Package, types.StructInfo.PackagePath})
-						}
+						_, tp := types.ProtocolSpecTypeToGoType(s.Name, si.PackageName, fullSpec)
+						arrayCode = jen.Id("s").Dot(instructionName).Op("=").Append(
+							jen.Id("s").Dot(instructionName),
+							jen.Do(func(s *jen.Statement) {
+								if tp != nil {
+									s.Qual(tp.Path, typeName)
+								} else {
+									s.Id(typeName)
+								}
+							}).Block(),
+						)
+					}
 
-						output.WriteString(fmt.Sprintf("\ts.%s = append(s.%s, %s{})\n", instructionName, instructionName, typeName))
-						instructionName = instructionName + "[ndx]"
+					deserializeCodes = []jen.Code{
+						arrayCode,
+						jen.If(
+							jen.Id("err").Op("=").Id("s").Dot(instructionName).Do(func(s *jen.Statement) {
+								if instructionType == "array" {
+									s.Index(jen.Id("ndx"))
+								}
+							}).Dot("Deserialize").Call(jen.Id("reader")),
+							jen.Id("err").Op("!=").Nil(),
+						).Block(jen.Return()),
 					}
-					output.WriteString(fmt.Sprintf("\tif err = s.%s.Deserialize(reader); err != nil {\n\t\treturn\n\t}\n", instructionName))
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
-					switch e.Type {
-					case "byte":
-						fallthrough
-					case "char":
-						fallthrough
-					case "short":
-						fallthrough
-					case "three":
-						fallthrough
-					case "int":
-						if e.Package != packageName {
-							typeName = fmt.Sprintf("%s.%s", e.Package, typeName)
-						}
-						writeGetTypeForDeserialize(output, instructionName, instruction, string(unicode.ToUpper(rune(e.Type[0])))+e.Type[1:], &typeName)
+					if eoType := types.NewEoType(e.Type); eoType&types.Primitive > 0 {
+						_, tp := types.ProtocolSpecTypeToGoType(e.Name, si.PackageName, fullSpec)
+						deserializeCodes = getDeserializeForInstruction(
+							instruction,
+							eoType,
+							jen.Do(func(s *jen.Statement) {
+								if tp != nil {
+									s.Qual(tp.Path, e.Name)
+								} else {
+									s.Id(e.Name)
+								}
+							}),
+						)
+					} else {
+						err = fmt.Errorf("expected primitive base type for enum %s when writing deserialize function", e.Name)
 					}
-					imports = append(imports, importInfo{e.Package, e.PackagePath})
 				} else {
 					panic("Unable to find type '" + typeName + "' when writing serialization function")
 				}
 			}
 
-			delimited := instruction.Delimited != nil && *instruction.Delimited
-			trailingDelimiter := instruction.TrailingDelimiter == nil || *instruction.TrailingDelimiter
 			if instructionType == "array" {
+				delimited := instruction.Delimited != nil && *instruction.Delimited
+
+				var lenExpr *jen.Statement
+				if instruction.Length != nil {
+					lenExpr = jen.Id("ndx").Op("<").Add(getLengthExpression(*instruction.Length))
+				} else if !delimited && isChunked {
+					if rawLen, err := types.CalculateTypeSize(typeName, fullSpec); err != nil {
+						lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
+					} else {
+						lenExpr = jen.Id("ndx").Op("<").Id("reader").Dot("Remaining").Call().Op("/").Lit(rawLen)
+					}
+				} else {
+					lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
+				}
+
+				trailingDelimiter := instruction.TrailingDelimiter == nil || *instruction.TrailingDelimiter
+
 				if delimited && isChunked {
+					delimiterExpr := jen.If(
+						jen.Id("err").Op("=").Id("reader").Dot("NextChunk").Call(),
+						jen.Id("err").Op("!=").Nil(),
+					).Block(jen.Return())
+
 					if !trailingDelimiter {
 						if instruction.Length == nil {
-							return nil, fmt.Errorf("delimited arrays with trailing-delimiter=false must have a length (array %s)", instructionName)
+							err = fmt.Errorf("delimited arrays with trailing-delimiter=false must have a length (array %s)", instructionName)
+							return
 						}
-						output.WriteString(fmt.Sprintf("\t\tif ndx + 1 < %s {\n", getLengthExpression(*instruction.Length)))
+
+						delimiterExpr = jen.If(
+							jen.Id("ndx").Op("+").Lit(1).Op("<").Add(getLengthExpression(*instruction.Length))).Block(delimiterExpr)
 					}
-					output.WriteString("\t\tif err = reader.NextChunk(); err != nil {\n\t\t\treturn\n\t\t}\n")
-					if !trailingDelimiter {
-						output.WriteString("\t\t}\n")
-					}
+
+					deserializeCodes = append(deserializeCodes, delimiterExpr)
 				}
-				output.WriteString("\t}\n\n")
+
+				g.For(
+					jen.Id("ndx").Op(":=").Lit(0),
+					lenExpr,
+					jen.Id("ndx").Op("++"),
+				).Block(deserializeCodes...).Line()
+			} else {
+				g.Add(deserializeCodes...)
 			}
 		}
-
-		return
 	}
-*/
-var _ = fmt.Printf
+
+	return
+}
 
 func getInstructionName(inst xml.ProtocolInstruction) (instName string) {
 	if inst.Name != nil {
@@ -738,104 +766,113 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 	}
 }
 
-/*
-	func writeGetTypeForDeserialize(output *strings.Builder, instructionName string, instruction xml.ProtocolInstruction, methodType string, castType *string) {
-		optional := instruction.Optional != nil && *instruction.Optional
+func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, castType *jen.Statement) []jen.Code {
+	instructionName := getInstructionName(instruction)
 
-		lengthExpr := ""
-		if instruction.XMLName.Local != "array" {
-			if instruction.Length != nil {
-				lengthExpr = getLengthExpression(*instruction.Length)
-			} else if methodType == "Bytes" {
-				lengthExpr = "reader.Remaining()"
-			}
+	// the method type is a string if it has the eotype_str or eotype_str_encoded flag
+	isString := (methodType&types.String) > 0 || (methodType&types.EncodedString) > 0
+
+	isArray := false
+	optional := instruction.Optional != nil && *instruction.Optional
+
+	lengthExpr := jen.Null()
+	if instruction.XMLName.Local != "array" {
+		if instruction.Length != nil {
+			lengthExpr = getLengthExpression(*instruction.Length)
+		} else if methodType == types.Bytes {
+			lengthExpr = jen.Id("reader").Dot("Remaining").Call()
+		}
+	} else {
+		// optional arrays that are unset will be nil.
+		// The length expression in the loop checks the length of the nil slice, which evaluates to 0.
+		// This means that arrays do not need additional dereferencing when optional.
+		optional = false
+		isArray = true
+	}
+
+	readerGetCode := jen.Id("reader").Dot("Get" + methodType.String()).Call(lengthExpr)
+
+	var retCodes []jen.Code
+	var assignRHS, assignLHS *jen.Statement
+	hasAssignTarget := false
+	if len(instructionName) == 0 && instruction.Content != nil {
+		if isString {
+			assignRHS = jen.Op("=").Add(readerGetCode)
+			assignLHS = jen.Id("_")
 		} else {
-			// optional arrays that are unset will be nil.
-			// The length expression in the loop checks the length of the nil slice, which evaluates to 0.
-			// This means that arrays do not need additional dereferencing when optional.
-			optional = false
+			assignRHS = jen.Add(readerGetCode)
+			assignLHS = jen.Null()
+		}
+	} else {
+		hasAssignTarget = true
+
+		indexCode := jen.Null()
+		if isArray {
+			// pre-append an item to the array in the struct field
+			var defaultCode *jen.Statement
+			if isString {
+				defaultCode = jen.Lit("")
+			} else {
+				defaultCode = jen.Lit(0)
+			}
+
+			retCodes = append(retCodes, jen.Id("s").Dot(instructionName).Op("=").Append(jen.Id("s").Dot(instructionName), defaultCode))
+			indexCode = jen.Index(jen.Id("ndx"))
 		}
 
 		if optional {
-			output.WriteString("\tif reader.Remaining() > 0 {\n")
+			// instantiate the optional struct field
+			retCodes = append(retCodes, jen.Id("s").Dot(instructionName).Op("=").New(jen.Do(func(s *jen.Statement) {
+				if castType != nil {
+					s.Add(castType)
+				} else if isString {
+					s.String()
+				} else {
+					s.Int()
+				}
+			})))
+
+			assignLHS = jen.Op("*").Id("s").Dot(instructionName).Add(indexCode)
+		} else {
+			assignLHS = jen.Id("s").Dot(instructionName).Add(indexCode)
 		}
 
-		if len(instructionName) == 0 && instruction.Content != nil {
-			output.WriteString(fmt.Sprintf("\treader.Get%s(%s)\n", methodType, lengthExpr))
-		} else {
-			if instruction.XMLName.Local == "array" {
-				output.WriteString(fmt.Sprintf("\t\ts.%s = append(s.%s, 0)\n", instructionName, instructionName))
-				instructionName = instructionName + "[ndx]"
-			}
-
+		assignRHS = jen.Op("=").Do(func(s *jen.Statement) {
 			if castType != nil {
-				if optional {
-					output.WriteString(fmt.Sprintf("\t\ts.%s = new(%s)\n\t\t*s.", instructionName, *castType))
-				} else {
-					output.WriteString("\t\ts.")
-				}
-
-				output.WriteString(fmt.Sprintf("%s = %s(reader.Get%s(%s))\n", instructionName, *castType, methodType, lengthExpr))
+				s.Add(castType).Call(readerGetCode)
 			} else {
-				if optional {
-					output.WriteString(fmt.Sprintf("\t\ts.%s = new(int)\n\t\t*s.", instructionName))
-				} else {
-					output.WriteString("\t\ts.")
-				}
-
-				output.WriteString(fmt.Sprintf("%s = reader.Get%s(%s)\n", instructionName, methodType, lengthExpr))
+				s.Add(readerGetCode)
 			}
-		}
-
-		if optional {
-			output.WriteString("\t}\n")
-		}
+		})
 	}
-*/
-var _ = fmt.Printf
 
-/*
-	func writeGetStringTypeForDeserialize(output *strings.Builder, instructionName string, instruction xml.ProtocolInstruction, methodType string) {
-		optional := instruction.Optional != nil && *instruction.Optional
-
-		lengthExpr := ""
-		if instruction.XMLName.Local != "array" {
-			if instruction.Length != nil {
-				lengthExpr = getLengthExpression(*instruction.Length)
+	var assignBlock *jen.Statement
+	if isString {
+		assignBlock = jen.If(
+			jen.List(assignLHS, jen.Id("err")).Add(assignRHS),
+			jen.Id("err").Op("!=").Nil(),
+		).Block(jen.Return()).Do(func(s *jen.Statement) {
+			// _, err := strconv.ParseInt(*instruction.Length, 10, 32)
+			if hasAssignTarget {
+				// For compatibility: prior codegen inserted an extra newline after fixed strings that referenced a length field
+				s.Line()
 			}
-		} else {
-			optional = false
-		}
-
-		if optional {
-			output.WriteString("\tif reader.Remaining() > 0 {\n")
-		}
-
-		if len(instructionName) == 0 && instruction.Content != nil {
-			output.WriteString(fmt.Sprintf("\tif _, err = reader.Get%s(%s); err != nil {\n\t\treturn\n\t}\n", methodType, lengthExpr))
-		} else {
-			if instruction.XMLName.Local == "array" {
-				output.WriteString(fmt.Sprintf("\t\ts.%s = append(s.%s, \"\")\n", instructionName, instructionName))
-				instructionName = instructionName + "[ndx]"
-			}
-
-			if optional {
-				output.WriteString(fmt.Sprintf("\t\ts.%s = new(string)\n\t\tif *s.", instructionName))
-			} else {
-				output.WriteString("\t\tif s.")
-			}
-
-			output.WriteString(fmt.Sprintf("%s, err = reader.Get%s(%s); err != nil {\n\t\treturn\n\t}\n\n", instructionName, methodType, lengthExpr))
-		}
-
-		if optional {
-			output.WriteString("\t}\n")
-		}
+		})
+	} else {
+		assignBlock = assignLHS.Add(assignRHS)
 	}
-*/
-var _ = fmt.Printf
 
-func getLengthExpression(instLength string) jen.Code {
+	if optional {
+		retCodes = append(retCodes, assignBlock)
+		retCodes = []jen.Code{jen.If(jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)).Block(retCodes...)}
+	} else {
+		retCodes = append(retCodes, assignBlock)
+	}
+
+	return retCodes
+}
+
+func getLengthExpression(instLength string) *jen.Statement {
 	if parsed, err := strconv.ParseInt(instLength, 10, 32); err == nil {
 		// string length is a numeric constant
 		return jen.Lit(int(parsed))

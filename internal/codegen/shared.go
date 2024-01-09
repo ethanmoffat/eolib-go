@@ -70,12 +70,6 @@ func writeTypeCommentJen(f *jen.File, typeName string, comment string) {
 	}
 }
 
-func writeTypeComment(output *strings.Builder, typeName string, comment string) {
-	if comment = sanitizeComment(comment); len(comment) > 0 {
-		output.WriteString(fmt.Sprintf("// %s :: %s\n", typeName, comment))
-	}
-}
-
 func writeInlineCommentJen(c jen.Code, comment string) {
 	if comment = sanitizeComment(comment); len(comment) > 0 {
 		switch v := c.(type) {
@@ -87,32 +81,8 @@ func writeInlineCommentJen(c jen.Code, comment string) {
 	}
 }
 
-func writeInlineComment(output *strings.Builder, comment string) {
-	if comment = sanitizeComment(comment); len(comment) > 0 {
-		output.WriteString(fmt.Sprintf(" // %s", comment))
-	}
-}
-
 func writeToFileJen(f *jen.File, outFileName string) error {
 	return f.Save(outFileName)
-}
-
-func writeToFile(outFileName string, outputText string) error {
-	ofp, err := os.Create(outFileName)
-	if err != nil {
-		return err
-	}
-	defer ofp.Close()
-
-	n, err := ofp.Write([]byte(outputText))
-	if err != nil {
-		return err
-	}
-	if n != len(outputText) {
-		return fmt.Errorf("wrote %d of %d bytes to file %s", n, len(outputText), outFileName)
-	}
-
-	return nil
 }
 
 func snakeCaseToCamelCase(input string) string {
