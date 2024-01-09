@@ -288,7 +288,7 @@ func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolI
 		}
 
 		if instructionType == "break" {
-			output.WriteString("\twriter.AddByte(0xFF)\n")
+			output.WriteString("\twriter.AddByte(255)\n")
 			continue
 		}
 
@@ -355,7 +355,11 @@ func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolI
 
 		typeName, typeSize := getInstructionTypeName(instruction)
 
-		output.WriteString("\t// " + instructionName + " : " + instructionType + " : " + *instruction.Type + "\n")
+		instructionNameComment := instructionName
+		if len(instructionNameComment) == 0 && instruction.Content != nil {
+			instructionNameComment = *instruction.Content
+		}
+		output.WriteString(fmt.Sprintf("\t// %s : %s : %s\n", instructionNameComment, instructionType, *instruction.Type))
 
 		delimited := instruction.Delimited != nil && *instruction.Delimited
 		trailingDelimiter := instruction.TrailingDelimiter == nil || *instruction.TrailingDelimiter
@@ -370,7 +374,7 @@ func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolI
 			output.WriteString(fmt.Sprintf("\tfor ndx := 0; ndx < %s; ndx++ {\n\t\t", lenExpr))
 
 			if delimited && !trailingDelimiter {
-				output.WriteString("\t\tif ndx > 0 {\n\t\t\twriter.AddByte(0xFF)\n\t\t}\n\n")
+				output.WriteString("\t\tif ndx > 0 {\n\t\t\twriter.AddByte(255)\n\t\t}\n\n")
 			}
 		}
 
@@ -442,7 +446,7 @@ func writeSerializeBody(output *strings.Builder, instructionList []xml.ProtocolI
 
 		if instructionType == "array" {
 			if delimited && trailingDelimiter {
-				output.WriteString("\t\twriter.AddByte(0xFF)\n")
+				output.WriteString("\t\twriter.AddByte(255)\n")
 			}
 			output.WriteString("\t}\n\n")
 		}
@@ -481,7 +485,7 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 			if isChunked {
 				output.WriteString("\tif err = reader.NextChunk(); err != nil {\n\t\treturn\n\t}\n")
 			} else {
-				output.WriteString("\tif breakByte := reader.GetByte(); breakByte != 0xFF {\n")
+				output.WriteString("\tif breakByte := reader.GetByte(); breakByte != 255 {\n")
 				output.WriteString("\t\treturn fmt.Errorf(\"missing expected break byte\")\n")
 				output.WriteString("\t}\n")
 			}
@@ -545,7 +549,11 @@ func writeDeserializeBody(output *strings.Builder, instructionList []xml.Protoco
 
 		typeName, typeSize := getInstructionTypeName(instruction)
 
-		output.WriteString("\t// " + instructionName + " : " + instructionType + " : " + *instruction.Type + "\n")
+		instructionNameComment := instructionName
+		if len(instructionNameComment) == 0 && instruction.Content != nil {
+			instructionNameComment = *instruction.Content
+		}
+		output.WriteString(fmt.Sprintf("\t// %s : %s : %s\n", instructionNameComment, instructionType, *instruction.Type))
 
 		var lenExpr string
 		if instructionType == "array" {
