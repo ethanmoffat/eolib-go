@@ -361,7 +361,7 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 			case "int":
 				fallthrough
 			case "blob":
-				serializeCodes = getSerializeForInstruction(instruction, types.NewSerializationType(typeName), false)
+				serializeCodes = getSerializeForInstruction(instruction, types.NewEoType(typeName), false)
 			case "bool":
 				if len(typeSize) > 0 {
 					typeName = string(unicode.ToUpper(rune(typeSize[0]))) + typeSize[1:]
@@ -402,7 +402,7 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 						).Block(jen.Return()),
 					}
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
-					if t := types.NewSerializationType(e.Type); t&types.Primitive > 0 {
+					if t := types.NewEoType(e.Type); t&types.Primitive > 0 {
 						serializeCodes = getSerializeForInstruction(instruction, t, true)
 					}
 				} else {

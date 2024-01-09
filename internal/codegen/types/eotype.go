@@ -73,7 +73,7 @@ func (t EoType) String() string {
 	return ""
 }
 
-func NewSerializationType(str string) EoType {
+func NewEoType(str string) EoType {
 	switch str {
 	case "byte":
 		return Byte
