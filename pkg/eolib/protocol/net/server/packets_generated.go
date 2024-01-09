@@ -107,19 +107,19 @@ func (s *InitInitReplyCodeDataOk) Deserialize(reader *data.EoReader) (err error)
 
 type InitInitReplyCodeDataBanned struct {
 	BanType     InitBanType
-	BanTypeData BanTypeData
+	BanTypeData InitInitBanTypeData
 }
 
-type BanTypeData interface {
+type InitInitBanTypeData interface {
 	protocol.EoData
 }
 
-// BanTypeData0 ::  The official client treats any value below 2 as a temporary ban. The official server sends 1, but some game server implementations. erroneously send 0.
-type BanTypeData0 struct {
+// InitInitBanTypeData0 ::  The official client treats any value below 2 as a temporary ban. The official server sends 1, but some game server implementations. erroneously send 0.
+type InitInitBanTypeData0 struct {
 	MinutesRemaining int
 }
 
-func (s *BanTypeData0) Serialize(writer *data.EoWriter) (err error) {
+func (s *InitInitBanTypeData0) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -130,7 +130,7 @@ func (s *BanTypeData0) Serialize(writer *data.EoWriter) (err error) {
 	return
 }
 
-func (s *BanTypeData0) Deserialize(reader *data.EoReader) (err error) {
+func (s *InitInitBanTypeData0) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -140,11 +140,11 @@ func (s *BanTypeData0) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-type BanTypeDataTemporary struct {
+type InitInitBanTypeDataTemporary struct {
 	MinutesRemaining int
 }
 
-func (s *BanTypeDataTemporary) Serialize(writer *data.EoWriter) (err error) {
+func (s *InitInitBanTypeDataTemporary) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -155,7 +155,7 @@ func (s *BanTypeDataTemporary) Serialize(writer *data.EoWriter) (err error) {
 	return
 }
 
-func (s *BanTypeDataTemporary) Deserialize(reader *data.EoReader) (err error) {
+func (s *InitInitBanTypeDataTemporary) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -176,7 +176,7 @@ func (s *InitInitReplyCodeDataBanned) Serialize(writer *data.EoWriter) (err erro
 	switch s.BanType {
 	case 0:
 		switch s.BanTypeData.(type) {
-		case *BanTypeData0:
+		case *InitInitBanTypeData0:
 			if err = s.BanTypeData.Serialize(writer); err != nil {
 				return
 			}
@@ -186,7 +186,7 @@ func (s *InitInitReplyCodeDataBanned) Serialize(writer *data.EoWriter) (err erro
 		}
 	case InitBan_Temporary:
 		switch s.BanTypeData.(type) {
-		case *BanTypeDataTemporary:
+		case *InitInitBanTypeDataTemporary:
 			if err = s.BanTypeData.Serialize(writer); err != nil {
 				return
 			}
@@ -206,12 +206,12 @@ func (s *InitInitReplyCodeDataBanned) Deserialize(reader *data.EoReader) (err er
 	s.BanType = InitBanType(reader.GetByte())
 	switch s.BanType {
 	case 0:
-		s.BanTypeData = &BanTypeData0{}
+		s.BanTypeData = &InitInitBanTypeData0{}
 		if err = s.BanTypeData.Deserialize(reader); err != nil {
 			return
 		}
 	case InitBan_Temporary:
-		s.BanTypeData = &BanTypeDataTemporary{}
+		s.BanTypeData = &InitInitBanTypeDataTemporary{}
 		if err = s.BanTypeData.Deserialize(reader); err != nil {
 			return
 		}

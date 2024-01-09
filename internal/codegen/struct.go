@@ -219,10 +219,11 @@ func writeSwitchStructs(f *jen.File, switchInst xml.ProtocolInstruction, si *typ
 		caseStructName := fmt.Sprintf("%s%s", switchInterfaceName, caseName)
 
 		nestedStructInfo := &types.StructInfo{
-			Name:         caseStructName,
-			Comment:      c.Comment,
-			Instructions: c.Instructions,
-			PackageName:  si.PackageName,
+			Name:                  caseStructName,
+			Comment:               c.Comment,
+			Instructions:          c.Instructions,
+			PackageName:           si.PackageName,
+			SwitchStructQualifier: si.SwitchStructQualifier,
 		}
 		err = writeStructShared(f, nestedStructInfo, fullSpec)
 		if err != nil {
