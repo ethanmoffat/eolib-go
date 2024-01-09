@@ -1,12 +1,6 @@
 package protocol
 
-import (
-	"fmt"
-	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
-)
-
-// Ensure fmt import is referenced in generated code
-var _ = fmt.Printf
+import "github.com/ethanmoffat/eolib-go/pkg/eolib/data"
 
 // Coords :: Map coordinates.
 type Coords struct {

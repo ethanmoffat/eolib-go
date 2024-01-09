@@ -3,12 +3,9 @@ package server
 import (
 	"fmt"
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
-	protocol "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
-	net "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net"
 )
-
-// Ensure fmt import is referenced in generated code
-var _ = fmt.Printf
 
 // BigCoords :: Map coordinates with 2-byte values.
 type BigCoords struct {

@@ -1,12 +1,6 @@
 package pub
 
-import (
-	"fmt"
-	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
-)
-
-// Ensure fmt import is referenced in generated code
-var _ = fmt.Printf
+import "github.com/ethanmoffat/eolib-go/pkg/eolib/data"
 
 // EifRecord :: Record of Item data in an Endless Item File.
 type EifRecord struct {

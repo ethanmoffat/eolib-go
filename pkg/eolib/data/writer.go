@@ -31,7 +31,7 @@ func (w *EoWriter) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
-// AddInt adds a raw byte to the writer data.
+// AddByte adds a raw byte to the writer data.
 func (w *EoWriter) AddByte(value int) error {
 	if value > 0xFF {
 		return errors.New("value is larger than maximum raw byte size")

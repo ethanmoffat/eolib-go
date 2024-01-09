@@ -1,13 +1,9 @@
 package client
 
 import (
-	"fmt"
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
-	protocol "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
 )
-
-// Ensure fmt import is referenced in generated code
-var _ = fmt.Printf
 
 // ByteCoords :: Map coordinates with raw 1-byte values.
 type ByteCoords struct {
