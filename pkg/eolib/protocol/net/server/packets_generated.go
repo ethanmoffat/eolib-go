@@ -3,13 +3,10 @@ package server
 import (
 	"fmt"
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
-	protocol "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
-	net "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net"
-	pub "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/pub"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/pub"
 )
-
-// Ensure fmt import is referenced in generated code
-var _ = fmt.Printf
 
 // InitInitServerPacket ::  Reply to connection initialization and requests for unencrypted data. This packet is unencrypted.
 type InitInitServerPacket struct {
@@ -110,19 +107,19 @@ func (s *InitInitReplyCodeDataOk) Deserialize(reader *data.EoReader) (err error)
 
 type InitInitReplyCodeDataBanned struct {
 	BanType     InitBanType
-	BanTypeData InitInitBanTypeData
+	BanTypeData BanTypeData
 }
 
-type InitInitBanTypeData interface {
+type BanTypeData interface {
 	protocol.EoData
 }
 
-// InitInitBanTypeData0 ::  The official client treats any value below 2 as a temporary ban. The official server sends 1, but some game server implementations. erroneously send 0.
-type InitInitBanTypeData0 struct {
+// BanTypeData0 ::  The official client treats any value below 2 as a temporary ban. The official server sends 1, but some game server implementations. erroneously send 0.
+type BanTypeData0 struct {
 	MinutesRemaining int
 }
 
-func (s *InitInitBanTypeData0) Serialize(writer *data.EoWriter) (err error) {
+func (s *BanTypeData0) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -133,7 +130,7 @@ func (s *InitInitBanTypeData0) Serialize(writer *data.EoWriter) (err error) {
 	return
 }
 
-func (s *InitInitBanTypeData0) Deserialize(reader *data.EoReader) (err error) {
+func (s *BanTypeData0) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -143,11 +140,11 @@ func (s *InitInitBanTypeData0) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-type InitInitBanTypeDataTemporary struct {
+type BanTypeDataTemporary struct {
 	MinutesRemaining int
 }
 
-func (s *InitInitBanTypeDataTemporary) Serialize(writer *data.EoWriter) (err error) {
+func (s *BanTypeDataTemporary) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
@@ -158,7 +155,7 @@ func (s *InitInitBanTypeDataTemporary) Serialize(writer *data.EoWriter) (err err
 	return
 }
 
-func (s *InitInitBanTypeDataTemporary) Deserialize(reader *data.EoReader) (err error) {
+func (s *BanTypeDataTemporary) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
@@ -179,7 +176,7 @@ func (s *InitInitReplyCodeDataBanned) Serialize(writer *data.EoWriter) (err erro
 	switch s.BanType {
 	case 0:
 		switch s.BanTypeData.(type) {
-		case *InitInitBanTypeData0:
+		case *BanTypeData0:
 			if err = s.BanTypeData.Serialize(writer); err != nil {
 				return
 			}
@@ -189,7 +186,7 @@ func (s *InitInitReplyCodeDataBanned) Serialize(writer *data.EoWriter) (err erro
 		}
 	case InitBan_Temporary:
 		switch s.BanTypeData.(type) {
-		case *InitInitBanTypeDataTemporary:
+		case *BanTypeDataTemporary:
 			if err = s.BanTypeData.Serialize(writer); err != nil {
 				return
 			}
@@ -209,12 +206,12 @@ func (s *InitInitReplyCodeDataBanned) Deserialize(reader *data.EoReader) (err er
 	s.BanType = InitBanType(reader.GetByte())
 	switch s.BanType {
 	case 0:
-		s.BanTypeData = &InitInitBanTypeData0{}
+		s.BanTypeData = &BanTypeData0{}
 		if err = s.BanTypeData.Deserialize(reader); err != nil {
 			return
 		}
 	case InitBan_Temporary:
-		s.BanTypeData = &InitInitBanTypeDataTemporary{}
+		s.BanTypeData = &BanTypeDataTemporary{}
 		if err = s.BanTypeData.Deserialize(reader); err != nil {
 			return
 		}
@@ -8104,7 +8101,6 @@ func (s *ChestSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 // ChestCloseServerPacket ::  Reply to trying to interact with a locked or "broken" chest. The official client assumes a broken chest if the packet is under 2 bytes in length.
 type ChestCloseServerPacket struct {
 	Key *int // Sent if the player is trying to interact with a locked chest.
-
 }
 
 func (s ChestCloseServerPacket) Family() net.PacketFamily {
