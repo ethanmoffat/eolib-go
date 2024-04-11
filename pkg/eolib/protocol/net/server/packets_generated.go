@@ -4294,10 +4294,9 @@ func (s *EmotePlayerServerPacket) Deserialize(reader *data.EoReader) (err error)
 	return
 }
 
-// EffectPlayerServerPacket :: Nearby player doing an effect.
+// EffectPlayerServerPacket :: Effects playing on nearby players.
 type EffectPlayerServerPacket struct {
-	PlayerId int
-	EffectId int
+	Effects []PlayerEffect
 }
 
 func (s EffectPlayerServerPacket) Family() net.PacketFamily {
@@ -4312,14 +4311,13 @@ func (s *EffectPlayerServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// PlayerId : field : short
-	if err = writer.AddShort(s.PlayerId); err != nil {
-		return
+	// Effects : array : PlayerEffect
+	for ndx := 0; ndx < len(s.Effects); ndx++ {
+		if err = s.Effects[ndx].Serialize(writer); err != nil {
+			return
+		}
 	}
-	// EffectId : field : three
-	if err = writer.AddThree(s.EffectId); err != nil {
-		return
-	}
+
 	return
 }
 
@@ -4327,10 +4325,13 @@ func (s *EffectPlayerServerPacket) Deserialize(reader *data.EoReader) (err error
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	// PlayerId : field : short
-	s.PlayerId = reader.GetShort()
-	// EffectId : field : three
-	s.EffectId = reader.GetThree()
+	// Effects : array : PlayerEffect
+	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.Effects = append(s.Effects, PlayerEffect{})
+		if err = s.Effects[ndx].Deserialize(reader); err != nil {
+			return
+		}
+	}
 
 	return
 }
@@ -7061,7 +7062,7 @@ func (s *JukeboxPlayerServerPacket) Deserialize(reader *data.EoReader) (err erro
 
 // JukeboxUseServerPacket :: Play jukebox music.
 type JukeboxUseServerPacket struct {
-	TrackId int
+	TrackId int // This value is 1-indexed.
 }
 
 func (s JukeboxUseServerPacket) Family() net.PacketFamily {
@@ -9078,7 +9079,7 @@ func (s *GuildSellServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// GuildBuyServerPacket :: Deposit guild bank list reply.
+// GuildBuyServerPacket :: Deposit guild bank reply.
 type GuildBuyServerPacket struct {
 	GoldAmount int
 }
@@ -9710,8 +9711,8 @@ func (s *SpellErrorServerPacket) Deserialize(reader *data.EoReader) (err error) 
 type AvatarAdminServerPacket struct {
 	CasterId        int
 	VictimId        int
-	CasterDirection protocol.Direction
 	Damage          int
+	CasterDirection protocol.Direction
 	HpPercentage    int
 	VictimDied      bool
 	SpellId         int
@@ -9737,12 +9738,12 @@ func (s *AvatarAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.VictimId); err != nil {
 		return
 	}
-	// CasterDirection : field : Direction
-	if err = writer.AddChar(int(s.CasterDirection)); err != nil {
-		return
-	}
 	// Damage : field : three
 	if err = writer.AddThree(s.Damage); err != nil {
+		return
+	}
+	// CasterDirection : field : Direction
+	if err = writer.AddChar(int(s.CasterDirection)); err != nil {
 		return
 	}
 	// HpPercentage : field : char
@@ -9774,10 +9775,10 @@ func (s *AvatarAdminServerPacket) Deserialize(reader *data.EoReader) (err error)
 	s.CasterId = reader.GetShort()
 	// VictimId : field : short
 	s.VictimId = reader.GetShort()
-	// CasterDirection : field : Direction
-	s.CasterDirection = protocol.Direction(reader.GetChar())
 	// Damage : field : three
 	s.Damage = reader.GetThree()
+	// CasterDirection : field : Direction
+	s.CasterDirection = protocol.Direction(reader.GetChar())
 	// HpPercentage : field : char
 	s.HpPercentage = reader.GetChar()
 	// VictimDied : field : bool
@@ -10309,7 +10310,7 @@ type NpcReplyServerPacket struct {
 	NpcIndex            int
 	Damage              int
 	HpPercentage        int
-	KillStealProtection *NpcKillStealProtectionState
+	KillStealProtection *NpcKillStealProtectionState // This field should be sent to the attacker, but not nearby players.
 }
 
 func (s NpcReplyServerPacket) Family() net.PacketFamily {
@@ -12063,10 +12064,9 @@ func (s *EffectUseServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// EffectAgreeServerPacket :: Map tile effect.
+// EffectAgreeServerPacket :: Effects playing on nearby tiles.
 type EffectAgreeServerPacket struct {
-	Coords   protocol.Coords
-	EffectId int
+	Effects []TileEffect
 }
 
 func (s EffectAgreeServerPacket) Family() net.PacketFamily {
@@ -12081,14 +12081,13 @@ func (s *EffectAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// Coords : field : Coords
-	if err = s.Coords.Serialize(writer); err != nil {
-		return
+	// Effects : array : TileEffect
+	for ndx := 0; ndx < len(s.Effects); ndx++ {
+		if err = s.Effects[ndx].Serialize(writer); err != nil {
+			return
+		}
 	}
-	// EffectId : field : short
-	if err = writer.AddShort(s.EffectId); err != nil {
-		return
-	}
+
 	return
 }
 
@@ -12096,12 +12095,13 @@ func (s *EffectAgreeServerPacket) Deserialize(reader *data.EoReader) (err error)
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	// Coords : field : Coords
-	if err = s.Coords.Deserialize(reader); err != nil {
-		return
+	// Effects : array : TileEffect
+	for ndx := 0; reader.Remaining() > 0; ndx++ {
+		s.Effects = append(s.Effects, TileEffect{})
+		if err = s.Effects[ndx].Deserialize(reader); err != nil {
+			return
+		}
 	}
-	// EffectId : field : short
-	s.EffectId = reader.GetShort()
 
 	return
 }

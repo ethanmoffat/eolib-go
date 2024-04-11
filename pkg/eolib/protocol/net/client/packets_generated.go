@@ -3345,7 +3345,7 @@ func (s *JukeboxOpenClientPacket) Deserialize(reader *data.EoReader) (err error)
 
 // JukeboxMsgClientPacket :: Requesting a song on a jukebox.
 type JukeboxMsgClientPacket struct {
-	TrackId int
+	TrackId int // This value is 0-indexed.
 }
 
 func (s JukeboxMsgClientPacket) Family() net.PacketFamily {
@@ -3360,7 +3360,6 @@ func (s *JukeboxMsgClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	writer.SanitizeStrings = true
 	// 0 : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
@@ -3373,7 +3372,6 @@ func (s *JukeboxMsgClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.TrackId); err != nil {
 		return
 	}
-	writer.SanitizeStrings = false
 	return
 }
 
@@ -3381,14 +3379,12 @@ func (s *JukeboxMsgClientPacket) Deserialize(reader *data.EoReader) (err error) 
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	reader.SetIsChunked(true)
 	// 0 : field : char
 	reader.GetChar()
 	// 0 : field : char
 	reader.GetChar()
 	// TrackId : field : short
 	s.TrackId = reader.GetShort()
-	reader.SetIsChunked(false)
 
 	return
 }
@@ -4749,6 +4745,7 @@ func (s *GuildPlayerClientPacket) Deserialize(reader *data.EoReader) (err error)
 type GuildTakeClientPacket struct {
 	SessionId int
 	InfoType  GuildInfoType
+	GuildTag  string
 }
 
 func (s GuildTakeClientPacket) Family() net.PacketFamily {
@@ -4771,6 +4768,10 @@ func (s *GuildTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(int(s.InfoType)); err != nil {
 		return
 	}
+	// GuildTag : field : string
+	if err = writer.AddFixedString(s.GuildTag, 3); err != nil {
+		return
+	}
 	return
 }
 
@@ -4782,6 +4783,10 @@ func (s *GuildTakeClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	s.SessionId = reader.GetInt()
 	// InfoType : field : GuildInfoType
 	s.InfoType = GuildInfoType(reader.GetShort())
+	// GuildTag : field : string
+	if s.GuildTag, err = reader.GetFixedString(3); err != nil {
+		return
+	}
 
 	return
 }

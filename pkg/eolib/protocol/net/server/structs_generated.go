@@ -2120,7 +2120,7 @@ type CharacterStatsInfoLookup struct {
 	Tp             int
 	MaxTp          int
 	BaseStats      CharacterBaseStats
-	SecondaryStats CharacterSecondaryStats
+	SecondaryStats CharacterSecondaryStatsInfoLookup
 	ElementalStats CharacterElementalStats
 }
 
@@ -2148,7 +2148,7 @@ func (s *CharacterStatsInfoLookup) Serialize(writer *data.EoWriter) (err error) 
 	if err = s.BaseStats.Serialize(writer); err != nil {
 		return
 	}
-	// SecondaryStats : field : CharacterSecondaryStats
+	// SecondaryStats : field : CharacterSecondaryStatsInfoLookup
 	if err = s.SecondaryStats.Serialize(writer); err != nil {
 		return
 	}
@@ -2175,7 +2175,7 @@ func (s *CharacterStatsInfoLookup) Deserialize(reader *data.EoReader) (err error
 	if err = s.BaseStats.Deserialize(reader); err != nil {
 		return
 	}
-	// SecondaryStats : field : CharacterSecondaryStats
+	// SecondaryStats : field : CharacterSecondaryStatsInfoLookup
 	if err = s.SecondaryStats.Deserialize(reader); err != nil {
 		return
 	}
@@ -3383,6 +3383,74 @@ func (s *GlobalBackfillMessage) Deserialize(reader *data.EoReader) (err error) {
 	}
 
 	reader.SetIsChunked(false)
+
+	return
+}
+
+// PlayerEffect :: An effect playing on a player.
+type PlayerEffect struct {
+	PlayerId int
+	EffectId int
+}
+
+func (s *PlayerEffect) Serialize(writer *data.EoWriter) (err error) {
+	oldSanitizeStrings := writer.SanitizeStrings
+	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
+
+	// PlayerId : field : short
+	if err = writer.AddShort(s.PlayerId); err != nil {
+		return
+	}
+	// EffectId : field : three
+	if err = writer.AddThree(s.EffectId); err != nil {
+		return
+	}
+	return
+}
+
+func (s *PlayerEffect) Deserialize(reader *data.EoReader) (err error) {
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
+
+	// PlayerId : field : short
+	s.PlayerId = reader.GetShort()
+	// EffectId : field : three
+	s.EffectId = reader.GetThree()
+
+	return
+}
+
+// TileEffect :: An effect playing on a tile.
+type TileEffect struct {
+	Coords   protocol.Coords
+	EffectId int
+}
+
+func (s *TileEffect) Serialize(writer *data.EoWriter) (err error) {
+	oldSanitizeStrings := writer.SanitizeStrings
+	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
+
+	// Coords : field : Coords
+	if err = s.Coords.Serialize(writer); err != nil {
+		return
+	}
+	// EffectId : field : short
+	if err = writer.AddShort(s.EffectId); err != nil {
+		return
+	}
+	return
+}
+
+func (s *TileEffect) Deserialize(reader *data.EoReader) (err error) {
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
+
+	// Coords : field : Coords
+	if err = s.Coords.Deserialize(reader); err != nil {
+		return
+	}
+	// EffectId : field : short
+	s.EffectId = reader.GetShort()
 
 	return
 }
