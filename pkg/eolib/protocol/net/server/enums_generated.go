@@ -8,7 +8,7 @@ type InitReply int
 const (
 	InitReply_OutOfDate InitReply = iota + 1
 	InitReply_Ok
-	InitReply_Banned
+	InitReply_Banned // The official client won't display a message until the connection from the server is closed.
 	InitReply_WarpMap
 	InitReply_FileEmf
 	InitReply_FileEif
@@ -381,9 +381,9 @@ const (
 	LoginReply_WrongUser LoginReply = iota + 1
 	LoginReply_WrongUserPassword
 	LoginReply_Ok
-	LoginReply_Banned
+	LoginReply_Banned // The official client won't display a message until the connection from the server is closed.
 	LoginReply_LoggedIn
-	LoginReply_Busy
+	LoginReply_Busy // The official client won't display a message until the connection from the server is closed.
 )
 
 // String converts a LoginReply value into its string representation
