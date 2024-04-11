@@ -3,13 +3,10 @@ package server
 import (
 	"fmt"
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
-	protocol "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
-	net "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net"
-	pub "github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/pub"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/net"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol/pub"
 )
-
-// Ensure fmt import is referenced in generated code
-var _ = fmt.Printf
 
 // InitInitServerPacket ::  Reply to connection initialization and requests for unencrypted data. This packet is unencrypted.
 type InitInitServerPacket struct {
@@ -8104,7 +8101,6 @@ func (s *ChestSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 // ChestCloseServerPacket ::  Reply to trying to interact with a locked or "broken" chest. The official client assumes a broken chest if the packet is under 2 bytes in length.
 type ChestCloseServerPacket struct {
 	Key *int // Sent if the player is trying to interact with a locked chest.
-
 }
 
 func (s ChestCloseServerPacket) Family() net.PacketFamily {
