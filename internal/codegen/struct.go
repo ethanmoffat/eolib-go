@@ -2,6 +2,7 @@ package codegen
 
 import (
 	"fmt"
+	"math"
 	"path"
 	"strconv"
 	"unicode"
@@ -743,6 +744,16 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 		instructionCode = jen.Int().Call(instructionCode)
 	}
 
+	if instruction.Offset != nil {
+		var op string
+		if *instruction.Offset < 0 {
+			op = "+"
+		} else {
+			op = "-"
+		}
+		instructionCode = instructionCode.Op(op).Lit(int(math.Abs(float64(*instruction.Offset))))
+	}
+
 	serializeCode := jen.If(
 		jen.Id("err").Op("=").Id("writer").Dot("Add"+methodType.String()).Call(
 			instructionCode,
@@ -792,6 +803,15 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 	}
 
 	readerGetCode := jen.Id("reader").Dot("Get" + methodType.String()).Call(lengthExpr)
+	if instruction.Offset != nil {
+		var op string
+		if *instruction.Offset < 0 {
+			op = "-"
+		} else {
+			op = "+"
+		}
+		readerGetCode = readerGetCode.Op(op).Lit(int(math.Abs(float64(*instruction.Offset))))
+	}
 
 	var retCodes []jen.Code
 	var assignRHS, assignLHS *jen.Statement

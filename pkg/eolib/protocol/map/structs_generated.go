@@ -225,7 +225,7 @@ func (s *MapSign) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// StringDataLength : length : short
-	if err = writer.AddShort(s.StringDataLength); err != nil {
+	if err = writer.AddShort(s.StringDataLength + 1); err != nil {
 		return
 	}
 	// StringData : field : encoded_string
@@ -248,7 +248,7 @@ func (s *MapSign) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// StringDataLength : length : short
-	s.StringDataLength = reader.GetShort()
+	s.StringDataLength = reader.GetShort() - 1
 	// StringData : field : encoded_string
 	if s.StringData, err = reader.GetFixedEncodedString(s.StringDataLength); err != nil {
 		return
