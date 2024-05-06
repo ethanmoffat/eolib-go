@@ -1547,13 +1547,16 @@ func (s *CharacterReplyReplyCodeDataOk) Deserialize(reader *data.EoReader) (err 
 	s.CharactersCount = reader.GetChar()
 	// 0 : field : char
 	reader.GetChar()
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Characters : array : CharacterSelectionListEntry
 	for ndx := 0; ndx < s.CharactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterSelectionListEntry{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
+			return
+		}
+		if err = reader.NextChunk(); err != nil {
 			return
 		}
 	}
@@ -1592,13 +1595,16 @@ func (s *CharacterReplyReplyCodeDataDeleted) Deserialize(reader *data.EoReader) 
 
 	// CharactersCount : length : char
 	s.CharactersCount = reader.GetChar()
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Characters : array : CharacterSelectionListEntry
 	for ndx := 0; ndx < s.CharactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterSelectionListEntry{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
+			return
+		}
+		if err = reader.NextChunk(); err != nil {
 			return
 		}
 	}
@@ -1916,13 +1922,16 @@ func (s *LoginReplyReplyCodeDataOk) Deserialize(reader *data.EoReader) (err erro
 	s.CharactersCount = reader.GetChar()
 	// 0 : field : char
 	reader.GetChar()
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Characters : array : CharacterSelectionListEntry
 	for ndx := 0; ndx < s.CharactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterSelectionListEntry{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
+			return
+		}
+		if err = reader.NextChunk(); err != nil {
 			return
 		}
 	}
@@ -2370,32 +2379,32 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Title : field : string
 	if s.Title, err = reader.GetString(); err != nil {
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// GuildName : field : string
 	if s.GuildName, err = reader.GetString(); err != nil {
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// GuildRankName : field : string
 	if s.GuildRankName, err = reader.GetString(); err != nil {
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// ClassId : field : char
 	s.ClassId = reader.GetChar()
@@ -2428,8 +2437,8 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	}
 	// LoginMessageCode : field : LoginMessageCode
 	s.LoginMessageCode = LoginMessageCode(reader.GetChar())
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 
 	return
@@ -2487,8 +2496,8 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// News : array : string
 	for ndx := 0; ndx < 9; ndx++ {
@@ -2497,6 +2506,9 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 			return
 		}
 
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
 	// Weight : field : Weight
@@ -2504,26 +2516,26 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 		return
 	}
 	// Items : array : Item
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	for ndx := 0; ndx < reader.Remaining()/6; ndx++ {
 		s.Items = append(s.Items, net.Item{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
 		}
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Spells : array : Spell
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	for ndx := 0; ndx < reader.Remaining()/4; ndx++ {
 		s.Spells = append(s.Spells, net.Spell{})
 		if err = s.Spells[ndx].Deserialize(reader); err != nil {
 			return
 		}
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Nearby : field : NearbyInfo
 	if err = s.Nearby.Deserialize(reader); err != nil {
@@ -2641,16 +2653,16 @@ func (s *AdminInteractReplyMessageTypeDataMessage) Deserialize(reader *data.EoRe
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Message : field : string
 	if s.Message, err = reader.GetString(); err != nil {
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 
 	return
@@ -2693,24 +2705,24 @@ func (s *AdminInteractReplyMessageTypeDataReport) Deserialize(reader *data.EoRea
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// Message : field : string
 	if s.Message, err = reader.GetString(); err != nil {
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 	// ReporteeName : field : string
 	if s.ReporteeName, err = reader.GetString(); err != nil {
 		return
 	}
 
-	if breakByte := reader.GetByte(); breakByte != 255 {
-		return fmt.Errorf("missing expected break byte")
+	if err = reader.NextChunk(); err != nil {
+		return
 	}
 
 	return
@@ -4690,7 +4702,7 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// NpcIndexes : array : char
-	for ndx := 0; ndx < reader.Remaining()/1; ndx++ {
+	for ndx := 0; reader.Remaining() > 0; ndx++ {
 		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}
@@ -5650,7 +5662,7 @@ func (s *ShopOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// CraftItems : array : ShopCraftItem
-	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
+	for ndx := 0; ndx < reader.Remaining()/14; ndx++ {
 		s.CraftItems = append(s.CraftItems, ShopCraftItem{})
 		if err = s.CraftItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -5721,7 +5733,7 @@ func (s *StatSkillOpenServerPacket) Deserialize(reader *data.EoReader) (err erro
 		return
 	}
 	// Skills : array : SkillLearn
-	for ndx := 0; ndx < reader.Remaining()/20; ndx++ {
+	for ndx := 0; ndx < reader.Remaining()/28; ndx++ {
 		s.Skills = append(s.Skills, SkillLearn{})
 		if err = s.Skills[ndx].Deserialize(reader); err != nil {
 			return
@@ -11098,6 +11110,9 @@ func (s *QuestListPageDataProgress) Deserialize(reader *data.EoReader) (err erro
 		if err = s.QuestProgressEntries[ndx].Deserialize(reader); err != nil {
 			return
 		}
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
 	return
@@ -11133,6 +11148,9 @@ func (s *QuestListPageDataHistory) Deserialize(reader *data.EoReader) (err error
 			return
 		}
 
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
 	return

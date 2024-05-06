@@ -100,7 +100,7 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 		// defer here uses 'Values' instead of 'Block' so the deferred function is single-line style
 		g.Defer().Func().Params().Values(jen.Id("reader").Dot("SetIsChunked").Call(jen.Id("oldIsChunked"))).Call().Line()
 
-		err = writeDeserializeBody(g, si, fullSpec, nil, false)
+		err = writeDeserializeBody(g, si, fullSpec, nil)
 
 		g.Line().Return()
 	}).Line()
@@ -450,7 +450,7 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 	return
 }
 
-func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol, outerInstructionList []xml.ProtocolInstruction, isChunked bool) (err error) {
+func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol, outerInstructionList []xml.ProtocolInstruction) (err error) {
 	for _, instruction := range si.Instructions {
 		instructionType := instruction.XMLName.Local
 		instructionName := getInstructionName(instruction)
@@ -464,13 +464,13 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 				return
 			}
 
-			if err = writeDeserializeBody(g, nestedInfo, fullSpec, si.Instructions, true); err != nil {
+			if err = writeDeserializeBody(g, nestedInfo, fullSpec, si.Instructions); err != nil {
 				return
 			}
 
 			g.Id("reader").Dot("SetIsChunked").Call(jen.False())
 		case "break":
-			if isChunked {
+			if instruction.IsChunked {
 				g.If(
 					jen.Id("err").Op("=").Id("reader").Dot("NextChunk").Call(),
 					jen.Id("err").Op("!=").Nil(),
@@ -652,8 +652,8 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 				var lenExpr *jen.Statement
 				if instruction.Length != nil {
 					lenExpr = jen.Id("ndx").Op("<").Add(getLengthExpression(*instruction.Length))
-				} else if !delimited && isChunked {
-					if rawLen, err := types.CalculateTypeSize(typeName, fullSpec); err != nil {
+				} else if !delimited && instruction.IsChunked {
+					if rawLen, err := types.CalculateTypeSize(typeName, fullSpec); err != nil || rawLen == 1 {
 						lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
 					} else {
 						lenExpr = jen.Id("ndx").Op("<").Id("reader").Dot("Remaining").Call().Op("/").Lit(rawLen)
@@ -664,7 +664,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 
 				trailingDelimiter := instruction.TrailingDelimiter == nil || *instruction.TrailingDelimiter
 
-				if delimited && isChunked {
+				if delimited && instruction.IsChunked {
 					delimiterExpr := jen.If(
 						jen.Id("err").Op("=").Id("reader").Dot("NextChunk").Call(),
 						jen.Id("err").Op("!=").Nil(),

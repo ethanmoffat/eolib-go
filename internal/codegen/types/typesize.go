@@ -52,6 +52,8 @@ func CalculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 
 	for _, instruction := range flattenedInstList {
 		switch instruction.XMLName.Local {
+		case "array":
+			fallthrough
 		case "field":
 			fieldTypeName, fieldTypeSize := GetInstructionTypeName(instruction)
 			if fieldTypeSize != "" {
@@ -61,7 +63,11 @@ func CalculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 			if instruction.Length != nil {
 				if length, err := strconv.ParseInt(*instruction.Length, 10, 32); err == nil {
 					// length is a numeric constant
-					res += int(length)
+					if fieldSize, err := CalculateTypeSize(fieldTypeName, fullSpec); err == nil {
+						res += fieldSize * int(length)
+					} else {
+						return 0, err
+					}
 				} else {
 					return 0, fmt.Errorf("instruction length %s must be a fixed size for %s (%s)", *instruction.Length, *instruction.Name, instruction.XMLName.Local)
 				}
@@ -74,8 +80,6 @@ func CalculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 			}
 		case "break":
 			res += 1
-		case "array":
-		case "dummy":
 		}
 	}
 

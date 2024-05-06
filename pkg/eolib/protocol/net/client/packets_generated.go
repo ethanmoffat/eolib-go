@@ -4043,7 +4043,7 @@ func (s *RangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 		return
 	}
 	// NpcIndexes : array : char
-	for ndx := 0; ndx < reader.Remaining()/1; ndx++ {
+	for ndx := 0; reader.Remaining() > 0; ndx++ {
 		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}
@@ -4509,6 +4509,9 @@ func (s *GuildAgreeInfoTypeDataRanks) Deserialize(reader *data.EoReader) (err er
 			return
 		}
 
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
 	return

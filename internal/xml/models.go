@@ -53,7 +53,8 @@ type ProtocolValue struct {
 }
 
 type ProtocolInstruction struct {
-	XMLName xml.Name
+	XMLName   xml.Name
+	IsChunked bool
 
 	// ProtocolField properties
 	Name     *string `xml:"name,attr"`
@@ -87,6 +88,8 @@ type ProtocolInstruction struct {
 }
 
 type ProtocolCase struct {
+	IsChunked bool
+
 	Value        string                `xml:"value,attr"`
 	Default      bool                  `xml:"default,attr"`
 	Comment      string                `xml:"comment"`
@@ -95,19 +98,23 @@ type ProtocolCase struct {
 
 type OrdinalValue int
 
-func validate(instructions []ProtocolInstruction) error {
-	for _, inst := range instructions {
+func validate(instructions []ProtocolInstruction, isChunked bool) error {
+	for i, inst := range instructions {
+		if isChunked {
+			instructions[i].IsChunked = true
+		}
+
 		if err := inst.Validate(); err != nil {
 			return err
 		}
 
-		if err := validate(inst.Chunked); err != nil {
+		if err := validate(inst.Chunked, true); err != nil {
 			return err
 		}
 
 		if len(inst.Cases) > 0 {
 			for _, cs := range inst.Cases {
-				if err := validate(cs.Instructions); err != nil {
+				if err := validate(cs.Instructions, isChunked); err != nil {
 					return err
 				}
 			}
@@ -119,13 +126,13 @@ func validate(instructions []ProtocolInstruction) error {
 
 func (p Protocol) Validate() error {
 	for _, st := range p.Structs {
-		if err := validate(st.Instructions); err != nil {
+		if err := validate(st.Instructions, false); err != nil {
 			return err
 		}
 	}
 
 	for _, pkt := range p.Packets {
-		if err := validate(pkt.Instructions); err != nil {
+		if err := validate(pkt.Instructions, false); err != nil {
 			return err
 		}
 	}
@@ -199,7 +206,7 @@ func (pi ProtocolInstruction) Validate() error {
 		fieldName := reflectType.Field(i)
 		fieldValue := reflectValue.Field(i)
 
-		if fieldName.Name == "XMLName" {
+		if fieldName.Name == "XMLName" || fieldName.Name == "IsChunked" {
 			continue
 		}
 
