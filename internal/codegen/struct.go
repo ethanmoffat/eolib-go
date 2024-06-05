@@ -649,6 +649,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			if instructionType == "array" {
 				delimited := instruction.Delimited != nil && *instruction.Delimited
 
+				var varAssignExpr *jen.Statement
 				var lenExpr *jen.Statement
 				if instruction.Length != nil {
 					lenExpr = jen.Id("ndx").Op("<").Add(getLengthExpression(*instruction.Length))
@@ -656,7 +657,8 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 					if rawLen, err := types.CalculateTypeSize(typeName, fullSpec); err != nil || rawLen == 1 {
 						lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
 					} else {
-						lenExpr = jen.Id("ndx").Op("<").Id("reader").Dot("Remaining").Call().Op("/").Lit(rawLen)
+						varAssignExpr = jen.Id(instructionName + "Remaining").Op(":=").Id("reader").Dot("Remaining").Call()
+						lenExpr = jen.Id("ndx").Op("<").Id(instructionName + "Remaining").Op("/").Lit(rawLen)
 					}
 				} else {
 					lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
@@ -681,6 +683,10 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 					}
 
 					deserializeCodes = append(deserializeCodes, delimiterExpr)
+				}
+
+				if varAssignExpr != nil {
+					g.Add(varAssignExpr)
 				}
 
 				g.For(

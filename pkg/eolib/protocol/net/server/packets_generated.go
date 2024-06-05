@@ -2516,7 +2516,8 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 		return
 	}
 	// Items : array : Item
-	for ndx := 0; ndx < reader.Remaining()/6; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/6; ndx++ {
 		s.Items = append(s.Items, net.Item{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -2527,7 +2528,8 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 		return
 	}
 	// Spells : array : Spell
-	for ndx := 0; ndx < reader.Remaining()/4; ndx++ {
+	SpellsRemaining := reader.Remaining()
+	for ndx := 0; ndx < SpellsRemaining/4; ndx++ {
 		s.Spells = append(s.Spells, net.Spell{})
 		if err = s.Spells[ndx].Deserialize(reader); err != nil {
 			return
@@ -2947,7 +2949,8 @@ func (s *AdminInteractListServerPacket) Deserialize(reader *data.EoReader) (err 
 		return
 	}
 	// Inventory : array : Item
-	for ndx := 0; ndx < reader.Remaining()/6; ndx++ {
+	InventoryRemaining := reader.Remaining()
+	for ndx := 0; ndx < InventoryRemaining/6; ndx++ {
 		s.Inventory = append(s.Inventory, net.Item{})
 		if err = s.Inventory[ndx].Deserialize(reader); err != nil {
 			return
@@ -2958,7 +2961,8 @@ func (s *AdminInteractListServerPacket) Deserialize(reader *data.EoReader) (err 
 		return
 	}
 	// Bank : array : ThreeItem
-	for ndx := 0; ndx < reader.Remaining()/5; ndx++ {
+	BankRemaining := reader.Remaining()
+	for ndx := 0; ndx < BankRemaining/5; ndx++ {
 		s.Bank = append(s.Bank, net.ThreeItem{})
 		if err = s.Bank[ndx].Deserialize(reader); err != nil {
 			return
@@ -4693,7 +4697,8 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 
 	reader.SetIsChunked(true)
 	// PlayerIds : array : short
-	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
+	PlayerIdsRemaining := reader.Remaining()
+	for ndx := 0; ndx < PlayerIdsRemaining/2; ndx++ {
 		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}
@@ -4711,7 +4716,8 @@ func (s *WalkReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Items : array : ItemMapInfo
-	for ndx := 0; ndx < reader.Remaining()/9; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/9; ndx++ {
 		s.Items = append(s.Items, ItemMapInfo{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -5651,7 +5657,8 @@ func (s *ShopOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// TradeItems : array : ShopTradeItem
-	for ndx := 0; ndx < reader.Remaining()/9; ndx++ {
+	TradeItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < TradeItemsRemaining/9; ndx++ {
 		s.TradeItems = append(s.TradeItems, ShopTradeItem{})
 		if err = s.TradeItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -5662,7 +5669,8 @@ func (s *ShopOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// CraftItems : array : ShopCraftItem
-	for ndx := 0; ndx < reader.Remaining()/14; ndx++ {
+	CraftItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < CraftItemsRemaining/14; ndx++ {
 		s.CraftItems = append(s.CraftItems, ShopCraftItem{})
 		if err = s.CraftItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -5733,7 +5741,8 @@ func (s *StatSkillOpenServerPacket) Deserialize(reader *data.EoReader) (err erro
 		return
 	}
 	// Skills : array : SkillLearn
-	for ndx := 0; ndx < reader.Remaining()/28; ndx++ {
+	SkillsRemaining := reader.Remaining()
+	for ndx := 0; ndx < SkillsRemaining/28; ndx++ {
 		s.Skills = append(s.Skills, SkillLearn{})
 		if err = s.Skills[ndx].Deserialize(reader); err != nil {
 			return
@@ -10807,7 +10816,8 @@ func (s *NpcPlayerServerPacket) Deserialize(reader *data.EoReader) (err error) {
 
 	reader.SetIsChunked(true)
 	// Positions : array : NpcUpdatePosition
-	for ndx := 0; ndx < reader.Remaining()/4; ndx++ {
+	PositionsRemaining := reader.Remaining()
+	for ndx := 0; ndx < PositionsRemaining/4; ndx++ {
 		s.Positions = append(s.Positions, NpcUpdatePosition{})
 		if err = s.Positions[ndx].Deserialize(reader); err != nil {
 			return
@@ -10818,7 +10828,8 @@ func (s *NpcPlayerServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Attacks : array : NpcUpdateAttack
-	for ndx := 0; ndx < reader.Remaining()/9; ndx++ {
+	AttacksRemaining := reader.Remaining()
+	for ndx := 0; ndx < AttacksRemaining/9; ndx++ {
 		s.Attacks = append(s.Attacks, NpcUpdateAttack{})
 		if err = s.Attacks[ndx].Deserialize(reader); err != nil {
 			return

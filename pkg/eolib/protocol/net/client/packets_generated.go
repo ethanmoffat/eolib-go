@@ -4034,7 +4034,8 @@ func (s *RangeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 
 	reader.SetIsChunked(true)
 	// PlayerIds : array : short
-	for ndx := 0; ndx < reader.Remaining()/2; ndx++ {
+	PlayerIdsRemaining := reader.Remaining()
+	for ndx := 0; ndx < PlayerIdsRemaining/2; ndx++ {
 		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}

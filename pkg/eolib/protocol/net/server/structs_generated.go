@@ -1019,7 +1019,8 @@ func (s *NearbyInfo) Deserialize(reader *data.EoReader) (err error) {
 	}
 
 	// Npcs : array : NpcMapInfo
-	for ndx := 0; ndx < reader.Remaining()/6; ndx++ {
+	NpcsRemaining := reader.Remaining()
+	for ndx := 0; ndx < NpcsRemaining/6; ndx++ {
 		s.Npcs = append(s.Npcs, NpcMapInfo{})
 		if err = s.Npcs[ndx].Deserialize(reader); err != nil {
 			return
@@ -1030,7 +1031,8 @@ func (s *NearbyInfo) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Items : array : ItemMapInfo
-	for ndx := 0; ndx < reader.Remaining()/9; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/9; ndx++ {
 		s.Items = append(s.Items, ItemMapInfo{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -2798,7 +2800,8 @@ func (s *TradeItemData) Deserialize(reader *data.EoReader) (err error) {
 	// PartnerPlayerId : field : short
 	s.PartnerPlayerId = reader.GetShort()
 	// PartnerItems : array : Item
-	for ndx := 0; ndx < reader.Remaining()/6; ndx++ {
+	PartnerItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < PartnerItemsRemaining/6; ndx++ {
 		s.PartnerItems = append(s.PartnerItems, net.Item{})
 		if err = s.PartnerItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -2811,7 +2814,8 @@ func (s *TradeItemData) Deserialize(reader *data.EoReader) (err error) {
 	// YourPlayerId : field : short
 	s.YourPlayerId = reader.GetShort()
 	// YourItems : array : Item
-	for ndx := 0; ndx < reader.Remaining()/6; ndx++ {
+	YourItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < YourItemsRemaining/6; ndx++ {
 		s.YourItems = append(s.YourItems, net.Item{})
 		if err = s.YourItems[ndx].Deserialize(reader); err != nil {
 			return
