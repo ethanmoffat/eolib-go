@@ -60,8 +60,12 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 	// write out fields
 	var switches []*xml.ProtocolInstruction
 	f.Type().Id(structName).StructFunc(func(g *jen.Group) {
-		switches = writeStructFields(g, si, fullSpec)
+		switches, err = writeStructFields(g, si, fullSpec)
 	}).Line()
+
+	if err != nil {
+		return
+	}
 
 	for _, sw := range switches {
 		if err = writeSwitchStructs(f, *sw, si, fullSpec); err != nil {
@@ -108,7 +112,7 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 	return
 }
 
-func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol) (switches []*xml.ProtocolInstruction) {
+func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol) (switches []*xml.ProtocolInstruction, err error) {
 	isEmpty := true
 
 	for i, inst := range si.Instructions {
@@ -177,9 +181,23 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			isEmpty = false
 		case "chunked":
 			nestedStructInfo, _ := si.Nested(&inst)
-			switches = append(switches, writeStructFields(g, nestedStructInfo, fullSpec)...)
+
+			var nextSwitches []*xml.ProtocolInstruction
+			if nextSwitches, err = writeStructFields(g, nestedStructInfo, fullSpec); err != nil {
+				switches = nil
+				return
+			}
+
+			switches = append(switches, nextSwitches...)
 		case "dummy":
+			continue
 		case "break":
+			if !inst.IsChunked {
+				switches = nil
+				err = fmt.Errorf("break bytes must be within a chunked section")
+				return
+			}
+
 			continue // no data to write
 		}
 	}
