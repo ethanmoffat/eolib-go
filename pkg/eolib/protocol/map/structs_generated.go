@@ -1,6 +1,7 @@
 package eomap
 
 import (
+	"fmt"
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/protocol"
 )
@@ -707,12 +708,21 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Rid) != 2 {
+			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
+			return
+		}
+
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
 	}
 
 	// Name : field : encoded_string
+	if len(s.Name) > 24 {
+		err = fmt.Errorf("expected Name with length 24, got %d", len(s.Name))
+		return
+	}
 	if err = writer.AddPaddedEncodedString(s.Name, 24); err != nil {
 		return
 	}
@@ -837,6 +847,11 @@ func (s *Emf) Serialize(writer *data.EoWriter) (err error) {
 
 	// GraphicLayers : array : MapGraphicLayer
 	for ndx := 0; ndx < 9; ndx++ {
+		if len(s.GraphicLayers) != 9 {
+			err = fmt.Errorf("expected GraphicLayers with length 9, got %d", len(s.GraphicLayers))
+			return
+		}
+
 		if err = s.GraphicLayers[ndx].Serialize(writer); err != nil {
 			return
 		}

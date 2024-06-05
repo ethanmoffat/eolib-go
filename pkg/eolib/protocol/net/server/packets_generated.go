@@ -2640,6 +2640,11 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	}
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.MapRid) != 2 {
+			err = fmt.Errorf("expected MapRid with length 2, got %d", len(s.MapRid))
+			return
+		}
+
 		if err = writer.AddShort(s.MapRid[ndx]); err != nil {
 			return
 		}
@@ -2651,6 +2656,11 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	}
 	// EifRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.EifRid) != 2 {
+			err = fmt.Errorf("expected EifRid with length 2, got %d", len(s.EifRid))
+			return
+		}
+
 		if err = writer.AddShort(s.EifRid[ndx]); err != nil {
 			return
 		}
@@ -2662,6 +2672,11 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	}
 	// EnfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.EnfRid) != 2 {
+			err = fmt.Errorf("expected EnfRid with length 2, got %d", len(s.EnfRid))
+			return
+		}
+
 		if err = writer.AddShort(s.EnfRid[ndx]); err != nil {
 			return
 		}
@@ -2673,6 +2688,11 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	}
 	// EsfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.EsfRid) != 2 {
+			err = fmt.Errorf("expected EsfRid with length 2, got %d", len(s.EsfRid))
+			return
+		}
+
 		if err = writer.AddShort(s.EsfRid[ndx]); err != nil {
 			return
 		}
@@ -2684,6 +2704,11 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	}
 	// EcfRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.EcfRid) != 2 {
+			err = fmt.Errorf("expected EcfRid with length 2, got %d", len(s.EcfRid))
+			return
+		}
+
 		if err = writer.AddShort(s.EcfRid[ndx]); err != nil {
 			return
 		}
@@ -2718,6 +2743,10 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 		return
 	}
 	// GuildTag : field : string
+	if len(s.GuildTag) != 3 {
+		err = fmt.Errorf("expected GuildTag with length 3, got %d", len(s.GuildTag))
+		return
+	}
 	if err = writer.AddFixedString(s.GuildTag, 3); err != nil {
 		return
 	}
@@ -2905,6 +2934,11 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Serialize(writer *data.EoWriter) 
 	writer.AddByte(255)
 	// News : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		if len(s.News) != 9 {
+			err = fmt.Errorf("expected News with length 9, got %d", len(s.News))
+			return
+		}
+
 		if err = writer.AddString(s.News[ndx]); err != nil {
 			return
 		}
@@ -4301,6 +4335,11 @@ func (s *MessageAcceptServerPacket) Serialize(writer *data.EoWriter) (err error)
 	writer.SanitizeStrings = true
 	// Messages : array : string
 	for ndx := 0; ndx < 4; ndx++ {
+		if len(s.Messages) != 4 {
+			err = fmt.Errorf("expected Messages with length 4, got %d", len(s.Messages))
+			return
+		}
+
 		if err = writer.AddString(s.Messages[ndx]); err != nil {
 			return
 		}
@@ -6279,6 +6318,11 @@ func (s *CitizenOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	writer.AddByte(255)
 	// Questions : array : string
 	for ndx := 0; ndx < 3; ndx++ {
+		if len(s.Questions) != 3 {
+			err = fmt.Errorf("expected Questions with length 3, got %d", len(s.Questions))
+			return
+		}
+
 		if ndx > 0 {
 			writer.AddByte(255)
 		}
@@ -6449,6 +6493,11 @@ func (s *ShopCreateServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Ingredients : array : Item
 	for ndx := 0; ndx < 4; ndx++ {
+		if len(s.Ingredients) != 4 {
+			err = fmt.Errorf("expected Ingredients with length 4, got %d", len(s.Ingredients))
+			return
+		}
+
 		if err = s.Ingredients[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -8446,6 +8495,11 @@ func (s *WarpRequestWarpTypeDataMapSwitch) Serialize(writer *data.EoWriter) (err
 
 	// MapRid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.MapRid) != 2 {
+			err = fmt.Errorf("expected MapRid with length 2, got %d", len(s.MapRid))
+			return
+		}
+
 		if err = writer.AddShort(s.MapRid[ndx]); err != nil {
 			return
 		}
@@ -10722,6 +10776,11 @@ func (s *GuildRankServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	writer.SanitizeStrings = true
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		if len(s.Ranks) != 9 {
+			err = fmt.Errorf("expected Ranks with length 9, got %d", len(s.Ranks))
+			return
+		}
+
 		if err = writer.AddString(s.Ranks[ndx]); err != nil {
 			return
 		}
@@ -11015,6 +11074,11 @@ func (s *GuildReportServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	writer.AddByte(255)
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		if len(s.Ranks) != 9 {
+			err = fmt.Errorf("expected Ranks with length 9, got %d", len(s.Ranks))
+			return
+		}
+
 		if err = writer.AddString(s.Ranks[ndx]); err != nil {
 			return
 		}

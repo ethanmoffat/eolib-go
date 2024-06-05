@@ -1,6 +1,9 @@
 package serverpub
 
-import "github.com/ethanmoffat/eolib-go/pkg/eolib/data"
+import (
+	"fmt"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
+)
 
 // DropRecord :: Record of an item an NPC can drop when killed.
 type DropRecord struct {
@@ -319,6 +322,11 @@ func (s *InnRecord) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Questions : array : InnQuestionRecord
 	for ndx := 0; ndx < 3; ndx++ {
+		if len(s.Questions) != 3 {
+			err = fmt.Errorf("expected Questions with length 3, got %d", len(s.Questions))
+			return
+		}
+
 		if err = s.Questions[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -474,6 +482,11 @@ func (s *SkillMasterSkillRecord) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// SkillRequirements : array : short
 	for ndx := 0; ndx < 4; ndx++ {
+		if len(s.SkillRequirements) != 4 {
+			err = fmt.Errorf("expected SkillRequirements with length 4, got %d", len(s.SkillRequirements))
+			return
+		}
+
 		if err = writer.AddShort(s.SkillRequirements[ndx]); err != nil {
 			return
 		}
@@ -811,6 +824,11 @@ func (s *ShopCraftRecord) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Ingredients : array : ShopCraftIngredientRecord
 	for ndx := 0; ndx < 4; ndx++ {
+		if len(s.Ingredients) != 4 {
+			err = fmt.Errorf("expected Ingredients with length 4, got %d", len(s.Ingredients))
+			return
+		}
+
 		if err = s.Ingredients[ndx].Serialize(writer); err != nil {
 			return
 		}

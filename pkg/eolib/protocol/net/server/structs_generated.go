@@ -329,6 +329,11 @@ func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Ring : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Ring) != 2 {
+			err = fmt.Errorf("expected Ring with length 2, got %d", len(s.Ring))
+			return
+		}
+
 		if err = writer.AddShort(s.Ring[ndx]); err != nil {
 			return
 		}
@@ -336,6 +341,11 @@ func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 
 	// Armlet : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Armlet) != 2 {
+			err = fmt.Errorf("expected Armlet with length 2, got %d", len(s.Armlet))
+			return
+		}
+
 		if err = writer.AddShort(s.Armlet[ndx]); err != nil {
 			return
 		}
@@ -343,6 +353,11 @@ func (s *EquipmentWelcome) Serialize(writer *data.EoWriter) (err error) {
 
 	// Bracer : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Bracer) != 2 {
+			err = fmt.Errorf("expected Bracer with length 2, got %d", len(s.Bracer))
+			return
+		}
+
 		if err = writer.AddShort(s.Bracer[ndx]); err != nil {
 			return
 		}
@@ -462,6 +477,11 @@ func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Ring : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Ring) != 2 {
+			err = fmt.Errorf("expected Ring with length 2, got %d", len(s.Ring))
+			return
+		}
+
 		if err = writer.AddShort(s.Ring[ndx]); err != nil {
 			return
 		}
@@ -469,6 +489,11 @@ func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 
 	// Armlet : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Armlet) != 2 {
+			err = fmt.Errorf("expected Armlet with length 2, got %d", len(s.Armlet))
+			return
+		}
+
 		if err = writer.AddShort(s.Armlet[ndx]); err != nil {
 			return
 		}
@@ -476,6 +501,11 @@ func (s *EquipmentPaperdoll) Serialize(writer *data.EoWriter) (err error) {
 
 	// Bracer : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Bracer) != 2 {
+			err = fmt.Errorf("expected Bracer with length 2, got %d", len(s.Bracer))
+			return
+		}
+
 		if err = writer.AddShort(s.Bracer[ndx]); err != nil {
 			return
 		}
@@ -592,6 +622,10 @@ func (s *CharacterMapInfo) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// GuildTag : field : string
+	if len(s.GuildTag) != 3 {
+		err = fmt.Errorf("expected GuildTag with length 3, got %d", len(s.GuildTag))
+		return
+	}
 	if err = writer.AddFixedString(s.GuildTag, 3); err != nil {
 		return
 	}
@@ -1729,6 +1763,11 @@ func (s *ShopCraftItem) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Ingredients : array : CharItem
 	for ndx := 0; ndx < 4; ndx++ {
+		if len(s.Ingredients) != 4 {
+			err = fmt.Errorf("expected Ingredients with length 4, got %d", len(s.Ingredients))
+			return
+		}
+
 		if err = s.Ingredients[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -2588,6 +2627,11 @@ func (s *SkillLearn) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// SkillRequirements : array : short
 	for ndx := 0; ndx < 4; ndx++ {
+		if len(s.SkillRequirements) != 4 {
+			err = fmt.Errorf("expected SkillRequirements with length 4, got %d", len(s.SkillRequirements))
+			return
+		}
+
 		if err = writer.AddShort(s.SkillRequirements[ndx]); err != nil {
 			return
 		}

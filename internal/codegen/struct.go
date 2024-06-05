@@ -370,7 +370,9 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 		default:
 			typeName, typeSize := types.GetInstructionTypeName(instruction)
 
+			isContent := false
 			if len(instructionName) == 0 && instruction.Content != nil {
+				isContent = true
 				instructionName = *instruction.Content
 			}
 			g.Commentf("// %s : %s : %s", instructionName, instructionType, *instruction.Type)
@@ -410,10 +412,16 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 				fallthrough
 			case "string":
 				if instruction.Length != nil && instructionType == "field" {
-					if instruction.Padded != nil && *instruction.Padded {
+					isPadded := instruction.Padded != nil && *instruction.Padded
+					if isPadded {
 						serializeCodes = getSerializeForInstruction(instruction, stringType+types.Padded, false)
 					} else {
 						serializeCodes = getSerializeForInstruction(instruction, stringType+types.Fixed, false)
+					}
+
+					if parsed, isConst := isConstantLengthExpression(*instruction.Length); isConst && !isContent {
+						lengthAssertCodes := getLengthAssertCodes(instructionName, parsed, isPadded)
+						serializeCodes = append(lengthAssertCodes, serializeCodes...)
 					}
 				} else {
 					serializeCodes = getSerializeForInstruction(instruction, stringType, false)
@@ -441,13 +449,6 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 			}
 
 			if instructionType == "array" {
-				var lenExpr *jen.Statement
-				if instruction.Length != nil {
-					lenExpr = getLengthExpression(*instruction.Length)
-				} else {
-					lenExpr = jen.Len(jen.Id("s").Dot(instructionName))
-				}
-
 				delimited := instruction.Delimited != nil && *instruction.Delimited
 				trailingDelimiter := instruction.TrailingDelimiter == nil || *instruction.TrailingDelimiter
 
@@ -461,6 +462,18 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 					} else {
 						serializeCodes = append(serializeCodes, addByteCode)
 					}
+				}
+
+				var lenExpr *jen.Statement
+				if instruction.Length != nil {
+					lenExpr = getLengthExpression(*instruction.Length)
+
+					if parsed, isConst := isConstantLengthExpression(*instruction.Length); isConst {
+						lengthAssertCodes := getLengthAssertCodes(instructionName, parsed, false)
+						serializeCodes = append(lengthAssertCodes, serializeCodes...)
+					}
+				} else {
+					lenExpr = jen.Len(jen.Id("s").Dot(instructionName))
 				}
 
 				g.For(
@@ -926,10 +939,35 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 	return retCodes
 }
 
+func getLengthAssertCodes(instructionName string, parsed int, isPadded bool) []jen.Code {
+	var op string
+	if isPadded {
+		op = ">"
+	} else {
+		op = "!="
+	}
+
+	return []jen.Code{
+		jen.If(jen.Len(jen.Id("s").Dot(instructionName)).Op(op).Lit(parsed)).BlockFunc(func(g *jen.Group) {
+			errMsg := fmt.Sprintf("expected %s with length %d, got %%d", instructionName, parsed)
+			g.Id("err").Op("=").Qual("fmt", "Errorf").Call(
+				jen.Lit(errMsg),
+				jen.Len(jen.Id("s").Dot(instructionName)),
+			)
+			g.Return()
+		}).Line(),
+	}
+}
+
+func isConstantLengthExpression(instLength string) (int, bool) {
+	parsed, err := strconv.ParseInt(instLength, 10, 32)
+	return int(parsed), err == nil
+}
+
 func getLengthExpression(instLength string) *jen.Statement {
-	if parsed, err := strconv.ParseInt(instLength, 10, 32); err == nil {
+	if parsed, isConst := isConstantLengthExpression(instLength); isConst {
 		// string length is a numeric constant
-		return jen.Lit(int(parsed))
+		return jen.Lit(parsed)
 	} else {
 		// string length is a reference to another field
 		return jen.Id("s").Dot(snakeCaseToPascalCase(instLength))

@@ -2930,6 +2930,11 @@ func (s *CitizenReplyClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	writer.AddByte(255)
 	// Answers : array : string
 	for ndx := 0; ndx < 3; ndx++ {
+		if len(s.Answers) != 3 {
+			err = fmt.Errorf("expected Answers with length 3, got %d", len(s.Answers))
+			return
+		}
+
 		if ndx > 0 {
 			writer.AddByte(255)
 		}
@@ -5458,6 +5463,11 @@ func (s *GuildAgreeInfoTypeDataRanks) Serialize(writer *data.EoWriter) (err erro
 
 	// Ranks : array : string
 	for ndx := 0; ndx < 9; ndx++ {
+		if len(s.Ranks) != 9 {
+			err = fmt.Errorf("expected Ranks with length 9, got %d", len(s.Ranks))
+			return
+		}
+
 		if err = writer.AddString(s.Ranks[ndx]); err != nil {
 			return
 		}
@@ -5776,6 +5786,10 @@ func (s *GuildTakeClientPacket) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// GuildTag : field : string
+	if len(s.GuildTag) != 3 {
+		err = fmt.Errorf("expected GuildTag with length 3, got %d", len(s.GuildTag))
+		return
+	}
 	if err = writer.AddFixedString(s.GuildTag, 3); err != nil {
 		return
 	}

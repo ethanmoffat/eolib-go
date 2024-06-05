@@ -1,6 +1,9 @@
 package pub
 
-import "github.com/ethanmoffat/eolib-go/pkg/eolib/data"
+import (
+	"fmt"
+	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
+)
 
 // EifRecord :: Record of Item data in an Endless Item File.
 type EifRecord struct {
@@ -352,6 +355,11 @@ func (s *Eif) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Rid) != 2 {
+			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
+			return
+		}
+
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -637,6 +645,11 @@ func (s *Enf) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Rid) != 2 {
+			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
+			return
+		}
+
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -818,6 +831,11 @@ func (s *Ecf) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Rid) != 2 {
+			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
+			return
+		}
+
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -1170,6 +1188,11 @@ func (s *Esf) Serialize(writer *data.EoWriter) (err error) {
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.Rid) != 2 {
+			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
+			return
+		}
+
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
