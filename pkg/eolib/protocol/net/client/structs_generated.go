@@ -7,8 +7,15 @@ import (
 
 // ByteCoords :: Map coordinates with raw 1-byte values.
 type ByteCoords struct {
+	byteSize int
+
 	X int
 	Y int
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *ByteCoords) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *ByteCoords) Serialize(writer *data.EoWriter) (err error) {
@@ -30,19 +37,28 @@ func (s *ByteCoords) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// X : field : byte
 	s.X = int(reader.GetByte())
 	// Y : field : byte
 	s.Y = int(reader.GetByte())
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // WalkAction :: Common data between walk packets.
 type WalkAction struct {
+	byteSize int
+
 	Direction protocol.Direction
 	Timestamp int
 	Coords    protocol.Coords
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *WalkAction) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *WalkAction) Serialize(writer *data.EoWriter) (err error) {
@@ -68,6 +84,7 @@ func (s *WalkAction) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// Direction : field : Direction
 	s.Direction = protocol.Direction(reader.GetChar())
 	// Timestamp : field : three
@@ -76,6 +93,7 @@ func (s *WalkAction) Deserialize(reader *data.EoReader) (err error) {
 	if err = s.Coords.Deserialize(reader); err != nil {
 		return
 	}
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }

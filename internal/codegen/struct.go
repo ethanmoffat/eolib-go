@@ -60,6 +60,7 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 	// write out fields
 	var switches []*xml.ProtocolInstruction
 	f.Type().Id(structName).StructFunc(func(g *jen.Group) {
+		g.Id("byteSize").Int().Line()
 		switches, err = writeStructFields(g, si, fullSpec)
 	}).Line()
 
@@ -83,6 +84,12 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 		).Line()
 	}
 
+	// write out ByteSize getter
+	f.Comment("ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.")
+	f.Func().Params(jen.Id("s").Op("*").Id(structName)).Id("ByteSize").Params().Int().BlockFunc(func(g *jen.Group) {
+		g.Return(jen.Id("s").Dot("byteSize"))
+	}).Line()
+
 	// write out serialize method
 	f.Func().Params(jen.Id("s").Op("*").Id(structName)).Id("Serialize").Params(jen.Id("writer").Op("*").Qual(types.PackagePath("data"), "EoWriter")).Params(jen.Id("err").Id("error")).BlockFunc(func(g *jen.Group) {
 		g.Id("oldSanitizeStrings").Op(":=").Id("writer").Dot("SanitizeStrings")
@@ -104,7 +111,9 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 		// defer here uses 'Values' instead of 'Block' so the deferred function is single-line style
 		g.Defer().Func().Params().Values(jen.Id("reader").Dot("SetIsChunked").Call(jen.Id("oldIsChunked"))).Call().Line()
 
+		g.Id("readerStartPosition").Op(":=").Id("reader").Dot("Position").Call()
 		err = writeDeserializeBody(g, si, fullSpec, nil)
+		g.Id("s").Dot("byteSize").Op("=").Id("reader").Dot("Position").Call().Op("-").Id("readerStartPosition")
 
 		g.Line().Return()
 	}).Line()

@@ -4,10 +4,17 @@ import "github.com/ethanmoffat/eolib-go/pkg/eolib/data"
 
 // DropRecord :: Record of an item an NPC can drop when killed.
 type DropRecord struct {
+	byteSize int
+
 	ItemId    int
 	MinAmount int
 	MaxAmount int
 	Rate      int // Chance (x in 64,000) of the item being dropped.
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *DropRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *DropRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -37,6 +44,7 @@ func (s *DropRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// ItemId : field : short
 	s.ItemId = reader.GetShort()
 	// MinAmount : field : three
@@ -45,15 +53,23 @@ func (s *DropRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.MaxAmount = reader.GetThree()
 	// Rate : field : short
 	s.Rate = reader.GetShort()
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // DropNpcRecord :: Record of potential drops from an NPC.
 type DropNpcRecord struct {
+	byteSize int
+
 	NpcId      int
 	DropsCount int
 	Drops      []DropRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *DropNpcRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *DropNpcRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -82,6 +98,7 @@ func (s *DropNpcRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// NpcId : field : short
 	s.NpcId = reader.GetShort()
 	// DropsCount : length : short
@@ -94,12 +111,21 @@ func (s *DropNpcRecord) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // DropFile :: Endless Drop File.
 type DropFile struct {
+	byteSize int
+
 	Npcs []DropNpcRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *DropFile) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *DropFile) Serialize(writer *data.EoWriter) (err error) {
@@ -124,6 +150,7 @@ func (s *DropFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// EDF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
@@ -136,15 +163,24 @@ func (s *DropFile) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // InnQuestionRecord :: Record of a question and answer that the player must answer to register citizenship with an inn.
 type InnQuestionRecord struct {
+	byteSize int
+
 	QuestionLength int
 	Question       string
 	AnswerLength   int
 	Answer         string
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *InnQuestionRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *InnQuestionRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -174,6 +210,7 @@ func (s *InnQuestionRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// QuestionLength : length : char
 	s.QuestionLength = reader.GetChar()
 	// Question : field : string
@@ -188,11 +225,15 @@ func (s *InnQuestionRecord) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // InnRecord :: Record of Inn data in an Endless Inn File.
 type InnRecord struct {
+	byteSize int
+
 	BehaviorId            int // Behavior ID of the NPC that runs the inn. 0 for default inn.
 	NameLength            int
 	Name                  string
@@ -207,6 +248,11 @@ type InnRecord struct {
 	AlternateSpawnX       int
 	AlternateSpawnY       int
 	Questions             []InnQuestionRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *InnRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *InnRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -285,6 +331,7 @@ func (s *InnRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// NameLength : length : char
@@ -326,12 +373,21 @@ func (s *InnRecord) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // InnFile :: Endless Inn File.
 type InnFile struct {
+	byteSize int
+
 	Inns []InnRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *InnFile) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *InnFile) Serialize(writer *data.EoWriter) (err error) {
@@ -356,6 +412,7 @@ func (s *InnFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// EID : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
@@ -368,11 +425,15 @@ func (s *InnFile) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // SkillMasterSkillRecord :: Record of a skill that a Skill Master NPC can teach.
 type SkillMasterSkillRecord struct {
+	byteSize int
+
 	SkillId           int
 	LevelRequirement  int // Level required to learn this skill.
 	ClassRequirement  int // Class required to learn this skill.
@@ -384,6 +445,11 @@ type SkillMasterSkillRecord struct {
 	AgiRequirement    int   // Agility required to learn this skill.
 	ConRequirement    int   // Constitution required to learn this skill.
 	ChaRequirement    int   // Charisma required to learn this skill.
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *SkillMasterSkillRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *SkillMasterSkillRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -444,6 +510,7 @@ func (s *SkillMasterSkillRecord) Deserialize(reader *data.EoReader) (err error) 
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// SkillId : field : short
 	s.SkillId = reader.GetShort()
 	// LevelRequirement : field : char
@@ -470,12 +537,15 @@ func (s *SkillMasterSkillRecord) Deserialize(reader *data.EoReader) (err error) 
 	s.ConRequirement = reader.GetShort()
 	// ChaRequirement : field : short
 	s.ChaRequirement = reader.GetShort()
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // SkillMasterRecord :: Record of Skill Master data in an Endless Skill Master File.
 type SkillMasterRecord struct {
+	byteSize int
+
 	BehaviorId       int // Behavior ID of the Skill Master NPC.
 	NameLength       int
 	Name             string
@@ -484,6 +554,11 @@ type SkillMasterRecord struct {
 	ClassRequirement int // Class required to use this Skill Master.
 	SkillsCount      int
 	Skills           []SkillMasterSkillRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *SkillMasterRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *SkillMasterRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -532,6 +607,7 @@ func (s *SkillMasterRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// NameLength : length : char
@@ -557,12 +633,21 @@ func (s *SkillMasterRecord) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // SkillMasterFile :: Endless Skill Master File.
 type SkillMasterFile struct {
+	byteSize int
+
 	SkillMasters []SkillMasterRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *SkillMasterFile) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *SkillMasterFile) Serialize(writer *data.EoWriter) (err error) {
@@ -587,6 +672,7 @@ func (s *SkillMasterFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// EMF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
@@ -599,15 +685,24 @@ func (s *SkillMasterFile) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // ShopTradeRecord :: Record of an item that can be bought or sold in a shop.
 type ShopTradeRecord struct {
+	byteSize int
+
 	ItemId    int
 	BuyPrice  int // How much it costs to buy the item from the shop.
 	SellPrice int // How much the shop will pay for the item.
 	MaxAmount int // Max amount of the item that can be bought or sold at one time.
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *ShopTradeRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *ShopTradeRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -637,6 +732,7 @@ func (s *ShopTradeRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// ItemId : field : short
 	s.ItemId = reader.GetShort()
 	// BuyPrice : field : three
@@ -645,14 +741,22 @@ func (s *ShopTradeRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.SellPrice = reader.GetThree()
 	// MaxAmount : field : char
 	s.MaxAmount = reader.GetChar()
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // ShopCraftIngredientRecord :: Record of an ingredient for crafting an item in a shop.
 type ShopCraftIngredientRecord struct {
+	byteSize int
+
 	ItemId int // Item ID of the craft ingredient, or 0 if the ingredient is not present.
 	Amount int
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *ShopCraftIngredientRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *ShopCraftIngredientRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -674,18 +778,27 @@ func (s *ShopCraftIngredientRecord) Deserialize(reader *data.EoReader) (err erro
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// ItemId : field : short
 	s.ItemId = reader.GetShort()
 	// Amount : field : char
 	s.Amount = reader.GetChar()
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // ShopCraftRecord :: Record of an item that can be crafted in a shop.
 type ShopCraftRecord struct {
+	byteSize int
+
 	ItemId      int
 	Ingredients []ShopCraftIngredientRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *ShopCraftRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *ShopCraftRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -710,6 +823,7 @@ func (s *ShopCraftRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// ItemId : field : short
 	s.ItemId = reader.GetShort()
 	// Ingredients : array : ShopCraftIngredientRecord
@@ -720,11 +834,15 @@ func (s *ShopCraftRecord) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // ShopRecord :: Record of Shop data in an Endless Shop File.
 type ShopRecord struct {
+	byteSize int
+
 	BehaviorId       int
 	NameLength       int
 	Name             string
@@ -735,6 +853,11 @@ type ShopRecord struct {
 	CraftsCount      int
 	Trades           []ShopTradeRecord
 	Crafts           []ShopCraftRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *ShopRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *ShopRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -794,6 +917,7 @@ func (s *ShopRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// NameLength : length : char
@@ -829,12 +953,21 @@ func (s *ShopRecord) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // ShopFile :: Endless Shop File.
 type ShopFile struct {
+	byteSize int
+
 	Shops []ShopRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *ShopFile) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *ShopFile) Serialize(writer *data.EoWriter) (err error) {
@@ -859,6 +992,7 @@ func (s *ShopFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// ESF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
@@ -871,13 +1005,22 @@ func (s *ShopFile) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // TalkMessageRecord :: Record of a message that an NPC can say.
 type TalkMessageRecord struct {
+	byteSize int
+
 	MessageLength int
 	Message       string
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *TalkMessageRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *TalkMessageRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -899,6 +1042,7 @@ func (s *TalkMessageRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// MessageLength : length : char
 	s.MessageLength = reader.GetChar()
 	// Message : field : string
@@ -906,15 +1050,24 @@ func (s *TalkMessageRecord) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // TalkRecord :: Record of Talk data in an Endless Talk File.
 type TalkRecord struct {
+	byteSize int
+
 	NpcId         int // ID of the NPC that will talk.
 	Rate          int // Chance that the NPC will talk (0-100).
 	MessagesCount int
 	Messages      []TalkMessageRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *TalkRecord) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *TalkRecord) Serialize(writer *data.EoWriter) (err error) {
@@ -947,6 +1100,7 @@ func (s *TalkRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// NpcId : field : short
 	s.NpcId = reader.GetShort()
 	// Rate : field : char
@@ -961,12 +1115,21 @@ func (s *TalkRecord) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
+	s.byteSize = reader.Position() - readerStartPosition
+
 	return
 }
 
 // TalkFile :: Endless Talk File.
 type TalkFile struct {
+	byteSize int
+
 	Npcs []TalkRecord
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *TalkFile) ByteSize() int {
+	return s.byteSize
 }
 
 func (s *TalkFile) Serialize(writer *data.EoWriter) (err error) {
@@ -991,6 +1154,7 @@ func (s *TalkFile) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
+	readerStartPosition := reader.Position()
 	// ETF : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
@@ -1002,6 +1166,8 @@ func (s *TalkFile) Deserialize(reader *data.EoReader) (err error) {
 			return
 		}
 	}
+
+	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
