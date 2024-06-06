@@ -3,9 +3,8 @@ package codegen
 import (
 	"fmt"
 	"path"
+	"strings"
 
-	"github.com/dave/jennifer/jen"
-	"github.com/ethanmoffat/eolib-go/internal/codegen/types"
 	"github.com/ethanmoffat/eolib-go/internal/xml"
 )
 
@@ -17,58 +16,49 @@ func GenerateEnums(outputDir string, enums []xml.ProtocolEnum) error {
 		return err
 	}
 
-	f := jen.NewFile(packageName)
+	output := strings.Builder{}
+	output.WriteString(packageName + "\n\n")
+	output.WriteString("import \"fmt\"\n\n")
 
 	for _, e := range enums {
-		writeTypeCommentJen(f, e.Name, e.Comment)
+		writeTypeComment(&output, e.Name, e.Comment)
 
-		f.Type().Id(e.Name).Int()
+		output.WriteString(fmt.Sprintf("type %s int\n\n", e.Name))
+		output.WriteString("const (\n")
 
-		defsList := make([]jen.Code, len(e.Values))
 		expected := 0
 		for i, v := range e.Values {
-			var s *jen.Statement
 			if i == 0 {
-				s = jen.Id(fmt.Sprintf("%s_%s", types.SanitizeTypeName(e.Name), v.Name)).Qual("", e.Name).Op("=").Iota()
-
+				output.WriteString(fmt.Sprintf("\t%s_%s %s = iota", sanitizeTypeName(e.Name), v.Name, e.Name))
 				if v.Value > 0 {
+					output.WriteString(fmt.Sprintf(" + %d", v.Value))
 					expected = int(v.Value)
-					s.Op("+").Lit(expected)
 				}
 			} else {
-				s = jen.Id(fmt.Sprintf("%s_%s", types.SanitizeTypeName(e.Name), v.Name))
-				actual := int(v.Value)
-				if expected != actual {
-					s.Op("=").Lit(actual)
+				output.WriteString(fmt.Sprintf("\t%s_%s", sanitizeTypeName(e.Name), v.Name))
+				if expected != int(v.Value) {
+					output.WriteString(fmt.Sprintf(" = %d", v.Value))
 				}
 			}
 
-			writeInlineCommentJen(s, v.Comment)
+			writeInlineComment(&output, v.Comment)
+
+			output.WriteString("\n")
 			expected += 1
-
-			defsList[i] = s
 		}
-		f.Const().Defs(defsList...)
 
-		caseList := make([]jen.Code, len(e.Values)+1)
-		for ndx, v := range e.Values {
-			caseList[ndx] = jen.Case(jen.Id(fmt.Sprintf("%s_%s", types.SanitizeTypeName(e.Name), v.Name))).Block(jen.Return(jen.Lit(v.Name), jen.Nil()))
+		output.WriteString(")\n\n")
+
+		output.WriteString(fmt.Sprintf("// String converts a %s value into its string representation\n", e.Name))
+		output.WriteString(fmt.Sprintf("func (e %s) String() (string, error) {\n", e.Name))
+		output.WriteString("\tswitch e {\n")
+		for _, v := range e.Values {
+			output.WriteString(fmt.Sprintf("\tcase %s_%s:\n\t\treturn \"%s\", nil\n", sanitizeTypeName(e.Name), v.Name, v.Name))
 		}
-		caseList[len(e.Values)] = jen.Default().Block().Return(
-			jen.Lit(""), jen.Qual("fmt", "Errorf").Call(jen.Lit(fmt.Sprintf("could not convert value %%d of type %s to string", e.Name)), jen.Id("e")),
-		)
-
-		f.Commentf("String converts a %s value into its string representation", e.Name)
-		f.Func().Params(
-			// enum receiver
-			jen.Id("e").Id(e.Name),
-		).Id("String").Params(
-		// empty parameter list
-		).Params(jen.String(), jen.Error()).Block(
-			jen.Switch(jen.Id("e").Block(caseList...)),
-		)
+		output.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn \"\", fmt.Errorf(\"could not convert value %%d of type %s to string\", e)\n", e.Name))
+		output.WriteString("\t}\n}\n\n")
 	}
 
 	outFileName := path.Join(outputDir, enumFileName)
-	return writeToFileJen(f, outFileName)
+	return writeToFile(outFileName, output.String())
 }

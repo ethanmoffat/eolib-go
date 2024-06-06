@@ -5,10 +5,12 @@ import (
 	"github.com/ethanmoffat/eolib-go/pkg/eolib/data"
 )
 
+// Ensure fmt import is referenced in generated code
+var _ = fmt.Printf
+
 // EifRecord :: Record of Item data in an Endless Item File.
 type EifRecord struct {
-	byteSize int
-
+	NameLength       int
 	Name             string
 	GraphicId        int
 	Type             ItemType
@@ -52,21 +54,16 @@ type EifRecord struct {
 	Size ItemSize
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *EifRecord) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *EifRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(len(s.Name)); err != nil {
+	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
+	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
 	// GraphicId : field : short
@@ -221,7 +218,7 @@ func (s *EifRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.Weight); err != nil {
 		return
 	}
-	// 0 : field : char
+	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -236,11 +233,10 @@ func (s *EifRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	nameLength := reader.GetChar()
+	s.NameLength = reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
 		return
 	}
 
@@ -320,45 +316,32 @@ func (s *EifRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.ElementDamage = reader.GetChar()
 	// Weight : field : char
 	s.Weight = reader.GetChar()
-	// 0 : field : char
+	//  : field : char
 	reader.GetChar()
 	// Size : field : ItemSize
 	s.Size = ItemSize(reader.GetChar())
-	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // Eif :: Endless Item File.
 type Eif struct {
-	byteSize int
-
 	Rid             []int
 	TotalItemsCount int
 	Version         int
 	Items           []EifRecord
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *Eif) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *Eif) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// EIF : field : string
+	//  : field : string
 	if err = writer.AddFixedString("EIF", 3); err != nil {
 		return
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
-		if len(s.Rid) != 2 {
-			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
-			return
-		}
-
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -386,8 +369,7 @@ func (s *Eif) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
-	// EIF : field : string
+	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -409,15 +391,12 @@ func (s *Eif) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
-	s.byteSize = reader.Position() - readerStartPosition
-
 	return
 }
 
 // EnfRecord :: Record of NPC data in an Endless NPC File.
 type EnfRecord struct {
-	byteSize int
-
+	NameLength            int
 	Name                  string
 	GraphicId             int
 	Race                  int
@@ -441,21 +420,16 @@ type EnfRecord struct {
 	Experience            int
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *EnfRecord) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(len(s.Name)); err != nil {
+	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
+	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
 	// GraphicId : field : short
@@ -557,11 +531,10 @@ func (s *EnfRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	nameLength := reader.GetChar()
+	s.NameLength = reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
 		return
 	}
 
@@ -613,41 +586,28 @@ func (s *EnfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.Level = reader.GetChar()
 	// Experience : field : three
 	s.Experience = reader.GetThree()
-	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // Enf :: Endless NPC File.
 type Enf struct {
-	byteSize int
-
 	Rid            []int
 	TotalNpcsCount int
 	Version        int
 	Npcs           []EnfRecord
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *Enf) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *Enf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// ENF : field : string
+	//  : field : string
 	if err = writer.AddFixedString("ENF", 3); err != nil {
 		return
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
-		if len(s.Rid) != 2 {
-			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
-			return
-		}
-
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -675,8 +635,7 @@ func (s *Enf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
-	// ENF : field : string
+	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -698,15 +657,12 @@ func (s *Enf) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
-	s.byteSize = reader.Position() - readerStartPosition
-
 	return
 }
 
 // EcfRecord :: Record of Class data in an Endless Class File.
 type EcfRecord struct {
-	byteSize int
-
+	NameLength int
 	Name       string
 	ParentType int
 	StatGroup  int
@@ -718,21 +674,16 @@ type EcfRecord struct {
 	Cha        int
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *EcfRecord) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *EcfRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(len(s.Name)); err != nil {
+	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
+	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
 	// ParentType : field : char
@@ -774,11 +725,10 @@ func (s *EcfRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	nameLength := reader.GetChar()
+	s.NameLength = reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
 		return
 	}
 
@@ -798,41 +748,28 @@ func (s *EcfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.Con = reader.GetShort()
 	// Cha : field : short
 	s.Cha = reader.GetShort()
-	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // Ecf :: Endless Class File.
 type Ecf struct {
-	byteSize int
-
 	Rid               []int
 	TotalClassesCount int
 	Version           int
 	Classes           []EcfRecord
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *Ecf) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *Ecf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// ECF : field : string
+	//  : field : string
 	if err = writer.AddFixedString("ECF", 3); err != nil {
 		return
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
-		if len(s.Rid) != 2 {
-			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
-			return
-		}
-
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -860,8 +797,7 @@ func (s *Ecf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
-	// ECF : field : string
+	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -883,23 +819,21 @@ func (s *Ecf) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
-	s.byteSize = reader.Position() - readerStartPosition
-
 	return
 }
 
 // EsfRecord :: Record of Skill data in an Endless Skill File.
 type EsfRecord struct {
-	byteSize int
-
-	Name      string
-	Chant     string
-	IconId    int
-	GraphicId int
-	TpCost    int
-	SpCost    int
-	CastTime  int
-	Nature    SkillNature
+	NameLength  int
+	ChantLength int
+	Name        string
+	Chant       string
+	IconId      int
+	GraphicId   int
+	TpCost      int
+	SpCost      int
+	CastTime    int
+	Nature      SkillNature
 
 	Type           SkillType
 	Element        Element
@@ -926,29 +860,24 @@ type EsfRecord struct {
 	Cha           int
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *EsfRecord) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(len(s.Name)); err != nil {
+	if err = writer.AddChar(s.NameLength); err != nil {
 		return
 	}
 	// ChantLength : length : char
-	if err = writer.AddChar(len(s.Chant)); err != nil {
+	if err = writer.AddChar(s.ChantLength); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
+	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
 		return
 	}
 	// Chant : field : string
-	if err = writer.AddFixedString(s.Chant, len(s.Chant)); err != nil {
+	if err = writer.AddFixedString(s.Chant, s.ChantLength); err != nil {
 		return
 	}
 	// IconId : field : short
@@ -975,7 +904,7 @@ func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(int(s.Nature)); err != nil {
 		return
 	}
-	// 1 : field : char
+	//  : field : char
 	if err = writer.AddChar(1); err != nil {
 		return
 	}
@@ -1003,7 +932,7 @@ func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddChar(s.TargetTime); err != nil {
 		return
 	}
-	// 0 : field : char
+	//  : field : char
 	if err = writer.AddChar(0); err != nil {
 		return
 	}
@@ -1078,18 +1007,17 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	nameLength := reader.GetChar()
+	s.NameLength = reader.GetChar()
 	// ChantLength : length : char
-	chantLength := reader.GetChar()
+	s.ChantLength = reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
 		return
 	}
 
 	// Chant : field : string
-	if s.Chant, err = reader.GetFixedString(chantLength); err != nil {
+	if s.Chant, err = reader.GetFixedString(s.ChantLength); err != nil {
 		return
 	}
 
@@ -1105,7 +1033,7 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.CastTime = reader.GetChar()
 	// Nature : field : SkillNature
 	s.Nature = SkillNature(reader.GetChar())
-	// 1 : field : char
+	//  : field : char
 	reader.GetChar()
 	// Type : field : SkillType
 	s.Type = SkillType(reader.GetThree())
@@ -1119,7 +1047,7 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.TargetType = SkillTargetType(reader.GetChar())
 	// TargetTime : field : char
 	s.TargetTime = reader.GetChar()
-	// 0 : field : char
+	//  : field : char
 	reader.GetChar()
 	// MaxSkillLevel : field : short
 	s.MaxSkillLevel = reader.GetShort()
@@ -1153,41 +1081,28 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 	s.Con = reader.GetShort()
 	// Cha : field : short
 	s.Cha = reader.GetShort()
-	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }
 
 // Esf :: Endless Skill File.
 type Esf struct {
-	byteSize int
-
 	Rid              []int
 	TotalSkillsCount int
 	Version          int
 	Skills           []EsfRecord
 }
 
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *Esf) ByteSize() int {
-	return s.byteSize
-}
-
 func (s *Esf) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// ESF : field : string
+	//  : field : string
 	if err = writer.AddFixedString("ESF", 3); err != nil {
 		return
 	}
 	// Rid : array : short
 	for ndx := 0; ndx < 2; ndx++ {
-		if len(s.Rid) != 2 {
-			err = fmt.Errorf("expected Rid with length 2, got %d", len(s.Rid))
-			return
-		}
-
 		if err = writer.AddShort(s.Rid[ndx]); err != nil {
 			return
 		}
@@ -1215,8 +1130,7 @@ func (s *Esf) Deserialize(reader *data.EoReader) (err error) {
 	oldIsChunked := reader.IsChunked()
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
-	readerStartPosition := reader.Position()
-	// ESF : field : string
+	//  : field : string
 	if _, err = reader.GetFixedString(3); err != nil {
 		return
 	}
@@ -1237,8 +1151,6 @@ func (s *Esf) Deserialize(reader *data.EoReader) (err error) {
 			return
 		}
 	}
-
-	s.byteSize = reader.Position() - readerStartPosition
 
 	return
 }

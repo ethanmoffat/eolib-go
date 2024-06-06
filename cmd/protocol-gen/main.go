@@ -50,7 +50,6 @@ func main() {
 		"net/client": "client",
 		"net/server": "server",
 		"pub":        "pub",
-		"pub/server": "serverpub",
 		"":           "protocol",
 	}
 
