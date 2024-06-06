@@ -99,7 +99,7 @@ func snakeCaseToCamelCase(input string) string {
 				if ndx != 0 {
 					tmp = tmp + string(unicode.ToUpper(rune(out[ndx+1])))
 				} else {
-					tmp = tmp + string(out[ndx+1])
+					tmp = tmp + string(unicode.ToLower(rune(out[ndx+1])))
 				}
 			}
 
