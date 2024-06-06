@@ -9,7 +9,6 @@ import (
 type EifRecord struct {
 	byteSize int
 
-	NameLength       int
 	Name             string
 	GraphicId        int
 	Type             ItemType
@@ -63,11 +62,11 @@ func (s *EifRecord) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// GraphicId : field : short
@@ -239,9 +238,9 @@ func (s *EifRecord) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
@@ -419,7 +418,6 @@ func (s *Eif) Deserialize(reader *data.EoReader) (err error) {
 type EnfRecord struct {
 	byteSize int
 
-	NameLength            int
 	Name                  string
 	GraphicId             int
 	Race                  int
@@ -453,11 +451,11 @@ func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// GraphicId : field : short
@@ -561,9 +559,9 @@ func (s *EnfRecord) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
@@ -709,7 +707,6 @@ func (s *Enf) Deserialize(reader *data.EoReader) (err error) {
 type EcfRecord struct {
 	byteSize int
 
-	NameLength int
 	Name       string
 	ParentType int
 	StatGroup  int
@@ -731,11 +728,11 @@ func (s *EcfRecord) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// ParentType : field : char
@@ -779,9 +776,9 @@ func (s *EcfRecord) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
@@ -895,16 +892,14 @@ func (s *Ecf) Deserialize(reader *data.EoReader) (err error) {
 type EsfRecord struct {
 	byteSize int
 
-	NameLength  int
-	ChantLength int
-	Name        string
-	Chant       string
-	IconId      int
-	GraphicId   int
-	TpCost      int
-	SpCost      int
-	CastTime    int
-	Nature      SkillNature
+	Name      string
+	Chant     string
+	IconId    int
+	GraphicId int
+	TpCost    int
+	SpCost    int
+	CastTime  int
+	Nature    SkillNature
 
 	Type           SkillType
 	Element        Element
@@ -941,19 +936,19 @@ func (s *EsfRecord) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// ChantLength : length : char
-	if err = writer.AddChar(s.ChantLength); err != nil {
+	if err = writer.AddChar(len(s.Chant)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// Chant : field : string
-	if err = writer.AddFixedString(s.Chant, s.ChantLength); err != nil {
+	if err = writer.AddFixedString(s.Chant, len(s.Chant)); err != nil {
 		return
 	}
 	// IconId : field : short
@@ -1085,16 +1080,16 @@ func (s *EsfRecord) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// ChantLength : length : char
-	s.ChantLength = reader.GetChar()
+	chantLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
 	// Chant : field : string
-	if s.Chant, err = reader.GetFixedString(s.ChantLength); err != nil {
+	if s.Chant, err = reader.GetFixedString(chantLength); err != nil {
 		return
 	}
 

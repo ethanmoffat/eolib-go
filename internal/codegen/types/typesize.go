@@ -41,21 +41,13 @@ func CalculateTypeSize(typeName string, fullSpec xml.Protocol) (res int, err err
 		return getPrimitiveTypeSize(typeName, fullSpec)
 	}
 
-	var flattenedInstList []xml.ProtocolInstruction
-	for _, instruction := range (*structInfo).Instructions {
-		if instruction.XMLName.Local == "chunked" {
-			flattenedInstList = append(flattenedInstList, instruction.Chunked...)
-		} else {
-			flattenedInstList = append(flattenedInstList, instruction)
-		}
-	}
-
+	flattenedInstList := xml.Flatten((*structInfo).Instructions)
 	for _, instruction := range flattenedInstList {
 		switch instruction.XMLName.Local {
 		case "array":
 			fallthrough
 		case "field":
-			fieldTypeName, fieldTypeSize := GetInstructionTypeName(instruction)
+			fieldTypeName, fieldTypeSize := GetInstructionTypeName(*instruction)
 			if fieldTypeSize != "" {
 				fieldTypeName = fieldTypeSize
 			}

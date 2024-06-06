@@ -65,9 +65,8 @@ func (s *DropRecord) Deserialize(reader *data.EoReader) (err error) {
 type DropNpcRecord struct {
 	byteSize int
 
-	NpcId      int
-	DropsCount int
-	Drops      []DropRecord
+	NpcId int
+	Drops []DropRecord
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -84,11 +83,11 @@ func (s *DropNpcRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// DropsCount : length : short
-	if err = writer.AddShort(s.DropsCount); err != nil {
+	if err = writer.AddShort(len(s.Drops)); err != nil {
 		return
 	}
 	// Drops : array : DropRecord
-	for ndx := 0; ndx < s.DropsCount; ndx++ {
+	for ndx := 0; ndx < len(s.Drops); ndx++ {
 		if err = s.Drops[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -105,9 +104,9 @@ func (s *DropNpcRecord) Deserialize(reader *data.EoReader) (err error) {
 	// NpcId : field : short
 	s.NpcId = reader.GetShort()
 	// DropsCount : length : short
-	s.DropsCount = reader.GetShort()
+	dropsCount := reader.GetShort()
 	// Drops : array : DropRecord
-	for ndx := 0; ndx < s.DropsCount; ndx++ {
+	for ndx := 0; ndx < dropsCount; ndx++ {
 		s.Drops = append(s.Drops, DropRecord{})
 		if err = s.Drops[ndx].Deserialize(reader); err != nil {
 			return
@@ -175,10 +174,8 @@ func (s *DropFile) Deserialize(reader *data.EoReader) (err error) {
 type InnQuestionRecord struct {
 	byteSize int
 
-	QuestionLength int
-	Question       string
-	AnswerLength   int
-	Answer         string
+	Question string
+	Answer   string
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -191,19 +188,19 @@ func (s *InnQuestionRecord) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// QuestionLength : length : char
-	if err = writer.AddChar(s.QuestionLength); err != nil {
+	if err = writer.AddChar(len(s.Question)); err != nil {
 		return
 	}
 	// Question : field : string
-	if err = writer.AddFixedString(s.Question, s.QuestionLength); err != nil {
+	if err = writer.AddFixedString(s.Question, len(s.Question)); err != nil {
 		return
 	}
 	// AnswerLength : length : char
-	if err = writer.AddChar(s.AnswerLength); err != nil {
+	if err = writer.AddChar(len(s.Answer)); err != nil {
 		return
 	}
 	// Answer : field : string
-	if err = writer.AddFixedString(s.Answer, s.AnswerLength); err != nil {
+	if err = writer.AddFixedString(s.Answer, len(s.Answer)); err != nil {
 		return
 	}
 	return
@@ -215,16 +212,16 @@ func (s *InnQuestionRecord) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// QuestionLength : length : char
-	s.QuestionLength = reader.GetChar()
+	questionLength := reader.GetChar()
 	// Question : field : string
-	if s.Question, err = reader.GetFixedString(s.QuestionLength); err != nil {
+	if s.Question, err = reader.GetFixedString(questionLength); err != nil {
 		return
 	}
 
 	// AnswerLength : length : char
-	s.AnswerLength = reader.GetChar()
+	answerLength := reader.GetChar()
 	// Answer : field : string
-	if s.Answer, err = reader.GetFixedString(s.AnswerLength); err != nil {
+	if s.Answer, err = reader.GetFixedString(answerLength); err != nil {
 		return
 	}
 
@@ -238,7 +235,6 @@ type InnRecord struct {
 	byteSize int
 
 	BehaviorId            int // Behavior ID of the NPC that runs the inn. 0 for default inn.
-	NameLength            int
 	Name                  string
 	SpawnMap              int  // ID of the map the player is sent to after respawning.
 	SpawnX                int  // X coordinate of the map the player is sent to after respawning.
@@ -267,11 +263,11 @@ func (s *InnRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// SpawnMap : field : short
@@ -343,9 +339,9 @@ func (s *InnRecord) Deserialize(reader *data.EoReader) (err error) {
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
@@ -560,12 +556,10 @@ type SkillMasterRecord struct {
 	byteSize int
 
 	BehaviorId       int // Behavior ID of the Skill Master NPC.
-	NameLength       int
 	Name             string
 	MinLevel         int // Minimum level required to use this Skill Master.
 	MaxLevel         int // Maximum level allowed to use this Skill Master.
 	ClassRequirement int // Class required to use this Skill Master.
-	SkillsCount      int
 	Skills           []SkillMasterSkillRecord
 }
 
@@ -583,11 +577,11 @@ func (s *SkillMasterRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// MinLevel : field : char
@@ -603,11 +597,11 @@ func (s *SkillMasterRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// SkillsCount : length : short
-	if err = writer.AddShort(s.SkillsCount); err != nil {
+	if err = writer.AddShort(len(s.Skills)); err != nil {
 		return
 	}
 	// Skills : array : SkillMasterSkillRecord
-	for ndx := 0; ndx < s.SkillsCount; ndx++ {
+	for ndx := 0; ndx < len(s.Skills); ndx++ {
 		if err = s.Skills[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -624,9 +618,9 @@ func (s *SkillMasterRecord) Deserialize(reader *data.EoReader) (err error) {
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
@@ -637,9 +631,9 @@ func (s *SkillMasterRecord) Deserialize(reader *data.EoReader) (err error) {
 	// ClassRequirement : field : char
 	s.ClassRequirement = reader.GetChar()
 	// SkillsCount : length : short
-	s.SkillsCount = reader.GetShort()
+	skillsCount := reader.GetShort()
 	// Skills : array : SkillMasterSkillRecord
-	for ndx := 0; ndx < s.SkillsCount; ndx++ {
+	for ndx := 0; ndx < skillsCount; ndx++ {
 		s.Skills = append(s.Skills, SkillMasterSkillRecord{})
 		if err = s.Skills[ndx].Deserialize(reader); err != nil {
 			return
@@ -862,13 +856,10 @@ type ShopRecord struct {
 	byteSize int
 
 	BehaviorId       int
-	NameLength       int
 	Name             string
 	MinLevel         int // Minimum level required to use this shop.
 	MaxLevel         int // Maximum level allowed to use this shop.
 	ClassRequirement int // Class required to use this shop.
-	TradesCount      int
-	CraftsCount      int
 	Trades           []ShopTradeRecord
 	Crafts           []ShopCraftRecord
 }
@@ -887,11 +878,11 @@ func (s *ShopRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// NameLength : length : char
-	if err = writer.AddChar(s.NameLength); err != nil {
+	if err = writer.AddChar(len(s.Name)); err != nil {
 		return
 	}
 	// Name : field : string
-	if err = writer.AddFixedString(s.Name, s.NameLength); err != nil {
+	if err = writer.AddFixedString(s.Name, len(s.Name)); err != nil {
 		return
 	}
 	// MinLevel : field : char
@@ -907,22 +898,22 @@ func (s *ShopRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// TradesCount : length : short
-	if err = writer.AddShort(s.TradesCount); err != nil {
+	if err = writer.AddShort(len(s.Trades)); err != nil {
 		return
 	}
 	// CraftsCount : length : char
-	if err = writer.AddChar(s.CraftsCount); err != nil {
+	if err = writer.AddChar(len(s.Crafts)); err != nil {
 		return
 	}
 	// Trades : array : ShopTradeRecord
-	for ndx := 0; ndx < s.TradesCount; ndx++ {
+	for ndx := 0; ndx < len(s.Trades); ndx++ {
 		if err = s.Trades[ndx].Serialize(writer); err != nil {
 			return
 		}
 	}
 
 	// Crafts : array : ShopCraftRecord
-	for ndx := 0; ndx < s.CraftsCount; ndx++ {
+	for ndx := 0; ndx < len(s.Crafts); ndx++ {
 		if err = s.Crafts[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -939,9 +930,9 @@ func (s *ShopRecord) Deserialize(reader *data.EoReader) (err error) {
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// NameLength : length : char
-	s.NameLength = reader.GetChar()
+	nameLength := reader.GetChar()
 	// Name : field : string
-	if s.Name, err = reader.GetFixedString(s.NameLength); err != nil {
+	if s.Name, err = reader.GetFixedString(nameLength); err != nil {
 		return
 	}
 
@@ -952,11 +943,11 @@ func (s *ShopRecord) Deserialize(reader *data.EoReader) (err error) {
 	// ClassRequirement : field : char
 	s.ClassRequirement = reader.GetChar()
 	// TradesCount : length : short
-	s.TradesCount = reader.GetShort()
+	tradesCount := reader.GetShort()
 	// CraftsCount : length : char
-	s.CraftsCount = reader.GetChar()
+	craftsCount := reader.GetChar()
 	// Trades : array : ShopTradeRecord
-	for ndx := 0; ndx < s.TradesCount; ndx++ {
+	for ndx := 0; ndx < tradesCount; ndx++ {
 		s.Trades = append(s.Trades, ShopTradeRecord{})
 		if err = s.Trades[ndx].Deserialize(reader); err != nil {
 			return
@@ -964,7 +955,7 @@ func (s *ShopRecord) Deserialize(reader *data.EoReader) (err error) {
 	}
 
 	// Crafts : array : ShopCraftRecord
-	for ndx := 0; ndx < s.CraftsCount; ndx++ {
+	for ndx := 0; ndx < craftsCount; ndx++ {
 		s.Crafts = append(s.Crafts, ShopCraftRecord{})
 		if err = s.Crafts[ndx].Deserialize(reader); err != nil {
 			return
@@ -1032,8 +1023,7 @@ func (s *ShopFile) Deserialize(reader *data.EoReader) (err error) {
 type TalkMessageRecord struct {
 	byteSize int
 
-	MessageLength int
-	Message       string
+	Message string
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -1046,11 +1036,11 @@ func (s *TalkMessageRecord) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// MessageLength : length : char
-	if err = writer.AddChar(s.MessageLength); err != nil {
+	if err = writer.AddChar(len(s.Message)); err != nil {
 		return
 	}
 	// Message : field : string
-	if err = writer.AddFixedString(s.Message, s.MessageLength); err != nil {
+	if err = writer.AddFixedString(s.Message, len(s.Message)); err != nil {
 		return
 	}
 	return
@@ -1062,9 +1052,9 @@ func (s *TalkMessageRecord) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// MessageLength : length : char
-	s.MessageLength = reader.GetChar()
+	messageLength := reader.GetChar()
 	// Message : field : string
-	if s.Message, err = reader.GetFixedString(s.MessageLength); err != nil {
+	if s.Message, err = reader.GetFixedString(messageLength); err != nil {
 		return
 	}
 
@@ -1077,10 +1067,9 @@ func (s *TalkMessageRecord) Deserialize(reader *data.EoReader) (err error) {
 type TalkRecord struct {
 	byteSize int
 
-	NpcId         int // ID of the NPC that will talk.
-	Rate          int // Chance that the NPC will talk (0-100).
-	MessagesCount int
-	Messages      []TalkMessageRecord
+	NpcId    int // ID of the NPC that will talk.
+	Rate     int // Chance that the NPC will talk (0-100).
+	Messages []TalkMessageRecord
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -1101,11 +1090,11 @@ func (s *TalkRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// MessagesCount : length : char
-	if err = writer.AddChar(s.MessagesCount); err != nil {
+	if err = writer.AddChar(len(s.Messages)); err != nil {
 		return
 	}
 	// Messages : array : TalkMessageRecord
-	for ndx := 0; ndx < s.MessagesCount; ndx++ {
+	for ndx := 0; ndx < len(s.Messages); ndx++ {
 		if err = s.Messages[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -1124,9 +1113,9 @@ func (s *TalkRecord) Deserialize(reader *data.EoReader) (err error) {
 	// Rate : field : char
 	s.Rate = reader.GetChar()
 	// MessagesCount : length : char
-	s.MessagesCount = reader.GetChar()
+	messagesCount := reader.GetChar()
 	// Messages : array : TalkMessageRecord
-	for ndx := 0; ndx < s.MessagesCount; ndx++ {
+	for ndx := 0; ndx < messagesCount; ndx++ {
 		s.Messages = append(s.Messages, TalkMessageRecord{})
 		if err = s.Messages[ndx].Deserialize(reader); err != nil {
 			return

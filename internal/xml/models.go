@@ -53,8 +53,12 @@ type ProtocolValue struct {
 }
 
 type ProtocolInstruction struct {
-	XMLName   xml.Name
+	// XMLName is the XML element name of this instruction.
+	XMLName xml.Name
+	// IsChunked is True if this instruction appears within a "chunked" section
 	IsChunked bool
+	// ReferencedBy is the name of the instruction that references this instruction. This is only set for length instructions which are referenced by another instruction.
+	ReferencedBy *string
 
 	// ProtocolField properties
 	Name     *string `xml:"name,attr"`
@@ -98,23 +102,65 @@ type ProtocolCase struct {
 
 type OrdinalValue int
 
-func validate(instructions []ProtocolInstruction, isChunked bool) error {
+func Flatten(instructions []ProtocolInstruction) []*ProtocolInstruction {
+	var flattenedInstList []*ProtocolInstruction
+	for ndx, instruction := range instructions {
+		if instruction.XMLName.Local == "chunked" {
+			flattenedInstList = append(flattenedInstList, Flatten(instruction.Chunked)...)
+		} else {
+			// note: when flattening, switches are *not* flattened as they may have cases with instructions with name collisions
+			// see: CharacterReplyServerPacket
+			flattenedInstList = append(flattenedInstList, &instructions[ndx])
+		}
+	}
+	return flattenedInstList
+}
+
+func getLengthInstructions(instructions []ProtocolInstruction) (lengthInstructions []*ProtocolInstruction) {
+	flattened := Flatten(instructions)
+	for i, inst := range flattened {
+		if inst.XMLName.Local == "length" {
+			lengthInstructions = append(lengthInstructions, flattened[i])
+		}
+	}
+	return
+}
+
+func findLengthInstructionByName(lengthName string, lengthInstructions []*ProtocolInstruction) *ProtocolInstruction {
+	for i, inst := range lengthInstructions {
+		if inst.Name != nil && *inst.Name == lengthName {
+			return lengthInstructions[i]
+		}
+	}
+	return nil
+}
+
+func validate(instructions []ProtocolInstruction, isChunked bool, lengthInstructions []*ProtocolInstruction) error {
+	localLengths := append(lengthInstructions, getLengthInstructions(instructions)...)
+
 	for i, inst := range instructions {
 		if isChunked {
 			instructions[i].IsChunked = true
+		}
+
+		if inst.Length != nil {
+			if lengthInstruction := findLengthInstructionByName(*inst.Length, localLengths); lengthInstruction != nil {
+				lengthInstruction.ReferencedBy = new(string)
+				*lengthInstruction.ReferencedBy = *inst.Name
+			}
 		}
 
 		if err := inst.Validate(); err != nil {
 			return err
 		}
 
-		if err := validate(inst.Chunked, true); err != nil {
+		if err := validate(inst.Chunked, true, localLengths); err != nil {
 			return err
 		}
 
 		if len(inst.Cases) > 0 {
 			for _, cs := range inst.Cases {
-				if err := validate(cs.Instructions, isChunked); err != nil {
+				if err := validate(cs.Instructions, isChunked, localLengths); err != nil {
 					return err
 				}
 			}
@@ -126,13 +172,13 @@ func validate(instructions []ProtocolInstruction, isChunked bool) error {
 
 func (p Protocol) Validate() error {
 	for _, st := range p.Structs {
-		if err := validate(st.Instructions, false); err != nil {
+		if err := validate(st.Instructions, false, nil); err != nil {
 			return err
 		}
 	}
 
 	for _, pkt := range p.Packets {
-		if err := validate(pkt.Instructions, false); err != nil {
+		if err := validate(pkt.Instructions, false, nil); err != nil {
 			return err
 		}
 	}
@@ -206,7 +252,7 @@ func (pi ProtocolInstruction) Validate() error {
 		fieldName := reflectType.Field(i)
 		fieldValue := reflectValue.Field(i)
 
-		if fieldName.Name == "XMLName" || fieldName.Name == "IsChunked" {
+		if fieldName.Name == "XMLName" || fieldName.Name == "IsChunked" || fieldName.Name == "ReferencedBy" {
 			continue
 		}
 

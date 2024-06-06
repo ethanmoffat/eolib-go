@@ -182,8 +182,10 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			g.Id(instName).Index().Do(qualifiedTypeName)
 			isEmpty = false
 		case "length":
-			g.Id(instName).Do(qualifiedTypeName)
-			isEmpty = false
+			// lengths do not write a separate property
+			// length is implicitly determined for serialization by using the built-in len() function
+			// length is stored in a local variable for deserialization
+			continue
 		case "switch":
 			g.Id(fmt.Sprintf("%sData", instName)).Id(fmt.Sprintf("%s%sData", si.SwitchStructQualifier, instName))
 			switches = append(switches, &si.Instructions[i])
@@ -392,7 +394,7 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 			case "int":
 				fallthrough
 			case "blob":
-				serializeCodes = getSerializeForInstruction(instruction, types.NewEoType(typeName), false)
+				serializeCodes, err = getSerializeForInstruction(instruction, types.NewEoType(typeName), false)
 			case "bool":
 				if len(typeSize) > 0 {
 					typeName = string(unicode.ToUpper(rune(typeSize[0]))) + typeSize[1:]
@@ -414,17 +416,19 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 				if instruction.Length != nil && instructionType == "field" {
 					isPadded := instruction.Padded != nil && *instruction.Padded
 					if isPadded {
-						serializeCodes = getSerializeForInstruction(instruction, stringType+types.Padded, false)
+						serializeCodes, err = getSerializeForInstruction(instruction, stringType+types.Padded, false)
 					} else {
-						serializeCodes = getSerializeForInstruction(instruction, stringType+types.Fixed, false)
+						serializeCodes, err = getSerializeForInstruction(instruction, stringType+types.Fixed, false)
 					}
 
-					if parsed, isConst := isConstantLengthExpression(*instruction.Length); isConst && !isContent {
-						lengthAssertCodes := getLengthAssertCodes(instructionName, parsed, isPadded)
-						serializeCodes = append(lengthAssertCodes, serializeCodes...)
+					if err == nil {
+						if parsed, isConst := isConstantLengthExpression(*instruction.Length); isConst && !isContent {
+							lengthAssertCodes := getLengthAssertCodes(instructionName, parsed, isPadded)
+							serializeCodes = append(lengthAssertCodes, serializeCodes...)
+						}
 					}
 				} else {
-					serializeCodes = getSerializeForInstruction(instruction, stringType, false)
+					serializeCodes, err = getSerializeForInstruction(instruction, stringType, false)
 				}
 			default:
 				if _, ok := fullSpec.IsStruct(typeName); ok {
@@ -440,12 +444,16 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 					}
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
 					if t := types.NewEoType(e.Type); t&types.Primitive > 0 {
-						serializeCodes = getSerializeForInstruction(instruction, t, true)
+						serializeCodes, err = getSerializeForInstruction(instruction, t, true)
 					}
 				} else {
 					err = fmt.Errorf("unable to find type '%s' when writing serialization function (member: %s, type: %s)", typeName, instructionName, instructionType)
 					return
 				}
+			}
+
+			if err != nil {
+				return
 			}
 
 			if instructionType == "array" {
@@ -466,11 +474,14 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 
 				var lenExpr *jen.Statement
 				if instruction.Length != nil {
-					lenExpr = getLengthExpression(*instruction.Length)
-
 					if parsed, isConst := isConstantLengthExpression(*instruction.Length); isConst {
+						lenExpr = jen.Lit(parsed)
+
 						lengthAssertCodes := getLengthAssertCodes(instructionName, parsed, false)
 						serializeCodes = append(lengthAssertCodes, serializeCodes...)
+					} else {
+						// implicit length: use the built-in length function for array length
+						lenExpr = jen.Len(jen.Id("s").Dot(instructionName))
 					}
 				} else {
 					lenExpr = jen.Len(jen.Id("s").Dot(instructionName))
@@ -595,7 +606,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			var deserializeCodes []jen.Code
 			switch typeName {
 			case "byte":
-				deserializeCodes = getDeserializeForInstruction(instruction, types.NewEoType(typeName), jen.Id("int"))
+				deserializeCodes, err = getDeserializeForInstruction(instruction, types.NewEoType(typeName), jen.Id("int"))
 			case "char":
 				fallthrough
 			case "short":
@@ -605,7 +616,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			case "int":
 				fallthrough
 			case "blob":
-				deserializeCodes = getDeserializeForInstruction(instruction, types.NewEoType(typeName), nil)
+				deserializeCodes, err = getDeserializeForInstruction(instruction, types.NewEoType(typeName), nil)
 			case "bool":
 				if len(typeSize) > 0 {
 					typeName = string(unicode.ToUpper(rune(typeSize[0]))) + typeSize[1:]
@@ -629,12 +640,12 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			case "string":
 				if instruction.Length != nil && instructionType == "field" {
 					if instruction.Padded != nil && *instruction.Padded {
-						deserializeCodes = getDeserializeForInstruction(instruction, stringType+types.Padded, nil)
+						deserializeCodes, err = getDeserializeForInstruction(instruction, stringType+types.Padded, nil)
 					} else {
-						deserializeCodes = getDeserializeForInstruction(instruction, stringType+types.Fixed, nil)
+						deserializeCodes, err = getDeserializeForInstruction(instruction, stringType+types.Fixed, nil)
 					}
 				} else {
-					deserializeCodes = getDeserializeForInstruction(instruction, stringType, nil)
+					deserializeCodes, err = getDeserializeForInstruction(instruction, stringType, nil)
 				}
 			default:
 				if s, ok := fullSpec.IsStruct(typeName); ok {
@@ -667,7 +678,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
 					if eoType := types.NewEoType(e.Type); eoType&types.Primitive > 0 {
 						_, tp := types.ProtocolSpecTypeToGoType(e.Name, si.PackageName, fullSpec)
-						deserializeCodes = getDeserializeForInstruction(
+						deserializeCodes, err = getDeserializeForInstruction(
 							instruction,
 							eoType,
 							jen.Do(func(s *jen.Statement) {
@@ -684,6 +695,10 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 				} else {
 					panic("Unable to find type '" + typeName + "' when writing serialization function")
 				}
+			}
+
+			if err != nil {
+				return
 			}
 
 			if instructionType == "array" {
@@ -752,7 +767,7 @@ func getInstructionName(inst xml.ProtocolInstruction) (instName string) {
 	return
 }
 
-func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, needsCastToInt bool) []jen.Code {
+func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, needsCastToInt bool) ([]jen.Code, error) {
 	instructionName := getInstructionName(instruction)
 
 	// the method type is a string if it has the eotype_str or eotype_str_encoded flag
@@ -766,7 +781,16 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 			instructionCode = jen.Id(*instruction.Content)
 		}
 	} else {
-		instructionCode = jen.Id("s").Dot(instructionName)
+		if instruction.XMLName.Local == "length" {
+			if instruction.ReferencedBy != nil {
+				// implicit length: this is a length instruction; serialize the length of the actual collection referencing it
+				instructionCode = jen.Len(jen.Id("s").Dot(snakeCaseToPascalCase(*instruction.ReferencedBy)))
+			} else {
+				return nil, fmt.Errorf("length instruction is not referenced by any other instruction")
+			}
+		} else {
+			instructionCode = jen.Id("s").Dot(instructionName)
+		}
 	}
 
 	isArray := false
@@ -806,7 +830,12 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 			jen.Do(func(s *jen.Statement) {
 				// strings may have a fixed length that needs to be serialized
 				if !isArray && isString && instruction.Length != nil {
-					s.Add(getLengthExpression(*instruction.Length))
+					if parsed, isConst := isConstantLengthExpression(*instruction.Length); isConst {
+						s.Add(jen.Lit(parsed))
+					} else {
+						// implicit length: use the built-in length function for string length
+						s.Add(jen.Len(jen.Id("s").Dot(instructionName)))
+					}
 				}
 			}),
 		),
@@ -821,10 +850,10 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 				s.Add(serializeCode)
 			}
 		}),
-	}
+	}, nil
 }
 
-func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, castType *jen.Statement) []jen.Code {
+func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, castType *jen.Statement) ([]jen.Code, error) {
 	instructionName := getInstructionName(instruction)
 
 	// the method type is a string if it has the eotype_str or eotype_str_encoded flag
@@ -872,6 +901,7 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 		}
 	} else {
 		hasAssignTarget = true
+		assignOp := "="
 
 		indexCode := jen.Null()
 		if isArray {
@@ -901,10 +931,20 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 
 			assignLHS = jen.Op("*").Id("s").Dot(instructionName).Add(indexCode)
 		} else {
-			assignLHS = jen.Id("s").Dot(instructionName).Add(indexCode)
+			if instruction.XMLName.Local == "length" {
+				if instruction.ReferencedBy != nil {
+					// implicit length: this is a length instruction; deserialize the length to a local variable
+					assignLHS = getLengthExpression(*instruction.Name)
+					assignOp = ":="
+				} else {
+					return nil, fmt.Errorf("length instruction is not referenced by any other instruction")
+				}
+			} else {
+				assignLHS = jen.Id("s").Dot(instructionName).Add(indexCode)
+			}
 		}
 
-		assignRHS = jen.Op("=").Do(func(s *jen.Statement) {
+		assignRHS = jen.Op(assignOp).Do(func(s *jen.Statement) {
 			if castType != nil {
 				s.Add(castType).Call(readerGetCode)
 			} else {
@@ -919,7 +959,6 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 			jen.List(assignLHS, jen.Id("err")).Add(assignRHS),
 			jen.Id("err").Op("!=").Nil(),
 		).Block(jen.Return()).Do(func(s *jen.Statement) {
-			// _, err := strconv.ParseInt(*instruction.Length, 10, 32)
 			if hasAssignTarget {
 				// For compatibility: prior codegen inserted an extra newline after fixed strings that referenced a length field
 				s.Line()
@@ -936,7 +975,7 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 		retCodes = append(retCodes, assignBlock)
 	}
 
-	return retCodes
+	return retCodes, nil
 }
 
 func getLengthAssertCodes(instructionName string, parsed int, isPadded bool) []jen.Code {
@@ -970,6 +1009,6 @@ func getLengthExpression(instLength string) *jen.Statement {
 		return jen.Lit(parsed)
 	} else {
 		// string length is a reference to another field
-		return jen.Id("s").Dot(snakeCaseToPascalCase(instLength))
+		return jen.Id(snakeCaseToCamelCase(instLength))
 	}
 }

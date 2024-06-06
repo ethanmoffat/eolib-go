@@ -14,8 +14,7 @@ type InitInitClientPacket struct {
 	Challenge int
 	Version   net.Version
 
-	HdidLength int
-	Hdid       string
+	Hdid string
 }
 
 func (s InitInitClientPacket) Family() net.PacketFamily {
@@ -48,11 +47,11 @@ func (s *InitInitClientPacket) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// HdidLength : length : char
-	if err = writer.AddChar(s.HdidLength); err != nil {
+	if err = writer.AddChar(len(s.Hdid)); err != nil {
 		return
 	}
 	// Hdid : field : string
-	if err = writer.AddFixedString(s.Hdid, s.HdidLength); err != nil {
+	if err = writer.AddFixedString(s.Hdid, len(s.Hdid)); err != nil {
 		return
 	}
 	return
@@ -72,9 +71,9 @@ func (s *InitInitClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	// 112 : field : char
 	reader.GetChar()
 	// HdidLength : length : char
-	s.HdidLength = reader.GetChar()
+	hdidLength := reader.GetChar()
 	// Hdid : field : string
-	if s.Hdid, err = reader.GetFixedString(s.HdidLength); err != nil {
+	if s.Hdid, err = reader.GetFixedString(hdidLength); err != nil {
 		return
 	}
 
@@ -4979,8 +4978,6 @@ func (s *PlayerRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err
 type NpcRangeRequestClientPacket struct {
 	byteSize int
 
-	NpcIndexesLength int
-
 	NpcIndexes []int
 }
 
@@ -5002,7 +4999,7 @@ func (s *NpcRangeRequestClientPacket) Serialize(writer *data.EoWriter) (err erro
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NpcIndexesLength : length : char
-	if err = writer.AddChar(s.NpcIndexesLength); err != nil {
+	if err = writer.AddChar(len(s.NpcIndexes)); err != nil {
 		return
 	}
 	// 255 : field : byte
@@ -5010,7 +5007,7 @@ func (s *NpcRangeRequestClientPacket) Serialize(writer *data.EoWriter) (err erro
 		return
 	}
 	// NpcIndexes : array : char
-	for ndx := 0; ndx < s.NpcIndexesLength; ndx++ {
+	for ndx := 0; ndx < len(s.NpcIndexes); ndx++ {
 		if err = writer.AddChar(s.NpcIndexes[ndx]); err != nil {
 			return
 		}
@@ -5025,11 +5022,11 @@ func (s *NpcRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err er
 
 	readerStartPosition := reader.Position()
 	// NpcIndexesLength : length : char
-	s.NpcIndexesLength = reader.GetChar()
+	npcIndexesLength := reader.GetChar()
 	// 255 : field : byte
 	reader.GetByte()
 	// NpcIndexes : array : char
-	for ndx := 0; ndx < s.NpcIndexesLength; ndx++ {
+	for ndx := 0; ndx < npcIndexesLength; ndx++ {
 		s.NpcIndexes = append(s.NpcIndexes, 0)
 		s.NpcIndexes[ndx] = reader.GetChar()
 	}

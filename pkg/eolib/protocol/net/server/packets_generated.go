@@ -1837,8 +1837,6 @@ func (s *CharacterReplyReplyCodeDataNotApproved) Deserialize(reader *data.EoRead
 type CharacterReplyReplyCodeDataOk struct {
 	byteSize int
 
-	CharactersCount int
-
 	Characters []CharacterSelectionListEntry
 }
 
@@ -1852,7 +1850,7 @@ func (s *CharacterReplyReplyCodeDataOk) Serialize(writer *data.EoWriter) (err er
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// CharactersCount : length : char
-	if err = writer.AddChar(s.CharactersCount); err != nil {
+	if err = writer.AddChar(len(s.Characters)); err != nil {
 		return
 	}
 	// 0 : field : char
@@ -1861,7 +1859,7 @@ func (s *CharacterReplyReplyCodeDataOk) Serialize(writer *data.EoWriter) (err er
 	}
 	writer.AddByte(255)
 	// Characters : array : CharacterSelectionListEntry
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Characters); ndx++ {
 		if err = s.Characters[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -1877,14 +1875,14 @@ func (s *CharacterReplyReplyCodeDataOk) Deserialize(reader *data.EoReader) (err 
 
 	readerStartPosition := reader.Position()
 	// CharactersCount : length : char
-	s.CharactersCount = reader.GetChar()
+	charactersCount := reader.GetChar()
 	// 0 : field : char
 	reader.GetChar()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Characters : array : CharacterSelectionListEntry
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < charactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterSelectionListEntry{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
 			return
@@ -1902,8 +1900,7 @@ func (s *CharacterReplyReplyCodeDataOk) Deserialize(reader *data.EoReader) (err 
 type CharacterReplyReplyCodeDataDeleted struct {
 	byteSize int
 
-	CharactersCount int
-	Characters      []CharacterSelectionListEntry
+	Characters []CharacterSelectionListEntry
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -1916,12 +1913,12 @@ func (s *CharacterReplyReplyCodeDataDeleted) Serialize(writer *data.EoWriter) (e
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// CharactersCount : length : char
-	if err = writer.AddChar(s.CharactersCount); err != nil {
+	if err = writer.AddChar(len(s.Characters)); err != nil {
 		return
 	}
 	writer.AddByte(255)
 	// Characters : array : CharacterSelectionListEntry
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Characters); ndx++ {
 		if err = s.Characters[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -1937,12 +1934,12 @@ func (s *CharacterReplyReplyCodeDataDeleted) Deserialize(reader *data.EoReader) 
 
 	readerStartPosition := reader.Position()
 	// CharactersCount : length : char
-	s.CharactersCount = reader.GetChar()
+	charactersCount := reader.GetChar()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Characters : array : CharacterSelectionListEntry
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < charactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterSelectionListEntry{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
 			return
@@ -2274,8 +2271,6 @@ func (s *LoginReplyReplyCodeDataWrongUserPassword) Deserialize(reader *data.EoRe
 type LoginReplyReplyCodeDataOk struct {
 	byteSize int
 
-	CharactersCount int
-
 	Characters []CharacterSelectionListEntry
 }
 
@@ -2289,7 +2284,7 @@ func (s *LoginReplyReplyCodeDataOk) Serialize(writer *data.EoWriter) (err error)
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// CharactersCount : length : char
-	if err = writer.AddChar(s.CharactersCount); err != nil {
+	if err = writer.AddChar(len(s.Characters)); err != nil {
 		return
 	}
 	// 0 : field : char
@@ -2298,7 +2293,7 @@ func (s *LoginReplyReplyCodeDataOk) Serialize(writer *data.EoWriter) (err error)
 	}
 	writer.AddByte(255)
 	// Characters : array : CharacterSelectionListEntry
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Characters); ndx++ {
 		if err = s.Characters[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -2314,14 +2309,14 @@ func (s *LoginReplyReplyCodeDataOk) Deserialize(reader *data.EoReader) (err erro
 
 	readerStartPosition := reader.Position()
 	// CharactersCount : length : char
-	s.CharactersCount = reader.GetChar()
+	charactersCount := reader.GetChar()
 	// 0 : field : char
 	reader.GetChar()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Characters : array : CharacterSelectionListEntry
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < charactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterSelectionListEntry{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
 			return
@@ -5399,8 +5394,7 @@ func (s *RangeReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 type NpcAgreeServerPacket struct {
 	byteSize int
 
-	NpcsCount int
-	Npcs      []NpcMapInfo
+	Npcs []NpcMapInfo
 }
 
 func (s NpcAgreeServerPacket) Family() net.PacketFamily {
@@ -5421,11 +5415,11 @@ func (s *NpcAgreeServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// NpcsCount : length : char
-	if err = writer.AddChar(s.NpcsCount); err != nil {
+	if err = writer.AddChar(len(s.Npcs)); err != nil {
 		return
 	}
 	// Npcs : array : NpcMapInfo
-	for ndx := 0; ndx < s.NpcsCount; ndx++ {
+	for ndx := 0; ndx < len(s.Npcs); ndx++ {
 		if err = s.Npcs[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -5440,9 +5434,9 @@ func (s *NpcAgreeServerPacket) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// NpcsCount : length : char
-	s.NpcsCount = reader.GetChar()
+	npcsCount := reader.GetChar()
 	// Npcs : array : NpcMapInfo
-	for ndx := 0; ndx < s.NpcsCount; ndx++ {
+	for ndx := 0; ndx < npcsCount; ndx++ {
 		s.Npcs = append(s.Npcs, NpcMapInfo{})
 		if err = s.Npcs[ndx].Deserialize(reader); err != nil {
 			return
@@ -8106,9 +8100,8 @@ func (s *BoardPlayerServerPacket) Deserialize(reader *data.EoReader) (err error)
 type BoardOpenServerPacket struct {
 	byteSize int
 
-	BoardId    int
-	PostsCount int
-	Posts      []BoardPostListing
+	BoardId int
+	Posts   []BoardPostListing
 }
 
 func (s BoardOpenServerPacket) Family() net.PacketFamily {
@@ -8134,11 +8127,11 @@ func (s *BoardOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// PostsCount : length : char
-	if err = writer.AddChar(s.PostsCount); err != nil {
+	if err = writer.AddChar(len(s.Posts)); err != nil {
 		return
 	}
 	// Posts : array : BoardPostListing
-	for ndx := 0; ndx < s.PostsCount; ndx++ {
+	for ndx := 0; ndx < len(s.Posts); ndx++ {
 		if err = s.Posts[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -8158,9 +8151,9 @@ func (s *BoardOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	// BoardId : field : char
 	s.BoardId = reader.GetChar()
 	// PostsCount : length : char
-	s.PostsCount = reader.GetChar()
+	postsCount := reader.GetChar()
 	// Posts : array : BoardPostListing
-	for ndx := 0; ndx < s.PostsCount; ndx++ {
+	for ndx := 0; ndx < postsCount; ndx++ {
 		s.Posts = append(s.Posts, BoardPostListing{})
 		if err = s.Posts[ndx].Deserialize(reader); err != nil {
 			return
@@ -10948,8 +10941,7 @@ func (s *GuildOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 type GuildTellServerPacket struct {
 	byteSize int
 
-	MembersCount int
-	Members      []GuildMember
+	Members []GuildMember
 }
 
 func (s GuildTellServerPacket) Family() net.PacketFamily {
@@ -10971,12 +10963,12 @@ func (s *GuildTellServerPacket) Serialize(writer *data.EoWriter) (err error) {
 
 	writer.SanitizeStrings = true
 	// MembersCount : length : short
-	if err = writer.AddShort(s.MembersCount); err != nil {
+	if err = writer.AddShort(len(s.Members)); err != nil {
 		return
 	}
 	writer.AddByte(255)
 	// Members : array : GuildMember
-	for ndx := 0; ndx < s.MembersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Members); ndx++ {
 		if err = s.Members[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -10994,12 +10986,12 @@ func (s *GuildTellServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	readerStartPosition := reader.Position()
 	reader.SetIsChunked(true)
 	// MembersCount : length : short
-	s.MembersCount = reader.GetShort()
+	membersCount := reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Members : array : GuildMember
-	for ndx := 0; ndx < s.MembersCount; ndx++ {
+	for ndx := 0; ndx < membersCount; ndx++ {
 		s.Members = append(s.Members, GuildMember{})
 		if err = s.Members[ndx].Deserialize(reader); err != nil {
 			return
@@ -11025,7 +11017,6 @@ type GuildReportServerPacket struct {
 	Description string
 	Wealth      string
 	Ranks       []string
-	StaffCount  int
 	Staff       []GuildStaff
 }
 
@@ -11086,12 +11077,12 @@ func (s *GuildReportServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	}
 
 	// StaffCount : length : short
-	if err = writer.AddShort(s.StaffCount); err != nil {
+	if err = writer.AddShort(len(s.Staff)); err != nil {
 		return
 	}
 	writer.AddByte(255)
 	// Staff : array : GuildStaff
-	for ndx := 0; ndx < s.StaffCount; ndx++ {
+	for ndx := 0; ndx < len(s.Staff); ndx++ {
 		if err = s.Staff[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -11161,12 +11152,12 @@ func (s *GuildReportServerPacket) Deserialize(reader *data.EoReader) (err error)
 	}
 
 	// StaffCount : length : short
-	s.StaffCount = reader.GetShort()
+	staffCount := reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Staff : array : GuildStaff
-	for ndx := 0; ndx < s.StaffCount; ndx++ {
+	for ndx := 0; ndx < staffCount; ndx++ {
 		s.Staff = append(s.Staff, GuildStaff{})
 		if err = s.Staff[ndx].Deserialize(reader); err != nil {
 			return
@@ -13027,7 +13018,6 @@ func (s *QuestReportServerPacket) Deserialize(reader *data.EoReader) (err error)
 type QuestDialogServerPacket struct {
 	byteSize int
 
-	QuestCount    int
 	BehaviorId    int
 	QuestId       int
 	SessionId     int
@@ -13055,7 +13045,7 @@ func (s *QuestDialogServerPacket) Serialize(writer *data.EoWriter) (err error) {
 
 	writer.SanitizeStrings = true
 	// QuestCount : length : char
-	if err = writer.AddChar(s.QuestCount); err != nil {
+	if err = writer.AddChar(len(s.QuestEntries)); err != nil {
 		return
 	}
 	// BehaviorId : field : short
@@ -13076,7 +13066,7 @@ func (s *QuestDialogServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	}
 	writer.AddByte(255)
 	// QuestEntries : array : DialogQuestEntry
-	for ndx := 0; ndx < s.QuestCount; ndx++ {
+	for ndx := 0; ndx < len(s.QuestEntries); ndx++ {
 		if err = s.QuestEntries[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -13102,7 +13092,7 @@ func (s *QuestDialogServerPacket) Deserialize(reader *data.EoReader) (err error)
 	readerStartPosition := reader.Position()
 	reader.SetIsChunked(true)
 	// QuestCount : length : char
-	s.QuestCount = reader.GetChar()
+	questCount := reader.GetChar()
 	// BehaviorId : field : short
 	s.BehaviorId = reader.GetShort()
 	// QuestId : field : short
@@ -13115,7 +13105,7 @@ func (s *QuestDialogServerPacket) Deserialize(reader *data.EoReader) (err error)
 		return
 	}
 	// QuestEntries : array : DialogQuestEntry
-	for ndx := 0; ndx < s.QuestCount; ndx++ {
+	for ndx := 0; ndx < questCount; ndx++ {
 		s.QuestEntries = append(s.QuestEntries, DialogQuestEntry{})
 		if err = s.QuestEntries[ndx].Deserialize(reader); err != nil {
 			return

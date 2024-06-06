@@ -1109,10 +1109,9 @@ func (s *AvatarChange) Deserialize(reader *data.EoReader) (err error) {
 type NearbyInfo struct {
 	byteSize int
 
-	CharactersCount int
-	Characters      []CharacterMapInfo
-	Npcs            []NpcMapInfo
-	Items           []ItemMapInfo
+	Characters []CharacterMapInfo
+	Npcs       []NpcMapInfo
+	Items      []ItemMapInfo
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -1125,13 +1124,13 @@ func (s *NearbyInfo) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	// CharactersCount : length : char
-	if err = writer.AddChar(s.CharactersCount); err != nil {
+	if err = writer.AddChar(len(s.Characters)); err != nil {
 		return
 	}
 	writer.SanitizeStrings = true
 	writer.AddByte(255)
 	// Characters : array : CharacterMapInfo
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Characters); ndx++ {
 		if err = s.Characters[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -1163,13 +1162,13 @@ func (s *NearbyInfo) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	// CharactersCount : length : char
-	s.CharactersCount = reader.GetChar()
+	charactersCount := reader.GetChar()
 	reader.SetIsChunked(true)
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Characters : array : CharacterMapInfo
-	for ndx := 0; ndx < s.CharactersCount; ndx++ {
+	for ndx := 0; ndx < charactersCount; ndx++ {
 		s.Characters = append(s.Characters, CharacterMapInfo{})
 		if err = s.Characters[ndx].Deserialize(reader); err != nil {
 			return
@@ -1287,8 +1286,7 @@ func (s *PubFile) Deserialize(reader *data.EoReader) (err error) {
 type PlayersList struct {
 	byteSize int
 
-	PlayersCount int
-	Players      []OnlinePlayer
+	Players []OnlinePlayer
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -1302,12 +1300,12 @@ func (s *PlayersList) Serialize(writer *data.EoWriter) (err error) {
 
 	writer.SanitizeStrings = true
 	// PlayersCount : length : short
-	if err = writer.AddShort(s.PlayersCount); err != nil {
+	if err = writer.AddShort(len(s.Players)); err != nil {
 		return
 	}
 	writer.AddByte(255)
 	// Players : array : OnlinePlayer
-	for ndx := 0; ndx < s.PlayersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Players); ndx++ {
 		if err = s.Players[ndx].Serialize(writer); err != nil {
 			return
 		}
@@ -1325,12 +1323,12 @@ func (s *PlayersList) Deserialize(reader *data.EoReader) (err error) {
 	readerStartPosition := reader.Position()
 	reader.SetIsChunked(true)
 	// PlayersCount : length : short
-	s.PlayersCount = reader.GetShort()
+	playersCount := reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Players : array : OnlinePlayer
-	for ndx := 0; ndx < s.PlayersCount; ndx++ {
+	for ndx := 0; ndx < playersCount; ndx++ {
 		s.Players = append(s.Players, OnlinePlayer{})
 		if err = s.Players[ndx].Deserialize(reader); err != nil {
 			return
@@ -1350,8 +1348,7 @@ func (s *PlayersList) Deserialize(reader *data.EoReader) (err error) {
 type PlayersListFriends struct {
 	byteSize int
 
-	PlayersCount int
-	Players      []string
+	Players []string
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -1365,12 +1362,12 @@ func (s *PlayersListFriends) Serialize(writer *data.EoWriter) (err error) {
 
 	writer.SanitizeStrings = true
 	// PlayersCount : length : short
-	if err = writer.AddShort(s.PlayersCount); err != nil {
+	if err = writer.AddShort(len(s.Players)); err != nil {
 		return
 	}
 	writer.AddByte(255)
 	// Players : array : string
-	for ndx := 0; ndx < s.PlayersCount; ndx++ {
+	for ndx := 0; ndx < len(s.Players); ndx++ {
 		if err = writer.AddString(s.Players[ndx]); err != nil {
 			return
 		}
@@ -1388,12 +1385,12 @@ func (s *PlayersListFriends) Deserialize(reader *data.EoReader) (err error) {
 	readerStartPosition := reader.Position()
 	reader.SetIsChunked(true)
 	// PlayersCount : length : short
-	s.PlayersCount = reader.GetShort()
+	playersCount := reader.GetShort()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
 	// Players : array : string
-	for ndx := 0; ndx < s.PlayersCount; ndx++ {
+	for ndx := 0; ndx < playersCount; ndx++ {
 		s.Players = append(s.Players, "")
 		if s.Players[ndx], err = reader.GetString(); err != nil {
 			return
@@ -3546,9 +3543,8 @@ func (s *NpcUpdateAttack) Deserialize(reader *data.EoReader) (err error) {
 type NpcUpdateChat struct {
 	byteSize int
 
-	NpcIndex      int
-	MessageLength int
-	Message       string
+	NpcIndex int
+	Message  string
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -3565,11 +3561,11 @@ func (s *NpcUpdateChat) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// MessageLength : length : char
-	if err = writer.AddChar(s.MessageLength); err != nil {
+	if err = writer.AddChar(len(s.Message)); err != nil {
 		return
 	}
 	// Message : field : string
-	if err = writer.AddFixedString(s.Message, s.MessageLength); err != nil {
+	if err = writer.AddFixedString(s.Message, len(s.Message)); err != nil {
 		return
 	}
 	return
@@ -3583,9 +3579,9 @@ func (s *NpcUpdateChat) Deserialize(reader *data.EoReader) (err error) {
 	// NpcIndex : field : char
 	s.NpcIndex = reader.GetChar()
 	// MessageLength : length : char
-	s.MessageLength = reader.GetChar()
+	messageLength := reader.GetChar()
 	// Message : field : string
-	if s.Message, err = reader.GetFixedString(s.MessageLength); err != nil {
+	if s.Message, err = reader.GetFixedString(messageLength); err != nil {
 		return
 	}
 
