@@ -13,7 +13,9 @@ install:
 
 generate:
 	@go install ./cmd/protocol-gen
-	@go generate ./...
+	@go generate .
+	@go install ./v3/cmd/protocol-gen-v3
+	@go generate ./v3
 
 clean:
 	@rm $$(go env GOPATH)/bin/protocol-gen

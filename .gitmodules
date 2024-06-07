@@ -1,3 +1,6 @@
 [submodule "eo-protocol"]
 	path = eo-protocol
 	url = https://www.github.com/cirras/eo-protocol
+[submodule "eo-protocol-v3"]
+	path = v3/eo-protocol
+	url = https://www.github.com/cirras/eo-protocol
