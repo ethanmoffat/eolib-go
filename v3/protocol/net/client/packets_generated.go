@@ -548,7 +548,7 @@ func (s *CharacterCreateClientPacket) Serialize(writer *data.EoWriter) (err erro
 		return
 	}
 	// Gender : field : Gender:short
-	if err = writer.AddChar(int(s.Gender)); err != nil {
+	if err = writer.AddShort(int(s.Gender)); err != nil {
 		return
 	}
 	// HairStyle : field : short
@@ -582,7 +582,7 @@ func (s *CharacterCreateClientPacket) Deserialize(reader *data.EoReader) (err er
 	// SessionId : field : short
 	s.SessionId = reader.GetShort()
 	// Gender : field : Gender:short
-	s.Gender = protocol.Gender(reader.GetChar())
+	s.Gender = protocol.Gender(reader.GetShort())
 	// HairStyle : field : short
 	s.HairStyle = reader.GetShort()
 	// HairColor : field : short

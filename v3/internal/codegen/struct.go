@@ -443,7 +443,11 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 						).Block(jen.Return()),
 					}
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
-					if t := types.NewEoType(e.Type); t&types.Primitive > 0 {
+					serializeType := e.Type
+					if typeSize != "" {
+						serializeType = typeSize
+					}
+					if t := types.NewEoType(serializeType); t&types.Primitive > 0 {
 						serializeCodes, err = getSerializeForInstruction(instruction, t, true)
 					}
 				} else {
@@ -676,7 +680,11 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 						).Block(jen.Return()),
 					}
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
-					if eoType := types.NewEoType(e.Type); eoType&types.Primitive > 0 {
+					deserializeType := e.Type
+					if typeSize != "" {
+						deserializeType = typeSize
+					}
+					if eoType := types.NewEoType(deserializeType); eoType&types.Primitive > 0 {
 						_, tp := types.ProtocolSpecTypeToGoType(e.Name, si.PackageName, fullSpec)
 						deserializeCodes, err = getDeserializeForInstruction(
 							instruction,

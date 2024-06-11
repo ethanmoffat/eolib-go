@@ -527,7 +527,7 @@ func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// Element : field : Element:short
-	if err = writer.AddChar(int(s.Element)); err != nil {
+	if err = writer.AddShort(int(s.Element)); err != nil {
 		return
 	}
 	// ElementDamage : field : short
@@ -535,7 +535,7 @@ func (s *EnfRecord) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	// ElementWeakness : field : Element:short
-	if err = writer.AddChar(int(s.ElementWeakness)); err != nil {
+	if err = writer.AddShort(int(s.ElementWeakness)); err != nil {
 		return
 	}
 	// ElementWeaknessDamage : field : short
@@ -602,11 +602,11 @@ func (s *EnfRecord) Deserialize(reader *data.EoReader) (err error) {
 	// ReturnDamage : field : char
 	s.ReturnDamage = reader.GetChar()
 	// Element : field : Element:short
-	s.Element = Element(reader.GetChar())
+	s.Element = Element(reader.GetShort())
 	// ElementDamage : field : short
 	s.ElementDamage = reader.GetShort()
 	// ElementWeakness : field : Element:short
-	s.ElementWeakness = Element(reader.GetChar())
+	s.ElementWeakness = Element(reader.GetShort())
 	// ElementWeaknessDamage : field : short
 	s.ElementWeaknessDamage = reader.GetShort()
 	// Level : field : char
