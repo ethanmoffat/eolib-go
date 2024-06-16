@@ -654,7 +654,7 @@ type CharacterRemoveClientPacket struct {
 	byteSize int
 
 	SessionId   int
-	CharacterId int
+	CharacterId int //  The official client sends a short, which gets written as a variable-sized integer. (2-4 bytes) due to a quirk of the official encoding routine. However, the official server expects an int.
 }
 
 func (s CharacterRemoveClientPacket) Family() net.PacketFamily {
@@ -6827,6 +6827,38 @@ type QuestAcceptReplyTypeData interface {
 	protocol.EoData
 }
 
+type QuestAcceptReplyTypeDataOk struct {
+	byteSize int
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *QuestAcceptReplyTypeDataOk) ByteSize() int {
+	return s.byteSize
+}
+
+func (s *QuestAcceptReplyTypeDataOk) Serialize(writer *data.EoWriter) (err error) {
+	oldSanitizeStrings := writer.SanitizeStrings
+	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
+
+	// 0 : field : char
+	if err = writer.AddChar(0); err != nil {
+		return
+	}
+	return
+}
+
+func (s *QuestAcceptReplyTypeDataOk) Deserialize(reader *data.EoReader) (err error) {
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
+
+	readerStartPosition := reader.Position()
+	// 0 : field : char
+	reader.GetChar()
+	s.byteSize = reader.Position() - readerStartPosition
+
+	return
+}
+
 type QuestAcceptReplyTypeDataLink struct {
 	byteSize int
 
@@ -6899,6 +6931,16 @@ func (s *QuestAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 		return
 	}
 	switch s.ReplyType {
+	case DialogReply_Ok:
+		switch s.ReplyTypeData.(type) {
+		case *QuestAcceptReplyTypeDataOk:
+			if err = s.ReplyTypeData.Serialize(writer); err != nil {
+				return
+			}
+		default:
+			err = fmt.Errorf("invalid switch struct type for switch value %d", s.ReplyType)
+			return
+		}
 	case DialogReply_Link:
 		switch s.ReplyTypeData.(type) {
 		case *QuestAcceptReplyTypeDataLink:
@@ -6929,6 +6971,11 @@ func (s *QuestAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	// ReplyType : field : DialogReply
 	s.ReplyType = DialogReply(reader.GetChar())
 	switch s.ReplyType {
+	case DialogReply_Ok:
+		s.ReplyTypeData = &QuestAcceptReplyTypeDataOk{}
+		if err = s.ReplyTypeData.Deserialize(reader); err != nil {
+			return
+		}
 	case DialogReply_Link:
 		s.ReplyTypeData = &QuestAcceptReplyTypeDataLink{}
 		if err = s.ReplyTypeData.Deserialize(reader); err != nil {
