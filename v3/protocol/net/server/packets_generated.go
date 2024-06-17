@@ -1443,8 +1443,8 @@ func (s *AccountReplyReplyCodeDataChanged) Serialize(writer *data.EoWriter) (err
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// NO : field : string
-	if err = writer.AddString("NO"); err != nil {
+	// OK : field : string
+	if err = writer.AddString("OK"); err != nil {
 		return
 	}
 	return
@@ -1455,7 +1455,7 @@ func (s *AccountReplyReplyCodeDataChanged) Deserialize(reader *data.EoReader) (e
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// NO : field : string
+	// OK : field : string
 	if _, err = reader.GetString(); err != nil {
 		return
 	}
@@ -3518,6 +3518,7 @@ type AdminInteractTellServerPacket struct {
 
 	Name      string
 	Usage     int
+	GoldBank  int
 	Exp       int
 	Level     int
 	MapId     int
@@ -3554,6 +3555,10 @@ func (s *AdminInteractTellServerPacket) Serialize(writer *data.EoWriter) (err er
 		return
 	}
 	writer.AddByte(255)
+	// GoldBank : field : int
+	if err = writer.AddInt(s.GoldBank); err != nil {
+		return
+	}
 	writer.AddByte(255)
 	// Exp : field : int
 	if err = writer.AddInt(s.Exp); err != nil {
@@ -3602,6 +3607,8 @@ func (s *AdminInteractTellServerPacket) Deserialize(reader *data.EoReader) (err 
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
+	// GoldBank : field : int
+	s.GoldBank = reader.GetInt()
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
@@ -6698,7 +6705,6 @@ func (s *ShopOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		}
 	}
 
-	writer.AddByte(255)
 	writer.SanitizeStrings = false
 	return
 }
@@ -6740,9 +6746,6 @@ func (s *ShopOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
 	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
@@ -9271,7 +9274,7 @@ func (s *PlayersNet242ServerPacket) Deserialize(reader *data.EoReader) (err erro
 type DoorOpenServerPacket struct {
 	byteSize int
 
-	Coords protocol.Coords
+	Coords protocol.Coords //  The official server erroneously encodes the Y coordinate as a short. The official client reads each coordinate as a char.
 }
 
 func (s DoorOpenServerPacket) Family() net.PacketFamily {
@@ -9295,10 +9298,6 @@ func (s *DoorOpenServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = s.Coords.Serialize(writer); err != nil {
 		return
 	}
-	// 0 : field : char
-	if err = writer.AddChar(0); err != nil {
-		return
-	}
 	return
 }
 
@@ -9311,8 +9310,6 @@ func (s *DoorOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	if err = s.Coords.Deserialize(reader); err != nil {
 		return
 	}
-	// 0 : field : char
-	reader.GetChar()
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -13976,6 +13973,10 @@ func (s *RecoverPlayerServerPacket) Serialize(writer *data.EoWriter) (err error)
 	if err = writer.AddShort(s.Tp); err != nil {
 		return
 	}
+	// 0 : field : short
+	if err = writer.AddShort(0); err != nil {
+		return
+	}
 	return
 }
 
@@ -13988,6 +13989,8 @@ func (s *RecoverPlayerServerPacket) Deserialize(reader *data.EoReader) (err erro
 	s.Hp = reader.GetShort()
 	// Tp : field : short
 	s.Tp = reader.GetShort()
+	// 0 : field : short
+	reader.GetShort()
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
