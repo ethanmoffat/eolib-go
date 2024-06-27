@@ -11841,6 +11841,63 @@ func (s *SpellTargetOtherServerPacket) Deserialize(reader *data.EoReader) (err e
 	return
 }
 
+// SpellReplyServerPacket :: Your character self-cast a targetable heal spell.
+type SpellReplyServerPacket struct {
+	byteSize int
+
+	SpellId int
+	Hp      int
+	Tp      int
+}
+
+func (s SpellReplyServerPacket) Family() net.PacketFamily {
+	return net.PacketFamily_Spell
+}
+
+func (s SpellReplyServerPacket) Action() net.PacketAction {
+	return net.PacketAction_Reply
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *SpellReplyServerPacket) ByteSize() int {
+	return s.byteSize
+}
+
+func (s *SpellReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
+	oldSanitizeStrings := writer.SanitizeStrings
+	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
+
+	// SpellId : field : short
+	if err = writer.AddShort(s.SpellId); err != nil {
+		return
+	}
+	// Hp : field : short
+	if err = writer.AddShort(s.Hp); err != nil {
+		return
+	}
+	// Tp : field : short
+	if err = writer.AddShort(s.Tp); err != nil {
+		return
+	}
+	return
+}
+
+func (s *SpellReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
+
+	readerStartPosition := reader.Position()
+	// SpellId : field : short
+	s.SpellId = reader.GetShort()
+	// Hp : field : short
+	s.Hp = reader.GetShort()
+	// Tp : field : short
+	s.Tp = reader.GetShort()
+	s.byteSize = reader.Position() - readerStartPosition
+
+	return
+}
+
 // TradeRequestServerPacket :: Trade request from another player.
 type TradeRequestServerPacket struct {
 	byteSize int

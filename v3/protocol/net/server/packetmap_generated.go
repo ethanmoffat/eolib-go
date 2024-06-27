@@ -158,6 +158,7 @@ var packetMap = map[int]reflect.Type{
 	net.PacketId(net.PacketFamily_Avatar, net.PacketAction_Admin):         reflect.TypeOf(AvatarAdminServerPacket{}),
 	net.PacketId(net.PacketFamily_Spell, net.PacketAction_TargetGroup):    reflect.TypeOf(SpellTargetGroupServerPacket{}),
 	net.PacketId(net.PacketFamily_Spell, net.PacketAction_TargetOther):    reflect.TypeOf(SpellTargetOtherServerPacket{}),
+	net.PacketId(net.PacketFamily_Spell, net.PacketAction_Reply):          reflect.TypeOf(SpellReplyServerPacket{}),
 	net.PacketId(net.PacketFamily_Trade, net.PacketAction_Request):        reflect.TypeOf(TradeRequestServerPacket{}),
 	net.PacketId(net.PacketFamily_Trade, net.PacketAction_Open):           reflect.TypeOf(TradeOpenServerPacket{}),
 	net.PacketId(net.PacketFamily_Trade, net.PacketAction_Reply):          reflect.TypeOf(TradeReplyServerPacket{}),
