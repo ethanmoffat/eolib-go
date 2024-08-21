@@ -5147,7 +5147,8 @@ func (s *EffectPlayerServerPacket) Deserialize(reader *data.EoReader) (err error
 
 	readerStartPosition := reader.Position()
 	// Effects : array : PlayerEffect
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	EffectsRemaining := reader.Remaining()
+	for ndx := 0; ndx < EffectsRemaining/5; ndx++ {
 		s.Effects = append(s.Effects, PlayerEffect{})
 		if err = s.Effects[ndx].Deserialize(reader); err != nil {
 			return
@@ -5954,7 +5955,8 @@ func (s *LockerReplyServerPacket) Deserialize(reader *data.EoReader) (err error)
 		return
 	}
 	// LockerItems : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	LockerItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < LockerItemsRemaining/5; ndx++ {
 		s.LockerItems = append(s.LockerItems, net.ThreeItem{})
 		if err = s.LockerItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -6024,7 +6026,8 @@ func (s *LockerGetServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// LockerItems : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	LockerItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < LockerItemsRemaining/5; ndx++ {
 		s.LockerItems = append(s.LockerItems, net.ThreeItem{})
 		if err = s.LockerItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -6085,7 +6088,8 @@ func (s *LockerOpenServerPacket) Deserialize(reader *data.EoReader) (err error) 
 		return
 	}
 	// LockerItems : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	LockerItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < LockerItemsRemaining/5; ndx++ {
 		s.LockerItems = append(s.LockerItems, net.ThreeItem{})
 		if err = s.LockerItems[ndx].Deserialize(reader); err != nil {
 			return
@@ -9407,7 +9411,8 @@ func (s *ChestOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Items : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/5; ndx++ {
 		s.Items = append(s.Items, net.ThreeItem{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -9482,7 +9487,8 @@ func (s *ChestReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 		return
 	}
 	// Items : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/5; ndx++ {
 		s.Items = append(s.Items, net.ThreeItem{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -9552,7 +9558,8 @@ func (s *ChestGetServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		return
 	}
 	// Items : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/5; ndx++ {
 		s.Items = append(s.Items, net.ThreeItem{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -9604,7 +9611,8 @@ func (s *ChestAgreeServerPacket) Deserialize(reader *data.EoReader) (err error) 
 
 	readerStartPosition := reader.Position()
 	// Items : array : ThreeItem
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/5; ndx++ {
 		s.Items = append(s.Items, net.ThreeItem{})
 		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
@@ -10313,7 +10321,8 @@ func (s *PartyTargetGroupServerPacket) Deserialize(reader *data.EoReader) (err e
 
 	readerStartPosition := reader.Position()
 	// Gains : array : PartyExpShare
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	GainsRemaining := reader.Remaining()
+	for ndx := 0; ndx < GainsRemaining/7; ndx++ {
 		s.Gains = append(s.Gains, PartyExpShare{})
 		if err = s.Gains[ndx].Deserialize(reader); err != nil {
 			return
@@ -11739,7 +11748,8 @@ func (s *SpellTargetGroupServerPacket) Deserialize(reader *data.EoReader) (err e
 	// SpellHealHp : field : short
 	s.SpellHealHp = reader.GetShort()
 	// Players : array : GroupHealTargetPlayer
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	PlayersRemaining := reader.Remaining()
+	for ndx := 0; ndx < PlayersRemaining/5; ndx++ {
 		s.Players = append(s.Players, GroupHealTargetPlayer{})
 		if err = s.Players[ndx].Deserialize(reader); err != nil {
 			return
@@ -14496,7 +14506,8 @@ func (s *EffectAgreeServerPacket) Deserialize(reader *data.EoReader) (err error)
 
 	readerStartPosition := reader.Position()
 	// Effects : array : TileEffect
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	EffectsRemaining := reader.Remaining()
+	for ndx := 0; ndx < EffectsRemaining/4; ndx++ {
 		s.Effects = append(s.Effects, TileEffect{})
 		if err = s.Effects[ndx].Deserialize(reader); err != nil {
 			return
@@ -14569,7 +14580,8 @@ func (s *EffectTargetOtherServerPacket) Deserialize(reader *data.EoReader) (err 
 	// MaxHp : field : short
 	s.MaxHp = reader.GetShort()
 	// Others : array : MapDrainDamageOther
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	OthersRemaining := reader.Remaining()
+	for ndx := 0; ndx < OthersRemaining/5; ndx++ {
 		s.Others = append(s.Others, MapDrainDamageOther{})
 		if err = s.Others[ndx].Deserialize(reader); err != nil {
 			return

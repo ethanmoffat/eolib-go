@@ -716,15 +716,13 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 				var lenExpr *jen.Statement
 				if instruction.Length != nil {
 					lenExpr = jen.Id("ndx").Op("<").Add(getLengthExpression(*instruction.Length))
-				} else if !delimited && instruction.IsChunked {
+				} else {
 					if rawLen, err := types.CalculateTypeSize(typeName, fullSpec); err != nil || rawLen == 1 {
 						lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
 					} else {
 						varAssignExpr = jen.Id(instructionName + "Remaining").Op(":=").Id("reader").Dot("Remaining").Call()
 						lenExpr = jen.Id("ndx").Op("<").Id(instructionName + "Remaining").Op("/").Lit(rawLen)
 					}
-				} else {
-					lenExpr = jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)
 				}
 
 				trailingDelimiter := instruction.TrailingDelimiter == nil || *instruction.TrailingDelimiter
