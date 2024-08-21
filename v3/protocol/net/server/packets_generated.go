@@ -12043,7 +12043,7 @@ func (s *TradeOpenServerPacket) Deserialize(reader *data.EoReader) (err error) {
 type TradeReplyServerPacket struct {
 	byteSize int
 
-	TradeData TradeItemData
+	TradeData []TradeItemData
 }
 
 func (s TradeReplyServerPacket) Family() net.PacketFamily {
@@ -12063,10 +12063,18 @@ func (s *TradeReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// TradeData : field : TradeItemData
-	if err = s.TradeData.Serialize(writer); err != nil {
-		return
+	// TradeData : array : TradeItemData
+	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.TradeData) != 2 {
+			err = fmt.Errorf("expected TradeData with length 2, got %d", len(s.TradeData))
+			return
+		}
+
+		if err = s.TradeData[ndx].Serialize(writer); err != nil {
+			return
+		}
 	}
+
 	return
 }
 
@@ -12075,10 +12083,14 @@ func (s *TradeReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// TradeData : field : TradeItemData
-	if err = s.TradeData.Deserialize(reader); err != nil {
-		return
+	// TradeData : array : TradeItemData
+	for ndx := 0; ndx < 2; ndx++ {
+		s.TradeData = append(s.TradeData, TradeItemData{})
+		if err = s.TradeData[ndx].Deserialize(reader); err != nil {
+			return
+		}
 	}
+
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -12088,7 +12100,7 @@ func (s *TradeReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 type TradeAdminServerPacket struct {
 	byteSize int
 
-	TradeData TradeItemData
+	TradeData []TradeItemData
 }
 
 func (s TradeAdminServerPacket) Family() net.PacketFamily {
@@ -12108,10 +12120,18 @@ func (s *TradeAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// TradeData : field : TradeItemData
-	if err = s.TradeData.Serialize(writer); err != nil {
-		return
+	// TradeData : array : TradeItemData
+	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.TradeData) != 2 {
+			err = fmt.Errorf("expected TradeData with length 2, got %d", len(s.TradeData))
+			return
+		}
+
+		if err = s.TradeData[ndx].Serialize(writer); err != nil {
+			return
+		}
 	}
+
 	return
 }
 
@@ -12120,10 +12140,14 @@ func (s *TradeAdminServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// TradeData : field : TradeItemData
-	if err = s.TradeData.Deserialize(reader); err != nil {
-		return
+	// TradeData : array : TradeItemData
+	for ndx := 0; ndx < 2; ndx++ {
+		s.TradeData = append(s.TradeData, TradeItemData{})
+		if err = s.TradeData[ndx].Deserialize(reader); err != nil {
+			return
+		}
 	}
+
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -12133,7 +12157,7 @@ func (s *TradeAdminServerPacket) Deserialize(reader *data.EoReader) (err error) 
 type TradeUseServerPacket struct {
 	byteSize int
 
-	TradeData TradeItemData
+	TradeData []TradeItemData
 }
 
 func (s TradeUseServerPacket) Family() net.PacketFamily {
@@ -12153,10 +12177,18 @@ func (s *TradeUseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// TradeData : field : TradeItemData
-	if err = s.TradeData.Serialize(writer); err != nil {
-		return
+	// TradeData : array : TradeItemData
+	for ndx := 0; ndx < 2; ndx++ {
+		if len(s.TradeData) != 2 {
+			err = fmt.Errorf("expected TradeData with length 2, got %d", len(s.TradeData))
+			return
+		}
+
+		if err = s.TradeData[ndx].Serialize(writer); err != nil {
+			return
+		}
 	}
+
 	return
 }
 
@@ -12165,10 +12197,14 @@ func (s *TradeUseServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// TradeData : field : TradeItemData
-	if err = s.TradeData.Deserialize(reader); err != nil {
-		return
+	// TradeData : array : TradeItemData
+	for ndx := 0; ndx < 2; ndx++ {
+		s.TradeData = append(s.TradeData, TradeItemData{})
+		if err = s.TradeData[ndx].Deserialize(reader); err != nil {
+			return
+		}
 	}
+
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return

@@ -3178,10 +3178,8 @@ func (s *GroupHealTargetPlayer) Deserialize(reader *data.EoReader) (err error) {
 type TradeItemData struct {
 	byteSize int
 
-	PartnerPlayerId int
-	PartnerItems    []net.Item
-	YourPlayerId    int
-	YourItems       []net.Item
+	PlayerId int
+	Items    []net.Item
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -3194,25 +3192,13 @@ func (s *TradeItemData) Serialize(writer *data.EoWriter) (err error) {
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
 	writer.SanitizeStrings = true
-	// PartnerPlayerId : field : short
-	if err = writer.AddShort(s.PartnerPlayerId); err != nil {
+	// PlayerId : field : short
+	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
 	}
-	// PartnerItems : array : Item
-	for ndx := 0; ndx < len(s.PartnerItems); ndx++ {
-		if err = s.PartnerItems[ndx].Serialize(writer); err != nil {
-			return
-		}
-	}
-
-	writer.AddByte(255)
-	// YourPlayerId : field : short
-	if err = writer.AddShort(s.YourPlayerId); err != nil {
-		return
-	}
-	// YourItems : array : Item
-	for ndx := 0; ndx < len(s.YourItems); ndx++ {
-		if err = s.YourItems[ndx].Serialize(writer); err != nil {
+	// Items : array : Item
+	for ndx := 0; ndx < len(s.Items); ndx++ {
+		if err = s.Items[ndx].Serialize(writer); err != nil {
 			return
 		}
 	}
@@ -3228,27 +3214,13 @@ func (s *TradeItemData) Deserialize(reader *data.EoReader) (err error) {
 
 	readerStartPosition := reader.Position()
 	reader.SetIsChunked(true)
-	// PartnerPlayerId : field : short
-	s.PartnerPlayerId = reader.GetShort()
-	// PartnerItems : array : Item
-	PartnerItemsRemaining := reader.Remaining()
-	for ndx := 0; ndx < PartnerItemsRemaining/6; ndx++ {
-		s.PartnerItems = append(s.PartnerItems, net.Item{})
-		if err = s.PartnerItems[ndx].Deserialize(reader); err != nil {
-			return
-		}
-	}
-
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
-	// YourPlayerId : field : short
-	s.YourPlayerId = reader.GetShort()
-	// YourItems : array : Item
-	YourItemsRemaining := reader.Remaining()
-	for ndx := 0; ndx < YourItemsRemaining/6; ndx++ {
-		s.YourItems = append(s.YourItems, net.Item{})
-		if err = s.YourItems[ndx].Deserialize(reader); err != nil {
+	// PlayerId : field : short
+	s.PlayerId = reader.GetShort()
+	// Items : array : Item
+	ItemsRemaining := reader.Remaining()
+	for ndx := 0; ndx < ItemsRemaining/6; ndx++ {
+		s.Items = append(s.Items, net.Item{})
+		if err = s.Items[ndx].Deserialize(reader); err != nil {
 			return
 		}
 	}
