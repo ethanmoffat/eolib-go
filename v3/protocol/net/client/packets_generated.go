@@ -4964,7 +4964,8 @@ func (s *PlayerRangeRequestClientPacket) Deserialize(reader *data.EoReader) (err
 
 	readerStartPosition := reader.Position()
 	// PlayerIds : array : short
-	for ndx := 0; reader.Remaining() > 0; ndx++ {
+	PlayerIdsRemaining := reader.Remaining()
+	for ndx := 0; ndx < PlayerIdsRemaining/2; ndx++ {
 		s.PlayerIds = append(s.PlayerIds, 0)
 		s.PlayerIds[ndx] = reader.GetShort()
 	}
