@@ -12073,6 +12073,7 @@ func (s *TradeReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
+	writer.SanitizeStrings = true
 	// TradeData : array : TradeItemData
 	for ndx := 0; ndx < 2; ndx++ {
 		if len(s.TradeData) != 2 {
@@ -12083,8 +12084,10 @@ func (s *TradeReplyServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = s.TradeData[ndx].Serialize(writer); err != nil {
 			return
 		}
+		writer.AddByte(255)
 	}
 
+	writer.SanitizeStrings = false
 	return
 }
 
@@ -12093,14 +12096,19 @@ func (s *TradeReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
+	reader.SetIsChunked(true)
 	// TradeData : array : TradeItemData
 	for ndx := 0; ndx < 2; ndx++ {
 		s.TradeData = append(s.TradeData, TradeItemData{})
 		if err = s.TradeData[ndx].Deserialize(reader); err != nil {
 			return
 		}
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
+	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -12130,6 +12138,7 @@ func (s *TradeAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
+	writer.SanitizeStrings = true
 	// TradeData : array : TradeItemData
 	for ndx := 0; ndx < 2; ndx++ {
 		if len(s.TradeData) != 2 {
@@ -12140,8 +12149,10 @@ func (s *TradeAdminServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = s.TradeData[ndx].Serialize(writer); err != nil {
 			return
 		}
+		writer.AddByte(255)
 	}
 
+	writer.SanitizeStrings = false
 	return
 }
 
@@ -12150,14 +12161,19 @@ func (s *TradeAdminServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
+	reader.SetIsChunked(true)
 	// TradeData : array : TradeItemData
 	for ndx := 0; ndx < 2; ndx++ {
 		s.TradeData = append(s.TradeData, TradeItemData{})
 		if err = s.TradeData[ndx].Deserialize(reader); err != nil {
 			return
 		}
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
+	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -12187,6 +12203,7 @@ func (s *TradeUseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
+	writer.SanitizeStrings = true
 	// TradeData : array : TradeItemData
 	for ndx := 0; ndx < 2; ndx++ {
 		if len(s.TradeData) != 2 {
@@ -12197,8 +12214,10 @@ func (s *TradeUseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		if err = s.TradeData[ndx].Serialize(writer); err != nil {
 			return
 		}
+		writer.AddByte(255)
 	}
 
+	writer.SanitizeStrings = false
 	return
 }
 
@@ -12207,14 +12226,19 @@ func (s *TradeUseServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
+	reader.SetIsChunked(true)
 	// TradeData : array : TradeItemData
 	for ndx := 0; ndx < 2; ndx++ {
 		s.TradeData = append(s.TradeData, TradeItemData{})
 		if err = s.TradeData[ndx].Deserialize(reader); err != nil {
 			return
 		}
+		if err = reader.NextChunk(); err != nil {
+			return
+		}
 	}
 
+	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
