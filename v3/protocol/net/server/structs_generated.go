@@ -1282,6 +1282,97 @@ func (s *PubFile) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
+// OnlinePlayer :: A player in the online list.
+type OnlinePlayer struct {
+	byteSize int
+
+	Name     string
+	Title    string
+	Level    int
+	Icon     CharacterIcon
+	ClassId  int
+	GuildTag string
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *OnlinePlayer) ByteSize() int {
+	return s.byteSize
+}
+
+func (s *OnlinePlayer) Serialize(writer *data.EoWriter) (err error) {
+	oldSanitizeStrings := writer.SanitizeStrings
+	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
+
+	writer.SanitizeStrings = true
+	// Name : field : string
+	if err = writer.AddString(s.Name); err != nil {
+		return
+	}
+	writer.AddByte(255)
+	// Title : field : string
+	if err = writer.AddString(s.Title); err != nil {
+		return
+	}
+	writer.AddByte(255)
+	// Level : field : char
+	if err = writer.AddChar(s.Level); err != nil {
+		return
+	}
+	// Icon : field : CharacterIcon
+	if err = writer.AddChar(int(s.Icon)); err != nil {
+		return
+	}
+	// ClassId : field : char
+	if err = writer.AddChar(s.ClassId); err != nil {
+		return
+	}
+	// GuildTag : field : string
+	if err = writer.AddString(s.GuildTag); err != nil {
+		return
+	}
+	writer.SanitizeStrings = false
+	return
+}
+
+func (s *OnlinePlayer) Deserialize(reader *data.EoReader) (err error) {
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
+
+	readerStartPosition := reader.Position()
+	reader.SetIsChunked(true)
+	// Name : field : string
+	if s.Name, err = reader.GetString(); err != nil {
+		return
+	}
+
+	if err = reader.NextChunk(); err != nil {
+		return
+	}
+	// Title : field : string
+	if s.Title, err = reader.GetString(); err != nil {
+		return
+	}
+
+	if err = reader.NextChunk(); err != nil {
+		return
+	}
+	// Level : field : char
+	s.Level = reader.GetChar()
+	// Icon : field : CharacterIcon
+	s.Icon = CharacterIcon(reader.GetChar())
+	// ClassId : field : char
+	s.ClassId = reader.GetChar()
+	// GuildTag : field : string
+	if s.GuildTag, err = reader.GetString(); err != nil {
+		return
+	}
+
+	reader.SetIsChunked(false)
+	s.byteSize = reader.Position() - readerStartPosition
+
+	return
+}
+
 // PlayersList :: Information about online players.
 type PlayersList struct {
 	byteSize int
@@ -1399,97 +1490,6 @@ func (s *PlayersListFriends) Deserialize(reader *data.EoReader) (err error) {
 		if err = reader.NextChunk(); err != nil {
 			return
 		}
-	}
-
-	reader.SetIsChunked(false)
-	s.byteSize = reader.Position() - readerStartPosition
-
-	return
-}
-
-// OnlinePlayer :: A player in the online list.
-type OnlinePlayer struct {
-	byteSize int
-
-	Name     string
-	Title    string
-	Level    int
-	Icon     CharacterIcon
-	ClassId  int
-	GuildTag string
-}
-
-// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
-func (s *OnlinePlayer) ByteSize() int {
-	return s.byteSize
-}
-
-func (s *OnlinePlayer) Serialize(writer *data.EoWriter) (err error) {
-	oldSanitizeStrings := writer.SanitizeStrings
-	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
-
-	writer.SanitizeStrings = true
-	// Name : field : string
-	if err = writer.AddString(s.Name); err != nil {
-		return
-	}
-	writer.AddByte(255)
-	// Title : field : string
-	if err = writer.AddString(s.Title); err != nil {
-		return
-	}
-	writer.AddByte(255)
-	// Level : field : char
-	if err = writer.AddChar(s.Level); err != nil {
-		return
-	}
-	// Icon : field : CharacterIcon
-	if err = writer.AddChar(int(s.Icon)); err != nil {
-		return
-	}
-	// ClassId : field : char
-	if err = writer.AddChar(s.ClassId); err != nil {
-		return
-	}
-	// GuildTag : field : string
-	if err = writer.AddString(s.GuildTag); err != nil {
-		return
-	}
-	writer.SanitizeStrings = false
-	return
-}
-
-func (s *OnlinePlayer) Deserialize(reader *data.EoReader) (err error) {
-	oldIsChunked := reader.IsChunked()
-	defer func() { reader.SetIsChunked(oldIsChunked) }()
-
-	readerStartPosition := reader.Position()
-	reader.SetIsChunked(true)
-	// Name : field : string
-	if s.Name, err = reader.GetString(); err != nil {
-		return
-	}
-
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
-	// Title : field : string
-	if s.Title, err = reader.GetString(); err != nil {
-		return
-	}
-
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
-	// Level : field : char
-	s.Level = reader.GetChar()
-	// Icon : field : CharacterIcon
-	s.Icon = CharacterIcon(reader.GetChar())
-	// ClassId : field : char
-	s.ClassId = reader.GetChar()
-	// GuildTag : field : string
-	if s.GuildTag, err = reader.GetString(); err != nil {
-		return
 	}
 
 	reader.SetIsChunked(false)
@@ -3191,7 +3191,6 @@ func (s *TradeItemData) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	writer.SanitizeStrings = true
 	// PlayerId : field : short
 	if err = writer.AddShort(s.PlayerId); err != nil {
 		return
@@ -3203,8 +3202,6 @@ func (s *TradeItemData) Serialize(writer *data.EoWriter) (err error) {
 		}
 	}
 
-	writer.AddByte(255)
-	writer.SanitizeStrings = false
 	return
 }
 
@@ -3213,7 +3210,6 @@ func (s *TradeItemData) Deserialize(reader *data.EoReader) (err error) {
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	reader.SetIsChunked(true)
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
 	// Items : array : Item
@@ -3225,10 +3221,6 @@ func (s *TradeItemData) Deserialize(reader *data.EoReader) (err error) {
 		}
 	}
 
-	if err = reader.NextChunk(); err != nil {
-		return
-	}
-	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
