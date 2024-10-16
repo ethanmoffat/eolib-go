@@ -9,7 +9,7 @@ Core library for writing Endless Online applications using the Go programming la
 The library may be referenced in a project via go get:
 
 ```
-go get github.com/ethanmoffat/eolib-go@v2.1.0
+go get github.com/ethanmoffat/eolib-go/v3
 ```
 
 ### Sample code
