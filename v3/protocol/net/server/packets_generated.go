@@ -9689,6 +9689,8 @@ func (s *ChestCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
+	oldWriterLength := writer.Length()
+
 	// Key : field : short
 	if s.Key != nil {
 		if err = writer.AddShort(*s.Key); err != nil {
@@ -9696,8 +9698,10 @@ func (s *ChestCloseServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		}
 	}
 	// N : dummy : string
-	if err = writer.AddString("N"); err != nil {
-		return
+	if writer.Length() == oldWriterLength {
+		if err = writer.AddString("N"); err != nil {
+			return
+		}
 	}
 	return
 }
@@ -9708,13 +9712,15 @@ func (s *ChestCloseServerPacket) Deserialize(reader *data.EoReader) (err error) 
 
 	readerStartPosition := reader.Position()
 	// Key : field : short
-	if reader.Remaining() > 0 {
+	if reader.Remaining() >= 2 {
 		s.Key = new(int)
 		*s.Key = reader.GetShort()
 	}
 	// N : dummy : string
-	if _, err = reader.GetString(); err != nil {
-		return
+	if reader.Position() == readerStartPosition {
+		if _, err = reader.GetString(); err != nil {
+			return
+		}
 	}
 	s.byteSize = reader.Position() - readerStartPosition
 
