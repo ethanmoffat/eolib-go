@@ -5,6 +5,7 @@ import (
 	"math"
 	"path"
 	"strconv"
+	"strings"
 	"unicode"
 
 	"github.com/dave/jennifer/jen"
@@ -265,6 +266,13 @@ func writeSwitchStructs(f *jen.File, switchInst xml.ProtocolInstruction, si *typ
 }
 
 func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol, outerInstructionList []xml.ProtocolInstruction) (err error) {
+	for i := len(si.Instructions) - 1; i >= 0; i-- {
+		if si.Instructions[i].XMLName.Local == "dummy" && len(si.Instructions) > 1 {
+			g.Id("oldWriterLength").Op(":=").Id("writer").Dot("Length").Call().Line()
+			break
+		}
+	}
+
 	for _, instruction := range si.Instructions {
 		instructionType := instruction.XMLName.Local
 		instructionName := getInstructionName(instruction)
@@ -496,6 +504,12 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 					jen.Id("ndx").Op("<").Add(lenExpr),
 					jen.Id("ndx").Op("++"),
 				).Block(serializeCodes...).Line()
+			} else if instructionType == "dummy" {
+				if len(si.Instructions) > 1 {
+					g.If(jen.Id("writer").Dot("Length").Call().Op("==").Id("oldWriterLength")).Block(serializeCodes...)
+				} else {
+					g.Add(serializeCodes...)
+				}
 			} else {
 				g.Add(serializeCodes...)
 			}
@@ -506,7 +520,7 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 }
 
 func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol, outerInstructionList []xml.ProtocolInstruction) (err error) {
-	for _, instruction := range si.Instructions {
+	for instructionIndex, instruction := range si.Instructions {
 		instructionType := instruction.XMLName.Local
 		instructionName := getInstructionName(instruction)
 
@@ -605,12 +619,20 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			}
 			g.Commentf("// %s : %s : %s", instructionName, instructionType, *instruction.Type)
 
+			followedByDummy := false
+			for checkIndex := instructionIndex + 1; checkIndex < len(si.Instructions); checkIndex++ {
+				if si.Instructions[checkIndex].XMLName.Local == "dummy" {
+					followedByDummy = true
+					break
+				}
+			}
+
 			stringType := types.String
 
 			var deserializeCodes []jen.Code
 			switch typeName {
 			case "byte":
-				deserializeCodes, err = getDeserializeForInstruction(instruction, types.NewEoType(typeName), jen.Id("int"))
+				deserializeCodes, err = getDeserializeForInstruction(instruction, types.NewEoType(typeName), jen.Id("int"), followedByDummy)
 			case "char":
 				fallthrough
 			case "short":
@@ -620,7 +642,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			case "int":
 				fallthrough
 			case "blob":
-				deserializeCodes, err = getDeserializeForInstruction(instruction, types.NewEoType(typeName), nil)
+				deserializeCodes, err = getDeserializeForInstruction(instruction, types.NewEoType(typeName), nil, followedByDummy)
 			case "bool":
 				if len(typeSize) > 0 {
 					typeName = string(unicode.ToUpper(rune(typeSize[0]))) + typeSize[1:]
@@ -644,12 +666,12 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			case "string":
 				if instruction.Length != nil && instructionType == "field" {
 					if instruction.Padded != nil && *instruction.Padded {
-						deserializeCodes, err = getDeserializeForInstruction(instruction, stringType+types.Padded, nil)
+						deserializeCodes, err = getDeserializeForInstruction(instruction, stringType+types.Padded, nil, followedByDummy)
 					} else {
-						deserializeCodes, err = getDeserializeForInstruction(instruction, stringType+types.Fixed, nil)
+						deserializeCodes, err = getDeserializeForInstruction(instruction, stringType+types.Fixed, nil, followedByDummy)
 					}
 				} else {
-					deserializeCodes, err = getDeserializeForInstruction(instruction, stringType, nil)
+					deserializeCodes, err = getDeserializeForInstruction(instruction, stringType, nil, followedByDummy)
 				}
 			default:
 				if s, ok := fullSpec.IsStruct(typeName); ok {
@@ -696,6 +718,7 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 									s.Id(e.Name)
 								}
 							}),
+							followedByDummy,
 						)
 					} else {
 						err = fmt.Errorf("expected primitive base type for enum %s when writing deserialize function", e.Name)
@@ -755,6 +778,12 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 					lenExpr,
 					jen.Id("ndx").Op("++"),
 				).Block(deserializeCodes...).Line()
+			} else if instructionType == "dummy" {
+				if len(si.Instructions) > 1 {
+					g.If(jen.Id("reader").Dot("Position").Call().Op("==").Id("readerStartPosition")).Block(deserializeCodes...)
+				} else {
+					g.Add(deserializeCodes...)
+				}
 			} else {
 				g.Add(deserializeCodes...)
 			}
@@ -859,7 +888,7 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 	}, nil
 }
 
-func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, castType *jen.Statement) ([]jen.Code, error) {
+func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodType types.EoType, castType *jen.Statement, dummyFollowsOptional bool) ([]jen.Code, error) {
 	instructionName := getInstructionName(instruction)
 
 	// the method type is a string if it has the eotype_str or eotype_str_encoded flag
@@ -976,7 +1005,14 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 
 	if optional {
 		retCodes = append(retCodes, assignBlock)
-		retCodes = []jen.Code{jen.If(jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)).Block(retCodes...)}
+
+		op := ">"
+		compareLit := 0
+		if dummyFollowsOptional {
+			op = ">="
+			compareLit, _ = types.CalculateTypeSize(strings.ToLower(methodType.String()), xml.Protocol{})
+		}
+		retCodes = []jen.Code{jen.If(jen.Id("reader").Dot("Remaining").Call().Op(op).Lit(compareLit)).Block(retCodes...)}
 	} else {
 		retCodes = append(retCodes, assignBlock)
 	}
