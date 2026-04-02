@@ -2713,6 +2713,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 	if err = writer.AddShort(s.EcfLength); err != nil {
 		return
 	}
+	writer.SanitizeStrings = true
 	// Name : field : string
 	if err = writer.AddString(s.Name); err != nil {
 		return
@@ -2782,6 +2783,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Serialize(writer *data.EoWr
 		return
 	}
 	writer.AddByte(255)
+	writer.SanitizeStrings = false
 	return
 }
 
@@ -2836,6 +2838,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 
 	// EcfLength : field : short
 	s.EcfLength = reader.GetShort()
+	reader.SetIsChunked(true)
 	// Name : field : string
 	if s.Name, err = reader.GetString(); err != nil {
 		return
@@ -2902,6 +2905,7 @@ func (s *WelcomeReplyWelcomeCodeDataSelectCharacter) Deserialize(reader *data.Eo
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
+	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -2926,6 +2930,7 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Serialize(writer *data.EoWriter) 
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
+	writer.SanitizeStrings = true
 	writer.AddByte(255)
 	// News : array : string
 	for ndx := 0; ndx < 9; ndx++ {
@@ -2964,6 +2969,7 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Serialize(writer *data.EoWriter) 
 	if err = s.Nearby.Serialize(writer); err != nil {
 		return
 	}
+	writer.SanitizeStrings = false
 	return
 }
 
@@ -2972,6 +2978,7 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
+	reader.SetIsChunked(true)
 	if err = reader.NextChunk(); err != nil {
 		return
 	}
@@ -3019,6 +3026,7 @@ func (s *WelcomeReplyWelcomeCodeDataEnterGame) Deserialize(reader *data.EoReader
 	if err = s.Nearby.Deserialize(reader); err != nil {
 		return
 	}
+	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
@@ -3045,7 +3053,6 @@ func (s *WelcomeReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 	if err = writer.AddShort(int(s.WelcomeCode)); err != nil {
 		return
 	}
-	writer.SanitizeStrings = true
 	switch s.WelcomeCode {
 	case WelcomeCode_SelectCharacter:
 		switch s.WelcomeCodeData.(type) {
@@ -3068,7 +3075,6 @@ func (s *WelcomeReplyServerPacket) Serialize(writer *data.EoWriter) (err error) 
 			return
 		}
 	}
-	writer.SanitizeStrings = false
 	return
 }
 
@@ -3079,7 +3085,6 @@ func (s *WelcomeReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 	readerStartPosition := reader.Position()
 	// WelcomeCode : field : WelcomeCode
 	s.WelcomeCode = WelcomeCode(reader.GetShort())
-	reader.SetIsChunked(true)
 	switch s.WelcomeCode {
 	case WelcomeCode_SelectCharacter:
 		s.WelcomeCodeData = &WelcomeReplyWelcomeCodeDataSelectCharacter{}
@@ -3092,7 +3097,6 @@ func (s *WelcomeReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 			return
 		}
 	}
-	reader.SetIsChunked(false)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
