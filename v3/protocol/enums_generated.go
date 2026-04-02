@@ -78,6 +78,7 @@ const (
 	Emote_Trade
 	Emote_LevelUp
 	Emote_Playful
+	Emote_Bard
 )
 
 // String converts a Emote value into its string representation
@@ -111,6 +112,8 @@ func (e Emote) String() (string, error) {
 		return "LevelUp", nil
 	case Emote_Playful:
 		return "Playful", nil
+	case Emote_Bard:
+		return "Bard", nil
 	default:
 		return "", fmt.Errorf("could not convert value %d of type Emote to string", e)
 	}

@@ -2585,6 +2585,76 @@ func (s *CharacterStatsEquipmentChange) Deserialize(reader *data.EoReader) (err 
 	return
 }
 
+// SkillStatRequirements :: Stat requirements to learn a skill from a skill master NPC.
+type SkillStatRequirements struct {
+	byteSize int
+
+	Str  int
+	Wis  int
+	Intl int
+	Agi  int
+	Con  int
+	Cha  int
+}
+
+// ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
+func (s *SkillStatRequirements) ByteSize() int {
+	return s.byteSize
+}
+
+func (s *SkillStatRequirements) Serialize(writer *data.EoWriter) (err error) {
+	oldSanitizeStrings := writer.SanitizeStrings
+	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
+
+	// Str : field : short
+	if err = writer.AddShort(s.Str); err != nil {
+		return
+	}
+	// Wis : field : short
+	if err = writer.AddShort(s.Wis); err != nil {
+		return
+	}
+	// Intl : field : short
+	if err = writer.AddShort(s.Intl); err != nil {
+		return
+	}
+	// Agi : field : short
+	if err = writer.AddShort(s.Agi); err != nil {
+		return
+	}
+	// Con : field : short
+	if err = writer.AddShort(s.Con); err != nil {
+		return
+	}
+	// Cha : field : short
+	if err = writer.AddShort(s.Cha); err != nil {
+		return
+	}
+	return
+}
+
+func (s *SkillStatRequirements) Deserialize(reader *data.EoReader) (err error) {
+	oldIsChunked := reader.IsChunked()
+	defer func() { reader.SetIsChunked(oldIsChunked) }()
+
+	readerStartPosition := reader.Position()
+	// Str : field : short
+	s.Str = reader.GetShort()
+	// Wis : field : short
+	s.Wis = reader.GetShort()
+	// Intl : field : short
+	s.Intl = reader.GetShort()
+	// Agi : field : short
+	s.Agi = reader.GetShort()
+	// Con : field : short
+	s.Con = reader.GetShort()
+	// Cha : field : short
+	s.Cha = reader.GetShort()
+	s.byteSize = reader.Position() - readerStartPosition
+
+	return
+}
+
 // SkillLearn :: A skill that can be learned from a skill master NPC.
 type SkillLearn struct {
 	byteSize int
@@ -2594,7 +2664,7 @@ type SkillLearn struct {
 	ClassRequirement  int
 	Cost              int
 	SkillRequirements []int
-	StatRequirements  CharacterBaseStats
+	StatRequirements  SkillStatRequirements
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -2634,7 +2704,7 @@ func (s *SkillLearn) Serialize(writer *data.EoWriter) (err error) {
 		}
 	}
 
-	// StatRequirements : field : CharacterBaseStats
+	// StatRequirements : field : SkillStatRequirements
 	if err = s.StatRequirements.Serialize(writer); err != nil {
 		return
 	}
@@ -2660,7 +2730,7 @@ func (s *SkillLearn) Deserialize(reader *data.EoReader) (err error) {
 		s.SkillRequirements[ndx] = reader.GetShort()
 	}
 
-	// StatRequirements : field : CharacterBaseStats
+	// StatRequirements : field : SkillStatRequirements
 	if err = s.StatRequirements.Deserialize(reader); err != nil {
 		return
 	}

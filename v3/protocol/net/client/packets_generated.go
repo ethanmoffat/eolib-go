@@ -6819,7 +6819,7 @@ type QuestAcceptClientPacket struct {
 	SessionId     int
 	DialogId      int
 	QuestId       int
-	NpcIndex      int
+	BehaviorId    int
 	ReplyType     DialogReply
 	ReplyTypeData QuestAcceptReplyTypeData
 }
@@ -6923,8 +6923,8 @@ func (s *QuestAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = writer.AddShort(s.QuestId); err != nil {
 		return
 	}
-	// NpcIndex : field : short
-	if err = writer.AddShort(s.NpcIndex); err != nil {
+	// BehaviorId : field : short
+	if err = writer.AddShort(s.BehaviorId); err != nil {
 		return
 	}
 	// ReplyType : field : DialogReply
@@ -6967,8 +6967,8 @@ func (s *QuestAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	s.DialogId = reader.GetShort()
 	// QuestId : field : short
 	s.QuestId = reader.GetShort()
-	// NpcIndex : field : short
-	s.NpcIndex = reader.GetShort()
+	// BehaviorId : field : short
+	s.BehaviorId = reader.GetShort()
 	// ReplyType : field : DialogReply
 	s.ReplyType = DialogReply(reader.GetChar())
 	switch s.ReplyType {
