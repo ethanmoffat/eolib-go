@@ -24,8 +24,8 @@ func GeneratePackets(outputDir string, packets []xml.ProtocolPacket, fullSpec xm
 	for _, p := range packets {
 		typeNames = append(typeNames, p.GetTypeName())
 
-		output.WriteString(fmt.Sprintf("\tnet.PacketId(net.PacketFamily_%s, net.PacketAction_%s): ", p.Family, p.Action))
-		output.WriteString(fmt.Sprintf("reflect.TypeOf(%s{}),\n", snakeCaseToCamelCase(p.GetTypeName())))
+		fmt.Fprintf(&output, "\tnet.PacketId(net.PacketFamily_%s, net.PacketAction_%s): ", p.Family, p.Action)
+		fmt.Fprintf(&output, "reflect.TypeOf(%s{}),\n", snakeCaseToCamelCase(p.GetTypeName()))
 	}
 
 	output.WriteString("}\n")
@@ -72,7 +72,9 @@ func PacketFromIntegerId(id int) (net.Packet, error) {
 
 	if len(packets) > 0 {
 		const packetMapFileName = "packetmap_generated.go"
-		writeToFile(path.Join(outputDir, packetMapFileName), output.String())
+		if err := writeToFile(path.Join(outputDir, packetMapFileName), output.String()); err != nil {
+			return err
+		}
 	}
 
 	const packetFileName = "packets_generated.go"

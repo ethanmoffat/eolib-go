@@ -269,8 +269,9 @@ func (r *EoReader) Length() int {
 
 func (r *EoReader) readByte() byte {
 	if r.Remaining() > 0 {
-		defer r.Seek(1, io.SeekCurrent)
-		return r.data[r.pos]
+		value := r.data[r.pos]
+		r.pos++
+		return value
 	}
 
 	return 0
@@ -279,8 +280,9 @@ func (r *EoReader) readByte() byte {
 func (r *EoReader) readBytes(length int) []byte {
 	length = eolib.Min(length, r.Remaining())
 
-	defer r.Seek(int64(length), io.SeekCurrent)
-	return r.data[r.pos : r.pos+length]
+	start := r.pos
+	r.pos += length
+	return r.data[start:r.pos]
 }
 
 func (r *EoReader) removePadding(input []byte) []byte {

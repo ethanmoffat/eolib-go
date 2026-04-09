@@ -43,7 +43,7 @@ func generateStructsShared(outputDir string, outputFileName string, typeNames []
 
 		outputText = output.String()
 
-		var matches map[string]bool = make(map[string]bool)
+		matches := make(map[string]bool)
 		var importText string
 		for _, imp := range imports {
 			if _, ok := matches[imp.Package]; !ok && strings.Split(packageDeclaration, " ")[1] != imp.Package {

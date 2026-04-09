@@ -17,11 +17,14 @@ func getPackageStatement(outputDir string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer fp.Close()
 
 	packageInfo, err := io.ReadAll(fp)
+	closeErr := fp.Close()
 	if err != nil {
 		return "", err
+	}
+	if closeErr != nil {
+		return "", closeErr
 	}
 
 	packageInfoLines := strings.Split(string(packageInfo), "\n")

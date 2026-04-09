@@ -1,6 +1,7 @@
 package codegen
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -18,11 +19,14 @@ func getPackageName(outputDir string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer fp.Close()
 
 	packageInfo, err := io.ReadAll(fp)
+	closeErr := fp.Close()
 	if err != nil {
 		return "", err
+	}
+	if closeErr != nil {
+		return "", closeErr
 	}
 
 	packageInfoLines := strings.Split(string(packageInfo), "\n")
@@ -58,7 +62,7 @@ func sanitizeTypeName(typeName string) string {
 
 func writeTypeComment(output *strings.Builder, typeName string, comment string) {
 	if comment = sanitizeComment(comment); len(comment) > 0 {
-		output.WriteString(fmt.Sprintf("// %s :: %s\n", typeName, comment))
+		fmt.Fprintf(output, "// %s :: %s\n", typeName, comment)
 	}
 }
 
@@ -73,17 +77,23 @@ func writeToFile(outFileName string, outputText string) error {
 	if err != nil {
 		return err
 	}
-	defer ofp.Close()
 
 	n, err := ofp.Write([]byte(outputText))
 	if err != nil {
+		if closeErr := ofp.Close(); closeErr != nil {
+			return errors.Join(err, closeErr)
+		}
 		return err
 	}
 	if n != len(outputText) {
-		return fmt.Errorf("wrote %d of %d bytes to file %s", n, len(outputText), outFileName)
+		err = fmt.Errorf("wrote %d of %d bytes to file %s", n, len(outputText), outFileName)
+		if closeErr := ofp.Close(); closeErr != nil {
+			return errors.Join(err, closeErr)
+		}
+		return err
 	}
 
-	return nil
+	return ofp.Close()
 }
 
 type importInfo struct {
