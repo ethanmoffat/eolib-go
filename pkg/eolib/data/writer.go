@@ -27,7 +27,8 @@ func NewEoWriter() *EoWriter {
 // Write writes len(p) bytes from p to the writer data.
 // This implementation unconditionally writes all bytes in the input slice and returns len(p) and a nil error.
 func (w *EoWriter) Write(p []byte) (int, error) {
-	return len(p), w.AddBytes(p)
+	w.AddBytes(p)
+	return len(p), nil
 }
 
 // AddInt adds a raw byte to the writer data.
@@ -55,7 +56,9 @@ func (w *EoWriter) AddChar(number int) error {
 	}
 
 	bytes := EncodeNumber(number)
-	return w.AddBytes(bytes[:1])
+	w.AddBytes(bytes[:1])
+
+	return nil
 }
 
 // AddShort adds an encoded 2-byte integer to the writer data.
@@ -65,7 +68,9 @@ func (w *EoWriter) AddShort(number int) error {
 	}
 
 	bytes := EncodeNumber(number)
-	return w.AddBytes(bytes[:2])
+	w.AddBytes(bytes[:2])
+
+	return nil
 }
 
 // AddThree adds an encoded 3-byte integer to the writer data.
@@ -75,7 +80,9 @@ func (w *EoWriter) AddThree(number int) error {
 	}
 
 	bytes := EncodeNumber(number)
-	return w.AddBytes(bytes[:3])
+	w.AddBytes(bytes[:3])
+
+	return nil
 }
 
 // AddInt adds an encoded 4-byte integer to the writer data.
@@ -85,7 +92,9 @@ func (w *EoWriter) AddInt(number int) error {
 	}
 
 	bytes := EncodeNumber(number)
-	return w.AddBytes(bytes[:4])
+	w.AddBytes(bytes[:4])
+
+	return nil
 }
 
 // AddString adds a string to the writer data.
@@ -96,7 +105,7 @@ func (w *EoWriter) AddString(str string) error {
 // AddFixedString adds a fixed-length string to the writer data.
 func (w *EoWriter) AddFixedString(str string, length int) (err error) {
 	if err = w.checkLength(str, length, false); err == nil {
-		err = w.AddBytes(w.sanitize(BytesFromString(str)))
+		w.AddBytes(w.sanitize(BytesFromString(str)))
 	}
 	return
 }
@@ -104,7 +113,7 @@ func (w *EoWriter) AddFixedString(str string, length int) (err error) {
 // AddPaddedString adds a fixed-length string to the writer data add adds trailing padding (0xFF) bytes.
 func (w *EoWriter) AddPaddedString(str string, length int) (err error) {
 	if err = w.checkLength(str, length, true); err == nil {
-		err = w.AddBytes(w.addPadding(w.sanitize(BytesFromString(str)), length))
+		w.AddBytes(w.addPadding(w.sanitize(BytesFromString(str)), length))
 	}
 	return
 }
@@ -119,7 +128,7 @@ func (w *EoWriter) AddEncodedString(str string) error {
 func (w *EoWriter) AddFixedEncodedString(str string, length int) (err error) {
 	if err = w.checkLength(str, length, false); err == nil {
 		sanitized := w.sanitize(BytesFromString(str))
-		err = w.AddBytes(EncodeString(sanitized))
+		w.AddBytes(EncodeString(sanitized))
 	}
 	return
 }
@@ -129,7 +138,7 @@ func (w *EoWriter) AddPaddedEncodedString(str string, length int) (err error) {
 	if err = w.checkLength(str, length, true); err == nil {
 		sanitized := w.sanitize(BytesFromString(str))
 		padded := w.addPadding(sanitized, length)
-		err = w.AddBytes(EncodeString(padded))
+		w.AddBytes(EncodeString(padded))
 	}
 	return
 }

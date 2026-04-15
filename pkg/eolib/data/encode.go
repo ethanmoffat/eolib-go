@@ -45,14 +45,13 @@ func DecodeNumber(bytes []byte) int {
 
 		value--
 
-		switch i {
-		case 0:
+		if i == 0 {
 			result += value
-		case 1:
+		} else if i == 1 {
 			result += CHAR_MAX * value
-		case 2:
+		} else if i == 2 {
 			result += SHORT_MAX * value
-		case 3:
+		} else if i == 3 {
 			result += THREE_MAX * value
 		}
 	}

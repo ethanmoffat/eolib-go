@@ -36,19 +36,13 @@ func main() {
 	fmt.Printf("Using parameters:\n  inputDir:  %s\n  outputDir: %s\n", inputDir, outputDir)
 
 	protocolFiles := []string{}
-	if err := filepath.WalkDir(path.Join(inputDir, "xml"), func(currentPath string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
+	filepath.WalkDir(path.Join(inputDir, "xml"), func(currentPath string, d fs.DirEntry, err error) error {
 		if path.Ext(currentPath) == ".xml" {
 			relativeDir := strings.ReplaceAll(currentPath, path.Join(inputDir, "xml"), "")
 			protocolFiles = append(protocolFiles, strings.ReplaceAll(relativeDir, "/protocol.xml", ""))
 		}
 		return nil
-	}); err != nil {
-		fmt.Printf("error enumerating protocol files: %v\n", err)
-		os.Exit(1)
-	}
+	})
 
 	dirToPackageName := map[string]string{
 		"map":        "eomap",
@@ -64,9 +58,16 @@ func main() {
 	for _, file := range protocolFiles {
 		fullInputPath := path.Join(inputDir, "xml", file, "protocol.xml")
 
-		bytes, err := readProtocolFile(fullInputPath)
+		fp, err := os.Open(fullInputPath)
 		if err != nil {
-			fmt.Printf("error reading file %s: %v\n", fullInputPath, err)
+			fmt.Printf("error opening file: %v\n", err)
+			os.Exit(1)
+		}
+		defer fp.Close()
+
+		bytes, err := io.ReadAll(fp)
+		if err != nil {
+			fmt.Printf("error reading file: %v\n", err)
 			os.Exit(1)
 		}
 
@@ -124,22 +125,4 @@ func main() {
 			fmt.Printf("      error generating packets: %v\n", err)
 		}
 	}
-}
-
-func readProtocolFile(fullInputPath string) ([]byte, error) {
-	fp, err := os.Open(fullInputPath)
-	if err != nil {
-		return nil, err
-	}
-
-	bytes, readErr := io.ReadAll(fp)
-	closeErr := fp.Close()
-	if readErr != nil {
-		return nil, readErr
-	}
-	if closeErr != nil {
-		return nil, closeErr
-	}
-
-	return bytes, nil
 }
