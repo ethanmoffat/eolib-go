@@ -192,7 +192,12 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			switches = append(switches, &si.Instructions[i])
 			isEmpty = false
 		case "chunked":
-			nestedStructInfo, _ := si.Nested(&inst)
+			nestedStructInfo, nestedErr := si.Nested(&inst)
+			if nestedErr != nil {
+				switches = nil
+				err = nestedErr
+				return
+			}
 
 			var nextSwitches []*xml.ProtocolInstruction
 			if nextSwitches, err = writeStructFields(g, nestedStructInfo, fullSpec); err != nil {
@@ -1010,7 +1015,11 @@ func getDeserializeForInstruction(instruction xml.ProtocolInstruction, methodTyp
 		compareLit := 0
 		if dummyFollowsOptional {
 			op = ">="
-			compareLit, _ = types.CalculateTypeSize(strings.ToLower(methodType.String()), xml.Protocol{})
+			size, sizeErr := types.CalculateTypeSize(strings.ToLower(methodType.String()), xml.Protocol{})
+			if sizeErr != nil {
+				return nil, sizeErr
+			}
+			compareLit = size
 		}
 		retCodes = []jen.Code{jen.If(jen.Id("reader").Dot("Remaining").Call().Op(op).Lit(compareLit)).Block(retCodes...)}
 	} else {

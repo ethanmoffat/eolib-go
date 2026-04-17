@@ -66,4 +66,12 @@ Note that a gvm extension exists for VSCode but it is out of date and no longer 
 
 A `Makefile` is provided to ease the process of building, testing, and code generation. Use `make help` to see all available targets. Running `make` by itself should be enough for most uses. `make test` is also available to run all tests.
 
+For `v3`, install `golangci-lint` `v2.11.4` before running `make -C v3` locally. The recommended binary install is:
+
+```bash
+curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b "$(go env GOPATH)/bin" v2.11.4
+```
+
+The GitHub Actions workflow installs the same pinned version in CI before running the build.
+
 Building the library on Windows is left as an exercise to the reader.
