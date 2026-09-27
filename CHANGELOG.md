@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Versions before 3.1.0 were reconstructed from the GitHub release notes and the git history.
+Versions before 3.1.0 were reconstructed from the GitHub release notes and the git history. The 2.x versions are
+yanked: they were tagged without changing the module path, so Go never accepted them.
 
 ## [Unreleased]
 
@@ -82,7 +83,10 @@ should be considered broken and unusable in the Go module system.
 ### Updated
 - Top-level packages reverted to their v1 state.
 
-## [2.1.0] - 2024-06-05
+## [2.1.0] - 2024-06-05 [YANKED]
+
+Not a valid Go module version: the module path was not updated to `/v2`, so this version was never installable.
+Use 3.0.0 or later.
 
 ### Added
 - Break bytes that are not in a chunked section will return an error during code generation.
@@ -101,13 +105,19 @@ should be considered broken and unusable in the Go module system.
 - Generated code now properly moves between chunks for nested types (switch structs) where `chunked` is specified in
   the outer specification.
 
-## [2.0.1] - 2024-04-30
+## [2.0.1] - 2024-04-30 [YANKED]
+
+Not a valid Go module version: the module path was not updated to `/v2`, so this version was never installable.
+Use 3.0.0 or later.
 
 ### Fixed
 - Use Offset property for `length` fields that specify it. Fixes bug where map signs had incorrect Title length data
   during serialize/deserialize.
 
-## [2.0.0] - 2024-04-11
+## [2.0.0] - 2024-04-11 [YANKED]
+
+Not a valid Go module version: the module path was not updated to `/v2`, so this version was never installable.
+Use 3.0.0 or later.
 
 ### Added
 - Top-level package docs are now available.
