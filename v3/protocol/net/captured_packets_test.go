@@ -240,7 +240,9 @@ func assertPropertyValue(t *testing.T, field reflect.Value, property capturedPro
 			assertPropertyValue(t, field.Index(i), child, fmt.Sprintf("%s[%d]", path, i))
 		}
 	case reflect.Int:
-		// Enum type names are not checked; some captured enum properties list the wrong type name.
+		if strings.Contains(property.Type, "::") {
+			assertTypeName(t, field.Type(), property.Type, path)
+		}
 		var expected int64
 		require.NoError(t, json.Unmarshal(property.Value, &expected), path)
 		assert.Equal(t, expected, field.Int(), path)
