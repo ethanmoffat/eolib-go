@@ -1,6 +1,7 @@
 package types
 
 import (
+	"path"
 	"strings"
 
 	"github.com/ethanmoffat/eolib-go/v3/internal/xml"
@@ -48,6 +49,8 @@ func ProtocolSpecTypeToGoType(eoType string, currentPackage string, fullSpec xml
 		if nextImport != nil {
 			if val, ok := packageAliases[nextImport.Package]; ok {
 				nextImport.Path = val
+			} else {
+				nextImport.Path = path.Join(packageAliases["protocol"], nextImport.Path)
 			}
 		}
 

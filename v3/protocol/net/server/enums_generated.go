@@ -526,7 +526,7 @@ type LoginMessageCode int
 
 const (
 	LoginMessageCode_No  LoginMessageCode = iota
-	LoginMessageCode_Yes                  = 2
+	LoginMessageCode_Yes                  = 250
 )
 
 // String converts a LoginMessageCode value into its string representation

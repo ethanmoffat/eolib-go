@@ -5,6 +5,7 @@ import (
 	"github.com/ethanmoffat/eolib-go/v3/data"
 	"github.com/ethanmoffat/eolib-go/v3/protocol"
 	"github.com/ethanmoffat/eolib-go/v3/protocol/net"
+	client "github.com/ethanmoffat/eolib-go/v3/protocol/net/client"
 	"github.com/ethanmoffat/eolib-go/v3/protocol/pub"
 )
 
@@ -11775,13 +11776,13 @@ func (s *SpellTargetGroupServerPacket) Deserialize(reader *data.EoReader) (err e
 type SpellTargetOtherServerPacket struct {
 	byteSize int
 
-	VictimId        int
-	CasterId        int
-	CasterDirection protocol.Direction
-	SpellId         int
-	SpellHealHp     int
-	HpPercentage    int
-	Hp              *int
+	VictimId     int
+	CasterId     int
+	TargetType   client.SpellTargetType
+	SpellId      int
+	SpellHealHp  int
+	HpPercentage int
+	Hp           *int
 }
 
 func (s SpellTargetOtherServerPacket) Family() net.PacketFamily {
@@ -11809,8 +11810,8 @@ func (s *SpellTargetOtherServerPacket) Serialize(writer *data.EoWriter) (err err
 	if err = writer.AddShort(s.CasterId); err != nil {
 		return
 	}
-	// CasterDirection : field : Direction
-	if err = writer.AddChar(int(s.CasterDirection)); err != nil {
+	// TargetType : field : SpellTargetType
+	if err = writer.AddChar(int(s.TargetType)); err != nil {
 		return
 	}
 	// SpellId : field : short
@@ -11843,8 +11844,8 @@ func (s *SpellTargetOtherServerPacket) Deserialize(reader *data.EoReader) (err e
 	s.VictimId = reader.GetShort()
 	// CasterId : field : short
 	s.CasterId = reader.GetShort()
-	// CasterDirection : field : Direction
-	s.CasterDirection = protocol.Direction(reader.GetChar())
+	// TargetType : field : SpellTargetType
+	s.TargetType = client.SpellTargetType(reader.GetChar())
 	// SpellId : field : short
 	s.SpellId = reader.GetShort()
 	// SpellHealHp : field : int
