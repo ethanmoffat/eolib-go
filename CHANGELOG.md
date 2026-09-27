@@ -15,7 +15,13 @@ yanked: they were tagged without changing the module path, so Go never accepted 
   [eo-captured-packets](https://github.com/ethanmoffat/eo-captured-packets) repository. Each packet is deserialized,
   its field values are checked against the captured properties via reflection, and it is serialized back to the
   captured bytes.
-- golangci-lint checks for the v3 module, run by `make -C v3 build` and in CI.
+- golangci-lint checks, run by `make build` and in CI.
+
+### Changed
+- The v3 module moved from the `v3/` subdirectory to the repository root. The module path and import paths are
+  unchanged (`github.com/ethanmoffat/eolib-go/v3`). Only local `replace` directives pointing at `v3/` need updating.
+- Removed the v1 code (`github.com/ethanmoffat/eolib-go`) and the v1 Makefile targets. Version 1 remains available
+  from its `v1.x.y` tags, but is no longer maintained.
 
 ### Updated
 - Pulled in changes for eo-protocol, with impact to generated code:

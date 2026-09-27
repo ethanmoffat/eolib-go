@@ -1,11 +1,12 @@
-module github.com/ethanmoffat/eolib-go
+module github.com/ethanmoffat/eolib-go/v3
 
 go 1.20
 
 require (
-	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
-	golang.org/x/text v0.11.0
+	github.com/dave/jennifer v1.7.0
+	github.com/stretchr/testify v1.9.0
+	golang.org/x/exp v0.0.0-20240604190554-fc45aab8b7f8
+	golang.org/x/text v0.16.0
 )
 
 require (

@@ -66,7 +66,7 @@ Note that a gvm extension exists for VSCode but it is out of date and no longer 
 
 A `Makefile` is provided to ease the process of building, testing, and code generation. Use `make help` to see all available targets. Running `make` by itself should be enough for most uses. `make test` is also available to run all tests.
 
-For `v3`, install `golangci-lint` `v2.11.4` before running `make -C v3` locally. The recommended binary install is:
+`make` runs `golangci-lint`; install `v2.11.4` before building locally. The recommended binary install is:
 
 ```bash
 curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b "$(go env GOPATH)/bin" v2.11.4
@@ -79,8 +79,9 @@ Building the library on Windows is left as an exercise to the reader.
 ## Versioning and releases
 
 eolib-go uses [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`, with an optional `-beta.N` or `-rc.N`
-suffix). Major versions 2 and above are published from the `vN` subdirectory, with the `/vN` module path suffix (e.g.
-`github.com/ethanmoffat/eolib-go/v3`). Changes are tracked in [CHANGELOG.md](CHANGELOG.md), following
+suffix). The current major version lives at the repository root, with the `/vN` module path suffix (e.g.
+`github.com/ethanmoffat/eolib-go/v3`). Version 1 (`github.com/ethanmoffat/eolib-go`) is only available from its
+`v1.x.y` tags, and the 2.x tags are yanked. Changes are tracked in [CHANGELOG.md](CHANGELOG.md), following
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 To release a new version:

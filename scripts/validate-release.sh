@@ -74,22 +74,19 @@ else
     fail "Version ${VERSION} must be MAJOR.MINOR.PATCH with an optional -beta.N or -rc.N suffix"
 fi
 
-# Go module: major versions 2 and above are published from the vN subdirectory, with the /vN module path suffix
+# Go module: the module lives at the repository root; major versions 2 and above need the /vN module path suffix
 #
 major="${VERSION%%.*}"
 if [ "${major}" -ge 2 ] 2> /dev/null; then
-    module_dir="v${major}"
     expected_module="${MODULE_PATH}/v${major}"
 else
-    module_dir="."
     expected_module="${MODULE_PATH}"
 fi
-go_mod="${REPO_ROOT}/${module_dir}/go.mod"
-module="$(sed -n 's/^module \(.*\)$/\1/p' "${go_mod}" 2> /dev/null | head -n 1)"
+module="$(sed -n 's/^module \(.*\)$/\1/p' "${REPO_ROOT}/go.mod" 2> /dev/null | head -n 1)"
 if [ "${module}" = "${expected_module}" ]; then
-    pass "${module_dir}/go.mod module is ${module}"
+    pass "go.mod module is ${module}"
 else
-    fail "${module_dir}/go.mod module is '${module}', expected ${expected_module}"
+    fail "go.mod module is '${module}', expected ${expected_module}"
 fi
 
 # CHANGELOG.md: a dated section with at least one entry, and comparison links

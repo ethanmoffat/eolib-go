@@ -47,9 +47,9 @@ jobs:
           version: v2.11.4
           install-only: true
       - name: Build
-        run: make build-all
+        run: make build
       - name: Test
-        run: make test-all
+        run: make test
 
   publish:
     name: Publish to the Go module proxy

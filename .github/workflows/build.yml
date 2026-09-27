@@ -42,10 +42,10 @@ jobs:
           install-only: true
 
       - name: Build
-        run: make build-all
+        run: make build
 
       - name: Test
-        run: make test-all
+        run: make test
 
       - name: Test Coverage report
-        run: make test-cover-all
+        run: make test-cover
