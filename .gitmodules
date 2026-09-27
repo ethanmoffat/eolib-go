@@ -4,3 +4,6 @@
 [submodule "eo-protocol-v3"]
 	path = v3/eo-protocol
 	url = https://www.github.com/cirras/eo-protocol
+[submodule "v3/eo-captured-packets"]
+	path = v3/eo-captured-packets
+	url = https://github.com/ethanmoffat/eo-captured-packets
