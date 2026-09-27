@@ -6,14 +6,27 @@ name: Go
 on:
   push:
     branches: ["master"]
+    paths-ignore:
+      - "CHANGELOG.md"
+      - "README.md"
+      - "docs/**"
   pull_request:
     branches: ["master"]
+    paths-ignore:
+      - "CHANGELOG.md"
+      - "README.md"
+      - "docs/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           submodules: "true"
 

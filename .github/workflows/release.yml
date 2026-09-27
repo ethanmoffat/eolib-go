@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version-without-v }}
+      major: ${{ steps.get-version.outputs.major }}
+      prerelease: ${{ steps.get-version.outputs.prerelease != '' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Full history, so the script can check the tagged commit is on master
+          fetch-depth: 0
+      - name: Get version from tag
+        id: get-version
+        uses: battila7/get-version-action@v2
+      - name: Validate release
+        env:
+          TAG_VERSION: ${{ steps.get-version.outputs.version-without-v }}
+        run: ./scripts/validate-release.sh "${TAG_VERSION}"
+
+  test:
+    name: Build and test
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: "true"
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+      - name: Install golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11.4
+          install-only: true
+      - name: Build
+        run: make build-all
+      - name: Test
+        run: make test-all
+
+  publish:
+    name: Publish to the Go module proxy
+    needs: [validate, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+      - name: Request the module version from proxy.golang.org
+        env:
+          VERSION: ${{ needs.validate.outputs.version }}
+          MAJOR: ${{ needs.validate.outputs.major }}
+        run: |
+          module="github.com/ethanmoffat/eolib-go"
+          if [ "${MAJOR}" -ge 2 ]; then
+            module="${module}/v${MAJOR}"
+          fi
+          GOPROXY=https://proxy.golang.org GOFLAGS=-mod=mod go list -m "${module}@v${VERSION}"
+
+  github-release:
+    name: GitHub release
+    needs: [validate, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Parse changelog
+        id: changelog
+        uses: coditory/changelog-parser@v1
+        with:
+          version: ${{ needs.validate.outputs.version }}
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: v${{ needs.validate.outputs.version }}
+          body: ${{ steps.changelog.outputs.description }}
+          prerelease: ${{ needs.validate.outputs.prerelease }}
