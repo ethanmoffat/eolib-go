@@ -75,3 +75,23 @@ curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b "$(go env GOPATH)/
 The GitHub Actions workflow installs the same pinned version in CI before running the build.
 
 Building the library on Windows is left as an exercise to the reader.
+
+## Versioning and releases
+
+eolib-go uses [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`, with an optional `-beta.N` or `-rc.N`
+suffix). Major versions 2 and above are published from the `vN` subdirectory, with the `/vN` module path suffix (e.g.
+`github.com/ethanmoffat/eolib-go/v3`). Changes are tracked in [CHANGELOG.md](CHANGELOG.md), following
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+To release a new version:
+
+1. Make sure the `[Unreleased]` section of `CHANGELOG.md` lists the changes.
+2. Run `./scripts/prepare-release.sh x.y.z-suffix --tag`. It updates every file that references the version (the
+   changelog section and links, and the module path in the README's `go get` command), runs
+   `scripts/validate-release.sh`, commits the changes as "Release x.y.z-suffix" and creates the tag. Use `--commit` to
+   commit without tagging, `--date` to set the changelog date, or no option to only update the files for review.
+3. Push master, and wait for CI to pass.
+4. Push the tag `vx.y.z-suffix`. The release workflow runs `validate-release.sh` again, which also checks that the
+   commit is on `origin/master`, before building anything. It then builds and tests the code, requests the new version
+   from the Go module proxy so it is available to `go get`, and publishes a GitHub release. It is marked as a
+   prerelease when the version has a suffix.
