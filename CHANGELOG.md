@@ -10,6 +10,8 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-09-28
+
 ### Fixed
 - Optional struct fields no longer panic. Serialization skips a nil field, and deserialization leaves it nil when
   there's no data left. This affected `NpcAcceptServerPacket.LevelUp` and `CastAcceptServerPacket.LevelUp`.
@@ -202,7 +204,8 @@ Initial release.
     - Verifying server hash
 - Helper functions for converting a packet ID to a strongly-typed implementation of the `net.Packet` interface.
 
-[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.2.1...HEAD
+[3.2.1]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.1
 [3.2.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.0
 [3.1.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.1.0
 [3.0.1]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.0.1
