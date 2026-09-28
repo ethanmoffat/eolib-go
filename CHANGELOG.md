@@ -10,6 +10,8 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-09-27
+
 ### Added
 - Tests for the packets captured from the official client and server, from the
   [eo-captured-packets](https://github.com/ethanmoffat/eo-captured-packets) repository. Each packet is deserialized,
@@ -184,7 +186,8 @@ Initial release.
     - Verifying server hash
 - Helper functions for converting a packet ID to a strongly-typed implementation of the `net.Packet` interface.
 
-[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.0
 [3.1.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.1.0
 [3.0.1]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.0.1
 [3.0.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.0.0
