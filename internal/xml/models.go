@@ -145,6 +145,9 @@ func validate(instructions []ProtocolInstruction, isChunked bool, lengthInstruct
 
 		if inst.Length != nil {
 			if lengthInstruction := findLengthInstructionByName(*inst.Length, localLengths); lengthInstruction != nil {
+				if lengthInstruction.ReferencedBy != nil {
+					return fmt.Errorf("validation error: length field %s must not be referenced by multiple fields (%s, %s)", *inst.Length, *lengthInstruction.ReferencedBy, *inst.Name)
+				}
 				lengthInstruction.ReferencedBy = new(string)
 				*lengthInstruction.ReferencedBy = *inst.Name
 			}
@@ -170,15 +173,136 @@ func validate(instructions []ProtocolInstruction, isChunked bool, lengthInstruct
 	return nil
 }
 
+// sequenceState tracks the ordering rules for a sequence of instructions. A <break> starts a new sequence.
+type sequenceState struct {
+	reachedOptional     bool
+	reachedDummy        bool
+	reachedUnsizedArray bool
+	fieldNames          map[string]bool
+}
+
+func (st sequenceState) merge(other sequenceState) sequenceState {
+	st.reachedOptional = st.reachedOptional || other.reachedOptional
+	st.reachedDummy = st.reachedDummy || other.reachedDummy
+	st.reachedUnsizedArray = st.reachedUnsizedArray || other.reachedUnsizedArray
+	return st
+}
+
+func validateSequence(instructions []ProtocolInstruction, isChunked bool, state *sequenceState) error {
+	for _, inst := range instructions {
+		kind := inst.XMLName.Local
+
+		if state.reachedDummy {
+			return fmt.Errorf("validation error: <dummy> elements must not be followed by any other elements")
+		}
+
+		if state.reachedUnsizedArray && kind != "break" {
+			return fmt.Errorf("validation error: non-delimited arrays without a length must be the final element (or the final element in the chunk, if chunked reading is enabled)")
+		}
+
+		switch kind {
+		case "field", "array", "length":
+			optional := inst.Optional != nil && *inst.Optional
+			if state.reachedOptional && !optional {
+				return fmt.Errorf("validation error: optional fields may not be followed by non-optional fields (%s)", instructionDescription(inst))
+			}
+			state.reachedOptional = state.reachedOptional || optional
+
+			if inst.Name != nil {
+				state.fieldNames[*inst.Name] = true
+			}
+
+			if kind == "array" {
+				delimited := inst.Delimited != nil && *inst.Delimited
+				if delimited && !isChunked {
+					return fmt.Errorf("validation error: delimited arrays are only allowed in chunked sections (%s)", instructionDescription(inst))
+				}
+				if !delimited && inst.Length == nil {
+					state.reachedUnsizedArray = true
+				}
+			}
+		case "dummy":
+			state.reachedDummy = true
+		case "break":
+			*state = sequenceState{fieldNames: state.fieldNames}
+		case "chunked":
+			if err := validateSequence(inst.Chunked, true, state); err != nil {
+				return err
+			}
+		case "switch":
+			if err := validateSwitch(inst, state); err != nil {
+				return err
+			}
+
+			merged := *state
+			for _, cs := range inst.Cases {
+				caseState := *state
+				if err := validateSequence(cs.Instructions, isChunked, &caseState); err != nil {
+					return err
+				}
+				merged = merged.merge(caseState)
+			}
+			*state = merged
+		}
+	}
+
+	return nil
+}
+
+func validateSwitch(inst ProtocolInstruction, state *sequenceState) error {
+	if inst.Field == nil || !state.fieldNames[*inst.Field] {
+		return fmt.Errorf("validation error: switch must reference a preceding field (%s)", instructionDescription(inst))
+	}
+
+	values := map[string]bool{}
+	for i, cs := range inst.Cases {
+		if cs.Default {
+			if i != len(inst.Cases)-1 {
+				return fmt.Errorf("validation error: only the last case in a switch on %s can be the default case", *inst.Field)
+			}
+			continue
+		}
+
+		if values[cs.Value] {
+			return fmt.Errorf("validation error: duplicate case value %s in switch on %s", cs.Value, *inst.Field)
+		}
+		values[cs.Value] = true
+	}
+
+	return nil
+}
+
+func instructionDescription(inst ProtocolInstruction) string {
+	if inst.Name != nil {
+		return fmt.Sprintf("<%s> %s", inst.XMLName.Local, *inst.Name)
+	}
+	if inst.Field != nil {
+		return fmt.Sprintf("<%s> %s", inst.XMLName.Local, *inst.Field)
+	}
+	return fmt.Sprintf("<%s>", inst.XMLName.Local)
+}
+
+func validateInstructions(typeName string, instructions []ProtocolInstruction) error {
+	if err := validate(instructions, false, nil); err != nil {
+		return fmt.Errorf("%s: %w", typeName, err)
+	}
+
+	if err := validateSequence(instructions, false, &sequenceState{fieldNames: map[string]bool{}}); err != nil {
+		return fmt.Errorf("%s: %w", typeName, err)
+	}
+
+	return nil
+}
+
 func (p Protocol) Validate() error {
 	for _, st := range p.Structs {
-		if err := validate(st.Instructions, false, nil); err != nil {
+		if err := validateInstructions(st.Name, st.Instructions); err != nil {
 			return err
 		}
 	}
 
 	for _, pkt := range p.Packets {
-		if err := validate(pkt.Instructions, false, nil); err != nil {
+		if err := validateInstructions(pkt.GetTypeName(), pkt.Instructions); err != nil {
 			return err
 		}
 	}

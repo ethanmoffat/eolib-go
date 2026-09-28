@@ -18,6 +18,13 @@ yanked: they were tagged without changing the module path, so Go never accepted 
   notes that any value set on the field is discarded.
 - `EoWriter.AddByte`, `AddChar`, `AddShort`, `AddThree` and `AddInt` now return an error for negative values, as
   eolib-dotnet does. Previously a negative value was written as an incorrect encoded number.
+- The protocol generator now rejects invalid XML that previously generated incorrect code:
+    - A non-delimited array without a length that isn't the last element (or the last element before a `<break>`).
+    - A required field after an optional one.
+    - A delimited array outside a `<chunked>` section.
+    - A `<dummy>` that isn't the last element.
+    - A length field referenced by more than one field.
+    - A switch on a field that isn't defined before it, a default case that isn't last, and duplicate case values.
 
 ## [3.2.0] - 2026-09-27
 
