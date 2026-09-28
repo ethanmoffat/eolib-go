@@ -463,7 +463,8 @@ func (s *AccountAgreeClientPacket) Deserialize(reader *data.EoReader) (err error
 type CharacterRequestClientPacket struct {
 	byteSize int
 
-	RequestString string
+	RequestString string // This field is always serialized as "NEW". Any value set on this field is discarded.
+
 }
 
 func (s CharacterRequestClientPacket) Family() net.PacketFamily {
@@ -485,7 +486,7 @@ func (s *CharacterRequestClientPacket) Serialize(writer *data.EoWriter) (err err
 
 	writer.SanitizeStrings = true
 	// RequestString : field : string
-	if err = writer.AddString(s.RequestString); err != nil {
+	if err = writer.AddString("NEW"); err != nil {
 		return
 	}
 	writer.AddByte(255)

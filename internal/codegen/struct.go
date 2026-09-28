@@ -159,8 +159,15 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			}
 
 			writeComment := func(ss *jen.Statement) {
+				var comments []string
 				if inst.Comment != nil {
-					writeInlineCommentJen(ss, *inst.Comment)
+					comments = append(comments, *inst.Comment)
+				}
+				if hardcoded, ok := getNamedHardcodedValue(inst); ok {
+					comments = append(comments, fmt.Sprintf("This field is always serialized as %q. Any value set on this field is discarded.", hardcoded))
+				}
+				if len(comments) > 0 {
+					writeInlineCommentJen(ss, strings.Join(comments, " "))
 				}
 			}
 
@@ -455,6 +462,13 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 							jen.Id("err").Op("!=").Nil(),
 						).Block(jen.Return()),
 					}
+
+					if isOptionalStructField(instruction) {
+						// optional struct fields are pointers; nil means the field is omitted
+						serializeCodes = []jen.Code{
+							jen.If(jen.Id("s").Dot(instructionName).Op("!=").Nil()).Block(serializeCodes...),
+						}
+					}
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
 					serializeType := e.Type
 					if typeSize != "" {
@@ -706,6 +720,23 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 							jen.Id("err").Op("!=").Nil(),
 						).Block(jen.Return()),
 					}
+
+					if isOptionalStructField(instruction) {
+						// optional struct fields are pointers; allocate one only when there's data left to read
+						_, tp := types.ProtocolSpecTypeToGoType(s.Name, si.PackageName, fullSpec)
+						deserializeCodes = []jen.Code{
+							jen.If(jen.Id("reader").Dot("Remaining").Call().Op(">").Lit(0)).Block(
+								jen.Id("s").Dot(instructionName).Op("=").Op("&").Do(func(s *jen.Statement) {
+									if tp != nil {
+										s.Qual(tp.Path, typeName)
+									} else {
+										s.Id(typeName)
+									}
+								}).Values(),
+								deserializeCodes[1],
+							),
+						}
+					}
 				} else if e, ok := fullSpec.IsEnum(typeName); ok {
 					deserializeType := e.Type
 					if typeSize != "" {
@@ -798,6 +829,20 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 	return
 }
 
+func getNamedHardcodedValue(inst xml.ProtocolInstruction) (string, bool) {
+	if inst.XMLName.Local != "field" || inst.Name == nil || inst.Content == nil {
+		return "", false
+	}
+
+	// chardata includes the whitespace around child elements such as <comment>
+	value := strings.TrimSpace(*inst.Content)
+	return value, len(value) > 0
+}
+
+func isOptionalStructField(inst xml.ProtocolInstruction) bool {
+	return inst.XMLName.Local == "field" && inst.Optional != nil && *inst.Optional
+}
+
 func getInstructionName(inst xml.ProtocolInstruction) (instName string) {
 	if inst.Name != nil {
 		instName = snakeCaseToPascalCase(*inst.Name)
@@ -819,6 +864,13 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 			instructionCode = jen.Lit(*instruction.Content)
 		} else {
 			instructionCode = jen.Id(*instruction.Content)
+		}
+	} else if hardcoded, ok := getNamedHardcodedValue(instruction); ok {
+		// named hardcoded fields always serialize the hardcoded value; the struct member only reflects what was read
+		if isString {
+			instructionCode = jen.Lit(hardcoded)
+		} else {
+			instructionCode = jen.Id(hardcoded)
 		}
 	} else {
 		if instruction.XMLName.Local == "length" {

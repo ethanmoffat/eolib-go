@@ -11,6 +11,11 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 ## [Unreleased]
 
 ### Fixed
+- Optional struct fields no longer panic. Serialization skips a nil field, and deserialization leaves it nil when
+  there's no data left. This affected `NpcAcceptServerPacket.LevelUp` and `CastAcceptServerPacket.LevelUp`.
+- Named hardcoded fields now always serialize their hardcoded value. `CharacterRequestClientPacket` now always
+  sends `"NEW"`, instead of the value of `RequestString`. The generated field comment documents the fixed value and
+  notes that any value set on the field is discarded.
 - `EoWriter.AddByte`, `AddChar`, `AddShort`, `AddThree` and `AddInt` now return an error for negative values, as
   eolib-dotnet does. Previously a negative value was written as an incorrect encoded number.
 

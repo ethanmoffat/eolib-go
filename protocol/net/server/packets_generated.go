@@ -12690,8 +12690,10 @@ func (s *NpcAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		}
 	}
 	// LevelUp : field : LevelUpStats
-	if err = s.LevelUp.Serialize(writer); err != nil {
-		return
+	if s.LevelUp != nil {
+		if err = s.LevelUp.Serialize(writer); err != nil {
+			return
+		}
 	}
 	return
 }
@@ -12711,8 +12713,11 @@ func (s *NpcAcceptServerPacket) Deserialize(reader *data.EoReader) (err error) {
 		*s.Experience = reader.GetInt()
 	}
 	// LevelUp : field : LevelUpStats
-	if err = s.LevelUp.Deserialize(reader); err != nil {
-		return
+	if reader.Remaining() > 0 {
+		s.LevelUp = &LevelUpStats{}
+		if err = s.LevelUp.Deserialize(reader); err != nil {
+			return
+		}
 	}
 	s.byteSize = reader.Position() - readerStartPosition
 
@@ -12844,8 +12849,10 @@ func (s *CastAcceptServerPacket) Serialize(writer *data.EoWriter) (err error) {
 		}
 	}
 	// LevelUp : field : LevelUpStats
-	if err = s.LevelUp.Serialize(writer); err != nil {
-		return
+	if s.LevelUp != nil {
+		if err = s.LevelUp.Serialize(writer); err != nil {
+			return
+		}
 	}
 	return
 }
@@ -12872,8 +12879,11 @@ func (s *CastAcceptServerPacket) Deserialize(reader *data.EoReader) (err error) 
 		*s.Experience = reader.GetInt()
 	}
 	// LevelUp : field : LevelUpStats
-	if err = s.LevelUp.Deserialize(reader); err != nil {
-		return
+	if reader.Remaining() > 0 {
+		s.LevelUp = &LevelUpStats{}
+		if err = s.LevelUp.Deserialize(reader); err != nil {
+			return
+		}
 	}
 	s.byteSize = reader.Position() - readerStartPosition
 
