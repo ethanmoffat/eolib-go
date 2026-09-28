@@ -31,7 +31,11 @@ func (w *EoWriter) Write(p []byte) (int, error) {
 }
 
 // AddByte adds a raw byte to the writer data.
+// An error is returned if the value is negative or is greater than 0xFF.
 func (w *EoWriter) AddByte(value int) error {
+	if value < 0 {
+		return errors.New("value is negative")
+	}
 	if value > 0xFF {
 		return errors.New("value is larger than maximum raw byte size")
 	}
@@ -49,7 +53,11 @@ func (w *EoWriter) AddBytes(bytes []byte) error {
 }
 
 // AddChar adds an encoded 1-byte integer to the writer data.
+// An error is returned if the value is negative or is not below CHAR_MAX.
 func (w *EoWriter) AddChar(number int) error {
+	if number < 0 {
+		return errors.New("value is negative")
+	}
 	if number > CHAR_MAX-1 {
 		return errors.New("value is larger than one byte maximum")
 	}
@@ -59,7 +67,11 @@ func (w *EoWriter) AddChar(number int) error {
 }
 
 // AddShort adds an encoded 2-byte integer to the writer data.
+// An error is returned if the value is negative or is not below SHORT_MAX.
 func (w *EoWriter) AddShort(number int) error {
+	if number < 0 {
+		return errors.New("value is negative")
+	}
 	if number > SHORT_MAX-1 {
 		return errors.New("value is larger than two byte maximum")
 	}
@@ -69,7 +81,11 @@ func (w *EoWriter) AddShort(number int) error {
 }
 
 // AddThree adds an encoded 3-byte integer to the writer data.
+// An error is returned if the value is negative or is not below THREE_MAX.
 func (w *EoWriter) AddThree(number int) error {
+	if number < 0 {
+		return errors.New("value is negative")
+	}
 	if number > THREE_MAX-1 {
 		return errors.New("value is larger than three byte maximum")
 	}
@@ -79,7 +95,11 @@ func (w *EoWriter) AddThree(number int) error {
 }
 
 // AddInt adds an encoded 4-byte integer to the writer data.
+// An error is returned if the value is negative or is not below INT_MAX.
 func (w *EoWriter) AddInt(number int) error {
+	if number < 0 {
+		return errors.New("value is negative")
+	}
 	if number > INT_MAX-1 {
 		return errors.New("value is larger than four byte maximum")
 	}

@@ -10,6 +10,10 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+### Fixed
+- `EoWriter.AddByte`, `AddChar`, `AddShort`, `AddThree` and `AddInt` now return an error for negative values, as
+  eolib-dotnet does. Previously a negative value was written as an incorrect encoded number.
+
 ## [3.2.0] - 2026-09-27
 
 ### Added

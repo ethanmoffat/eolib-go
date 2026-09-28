@@ -179,6 +179,26 @@ func TestWriterAddNumbersExceedingLimit(t *testing.T) {
 	assert.ErrorContains(t, err, "value is larger than")
 }
 
+func TestWriterAddNegativeNumbers(t *testing.T) {
+	writer := data.NewEoWriter()
+
+	adders := map[string]func(int) error{
+		"AddByte":  writer.AddByte,
+		"AddChar":  writer.AddChar,
+		"AddShort": writer.AddShort,
+		"AddThree": writer.AddThree,
+		"AddInt":   writer.AddInt,
+	}
+
+	for name, add := range adders {
+		t.Run(name, func(t *testing.T) {
+			assert.ErrorContains(t, add(-1), "value is negative")
+		})
+	}
+
+	assert.Equal(t, 0, writer.Length())
+}
+
 func TestWriterAddFixedStringWithIncorrectLength(t *testing.T) {
 	writer := data.NewEoWriter()
 	var err error
