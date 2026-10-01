@@ -10,6 +10,8 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+## [3.2.2] - 2026-09-30
+
 ### Added
 - Named hardcoded fields now generate a `<Type>_Default<Field>` constant with the spec value, e.g. `client.InitInitClientPacket_DefaultProtocolVersion`.
 - XML comments in the protocol files are now generated as doc comments. Comments on dummies and other instructions without a struct field are added as paragraphs to the doc comment of the containing type, prefixed with a description of the instruction (e.g. "The dummy byte (always 255): …"), and comments in empty switch cases are added to the switch data field. Comments on unnamed hardcoded fields are omitted, since those values aren't visible to consumers.
@@ -219,7 +221,8 @@ Initial release.
     - Verifying server hash
 - Helper functions for converting a packet ID to a strongly-typed implementation of the `net.Packet` interface.
 
-[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.2.1...HEAD
+[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.2.2...HEAD
+[3.2.2]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.2
 [3.2.1]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.1
 [3.2.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.0
 [3.1.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.1.0
