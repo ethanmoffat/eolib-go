@@ -2,7 +2,7 @@ package net
 
 import "fmt"
 
-// PacketFamily ::  The type of operation that a packet performs. Part of the unique packet ID.
+// PacketFamily :: The type of operation that a packet performs. Part of the unique packet ID.
 type PacketFamily int
 
 const (
@@ -166,7 +166,7 @@ func (e PacketFamily) String() (string, error) {
 	}
 }
 
-// PacketAction ::  The specific action that a packet performs. Part of the unique packet ID.
+// PacketAction :: The specific action that a packet performs. Part of the unique packet ID.
 type PacketAction int
 
 const (
@@ -317,7 +317,7 @@ func (e QuestPage) String() (string, error) {
 	}
 }
 
-// PartyRequestType ::  Whether a player is requesting to join a party, or inviting someone to join theirs.
+// PartyRequestType :: Whether a player is requesting to join a party, or inviting someone to join theirs.
 type PartyRequestType int
 
 const (

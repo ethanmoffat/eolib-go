@@ -135,7 +135,7 @@ func (s *Item) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// ThreeItem ::  An item reference with a 3-byte amount. Used for shops, lockers, and various item transfers.
+// ThreeItem :: An item reference with a 3-byte amount. Used for shops, lockers, and various item transfers.
 type ThreeItem struct {
 	byteSize int
 
@@ -177,7 +177,7 @@ func (s *ThreeItem) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// CharItem ::  An item reference with a 1-byte amount. Used for craft ingredients.
+// CharItem :: An item reference with a 1-byte amount. Used for craft ingredients.
 type CharItem struct {
 	byteSize int
 

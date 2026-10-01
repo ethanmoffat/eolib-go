@@ -52,7 +52,7 @@ func (e InitReply) String() (string, error) {
 	}
 }
 
-// InitBanType ::  Ban type sent with INIT_INIT packet. The official client treats a value >= 2 as Permanent. Otherwise, it's Temporary.
+// InitBanType :: Ban type sent with INIT_INIT packet. The official client treats a value >= 2 as Permanent. Otherwise, it's Temporary.
 type InitBanType int
 
 const (
@@ -270,7 +270,7 @@ func (e GuildReply) String() (string, error) {
 	}
 }
 
-// InnUnsubscribeReply ::  Reply code sent with CITIZEN_REMOVE packet. Indicates the result of trying to give up citizenship to a town.
+// InnUnsubscribeReply :: Reply code sent with CITIZEN_REMOVE packet. Indicates the result of trying to give up citizenship to a town.
 type InnUnsubscribeReply int
 
 const (
@@ -295,8 +295,8 @@ type CharacterReply int
 
 const (
 	CharacterReply_Exists CharacterReply = iota + 1
-	CharacterReply_Full                  //  Only sent in reply to Character_Create packets. Displays the same message as CharacterReply.Full3 in the official client.
-	CharacterReply_Full3                 //  Only sent in reply to Character_Request packets. Displays the same message as CharacterReply.Full in the official client.
+	CharacterReply_Full                  // Only sent in reply to Character_Create packets. Displays the same message as CharacterReply.Full3 in the official client.
+	CharacterReply_Full3                 // Only sent in reply to Character_Request packets. Displays the same message as CharacterReply.Full in the official client.
 	CharacterReply_NotApproved
 	CharacterReply_Ok
 	CharacterReply_Deleted
@@ -322,7 +322,7 @@ func (e CharacterReply) String() (string, error) {
 	}
 }
 
-// SkillMasterReply ::  Reply code sent with STATSKILL_REPLY packet. Indicates why an action was unsuccessful.
+// SkillMasterReply :: Reply code sent with STATSKILL_REPLY packet. Indicates why an action was unsuccessful.
 type SkillMasterReply int
 
 const (
@@ -374,7 +374,7 @@ func (e AccountReply) String() (string, error) {
 	}
 }
 
-// LoginReply ::  Reply code sent with LOGIN_REPLY packet. Indicates the result of a login attempt.
+// LoginReply :: Reply code sent with LOGIN_REPLY packet. Indicates the result of a login attempt.
 type LoginReply int
 
 const (
@@ -475,7 +475,7 @@ func (e WarpEffect) String() (string, error) {
 	}
 }
 
-// WarpType ::  Indicates whether a warp is within the current map, or switching to another map.
+// WarpType :: Indicates whether a warp is within the current map, or switching to another map.
 type WarpType int
 
 const (
@@ -694,7 +694,7 @@ func (e PriestReply) String() (string, error) {
 	}
 }
 
-// PartyReplyCode ::  Reply code sent with PARTY_REPLY packet. Indicates why an invite or join request failed.
+// PartyReplyCode :: Reply code sent with PARTY_REPLY packet. Indicates why an invite or join request failed.
 type PartyReplyCode int
 
 const (

@@ -55,6 +55,7 @@ func (si *StructInfo) Nested(chunked *xml.ProtocolInstruction) (*StructInfo, err
 	}
 
 	return &StructInfo{
+		Name:                  si.Name,
 		Instructions:          chunked.Chunked,
 		PackageName:           si.PackageName,
 		SwitchStructQualifier: si.SwitchStructQualifier,

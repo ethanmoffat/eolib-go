@@ -39,15 +39,15 @@ func (e Element) String() (string, error) {
 type ItemType int
 
 const (
-	Item_General ItemType = iota
-	Item_Reserved1
+	Item_General   ItemType = iota
+	Item_Reserved1          // "static" in the official pub editor.
 	Item_Currency
 	Item_Heal
 	Item_Teleport
-	Item_Reserved5
+	Item_Reserved5 // "transformation" in the official pub editor.
 	Item_ExpReward
-	Item_Reserved7
-	Item_Reserved8
+	Item_Reserved7 // "skill book" in the official pub editor.
+	Item_Reserved8 // "visual document" in the official pub editor.
 	Item_Key
 	Item_Weapon
 	Item_Shield
@@ -65,10 +65,10 @@ const (
 	Item_EffectPotion
 	Item_HairDye
 	Item_CureCurse
-	Item_Reserved26
-	Item_Reserved27
-	Item_Reserved28
-	Item_Reserved29
+	Item_Reserved26 // "buff*" in the official pub editor.
+	Item_Reserved27 // "debuff*" in the official pub editor.
+	Item_Reserved28 // "title" in the official pub editor.
+	Item_Reserved29 // "hairtool" in the official pub editor.
 )
 
 // String converts a ItemType value into its string representation
@@ -146,7 +146,7 @@ const (
 	ItemSubtype_Ranged
 	ItemSubtype_Arrows
 	ItemSubtype_Wings
-	ItemSubtype_Reserved4
+	ItemSubtype_Reserved4 // "2handed" in the official pub editor.
 )
 
 // String converts a ItemSubtype value into its string representation
@@ -242,12 +242,12 @@ const (
 	Npc_Friendly NpcType = iota
 	Npc_Passive
 	Npc_Aggressive
-	Npc_Reserved3
-	Npc_Reserved4
-	Npc_Reserved5
+	Npc_Reserved3 // "pet" in the official pub editor.
+	Npc_Reserved4 // "npc mine" in the official pub editor.
+	Npc_Reserved5 // "npc killer" in the official pub editor.
 	Npc_Shop
 	Npc_Inn
-	Npc_Reserved8
+	Npc_Reserved8 // "locker" in the official pub editor.
 	Npc_Bank
 	Npc_Barber
 	Npc_Guild

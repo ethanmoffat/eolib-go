@@ -34,9 +34,9 @@ type EifRecord struct {
 	AirResistance    int
 	WaterResistance  int
 	FireResistance   int
-	Spec1            int //  Holds one the following values, depending on item type:. scroll_map, doll_graphic, exp_reward, hair_color, effect, key, alcohol_potency.
-	Spec2            int //  Holds one the following values, depending on item type:. scroll_x, gender.
-	Spec3            int //  Holds one the following values, depending on item type:. scroll_y.
+	Spec1            int // Holds one the following values, depending on item type: scroll_map, doll_graphic, exp_reward, hair_color, effect, key, alcohol_potency.
+	Spec2            int // Holds one the following values, depending on item type: scroll_x, gender.
+	Spec3            int // Holds one the following values, depending on item type: scroll_y.
 	LevelRequirement int
 	ClassRequirement int
 	StrRequirement   int
@@ -906,7 +906,7 @@ type EsfRecord struct {
 	ElementPower   int
 	TargetRestrict SkillTargetRestrict
 	TargetType     SkillTargetType
-	TargetTime     int
+	TargetTime     int // Reserved for (de)buff duration.
 
 	MaxSkillLevel int
 	MinDamage     int

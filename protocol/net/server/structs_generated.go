@@ -49,7 +49,7 @@ func (s *BigCoords) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// EquipmentChange ::  Player equipment data. Sent when a player's visible equipment changes. Note that these values are graphic IDs.
+// EquipmentChange :: Player equipment data. Sent when a player's visible equipment changes. Note that these values are graphic IDs.
 type EquipmentChange struct {
 	byteSize int
 
@@ -112,7 +112,7 @@ func (s *EquipmentChange) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// EquipmentMapInfo ::  Player equipment data. Sent with map information about a nearby character. Note that these values are graphic IDs.
+// EquipmentMapInfo :: Player equipment data. Sent with map information about a nearby character. Note that these values are graphic IDs.
 type EquipmentMapInfo struct {
 	byteSize int
 
@@ -201,7 +201,7 @@ func (s *EquipmentMapInfo) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// EquipmentCharacterSelect ::  Player equipment data. Sent with a character in the character selection list. Note that these values are graphic IDs.
+// EquipmentCharacterSelect :: Player equipment data. Sent with a character in the character selection list. Note that these values are graphic IDs.
 type EquipmentCharacterSelect struct {
 	byteSize int
 
@@ -264,7 +264,7 @@ func (s *EquipmentCharacterSelect) Deserialize(reader *data.EoReader) (err error
 	return
 }
 
-// EquipmentWelcome ::  Player equipment data. Sent upon selecting a character and entering the game. Note that these values are item IDs.
+// EquipmentWelcome :: Player equipment data. Sent upon selecting a character and entering the game. Note that these values are item IDs.
 type EquipmentWelcome struct {
 	byteSize int
 
@@ -412,7 +412,7 @@ func (s *EquipmentWelcome) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// EquipmentPaperdoll ::  Player equipment data. Sent with information about a player's paperdoll. Note that these values are item IDs.
+// EquipmentPaperdoll :: Player equipment data. Sent with information about a player's paperdoll. Note that these values are item IDs.
 type EquipmentPaperdoll struct {
 	byteSize int
 
@@ -560,7 +560,7 @@ func (s *EquipmentPaperdoll) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// CharacterMapInfo ::  Information about a nearby character. The official client skips these if they're under 42 bytes in length.
+// CharacterMapInfo :: Information about a nearby character. The official client skips these if they're under 42 bytes in length.
 type CharacterMapInfo struct {
 	byteSize int
 
@@ -1435,7 +1435,7 @@ func (s *PlayersList) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// PlayersListFriends ::  Information about online players. Sent in reply to friends list requests.
+// PlayersListFriends :: Information about online players. Sent in reply to friends list requests.
 type PlayersListFriends struct {
 	byteSize int
 
@@ -1905,7 +1905,7 @@ func (s *CharacterBaseStats) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// CharacterBaseStatsWelcome ::  The 6 base character stats. Sent upon selecting a character and entering the game.
+// CharacterBaseStatsWelcome :: The 6 base character stats. Sent upon selecting a character and entering the game.
 type CharacterBaseStatsWelcome struct {
 	byteSize int
 
@@ -2038,7 +2038,7 @@ func (s *CharacterSecondaryStats) Deserialize(reader *data.EoReader) (err error)
 	return
 }
 
-// CharacterSecondaryStatsInfoLookup ::  The 5 secondary character stats. Sent with character info lookups.
+// CharacterSecondaryStatsInfoLookup :: The 5 secondary character stats. Sent with character info lookups.
 type CharacterSecondaryStatsInfoLookup struct {
 	byteSize int
 
@@ -2171,7 +2171,7 @@ func (s *CharacterElementalStats) Deserialize(reader *data.EoReader) (err error)
 	return
 }
 
-// CharacterStatsReset ::  Character stats data. Sent when resetting stats and skills at a skill master NPC.
+// CharacterStatsReset :: Character stats data. Sent when resetting stats and skills at a skill master NPC.
 type CharacterStatsReset struct {
 	byteSize int
 
@@ -2266,7 +2266,7 @@ func (s *CharacterStatsReset) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// CharacterStatsWelcome ::  Character stats data. Sent upon selecting a character and entering the game.
+// CharacterStatsWelcome :: Character stats data. Sent upon selecting a character and entering the game.
 type CharacterStatsWelcome struct {
 	byteSize int
 
@@ -2368,7 +2368,7 @@ func (s *CharacterStatsWelcome) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// CharacterStatsUpdate ::  Character stats data. Sent when stats are updated.
+// CharacterStatsUpdate :: Character stats data. Sent when stats are updated.
 type CharacterStatsUpdate struct {
 	byteSize int
 
@@ -2442,7 +2442,7 @@ func (s *CharacterStatsUpdate) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// CharacterStatsInfoLookup ::  Character stats data. Sent with character info lookups.
+// CharacterStatsInfoLookup :: Character stats data. Sent with character info lookups.
 type CharacterStatsInfoLookup struct {
 	byteSize int
 
@@ -2525,7 +2525,7 @@ func (s *CharacterStatsInfoLookup) Deserialize(reader *data.EoReader) (err error
 	return
 }
 
-// CharacterStatsEquipmentChange ::  Character stats data. Sent when an item is equipped or unequipped.
+// CharacterStatsEquipmentChange :: Character stats data. Sent when an item is equipped or unequipped.
 type CharacterStatsEquipmentChange struct {
 	byteSize int
 
@@ -3032,7 +3032,7 @@ type PartyExpShare struct {
 
 	PlayerId   int
 	Experience int
-	LevelUp    int //  A value greater than 0 is "new level" and indicates the player leveled up.
+	LevelUp    int // A value greater than 0 is "new level" and indicates the player leveled up.
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.

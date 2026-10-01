@@ -56,7 +56,7 @@ func writeStruct(f *jen.File, typeName string, fullSpec xml.Protocol) (err error
 
 func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol) (err error) {
 	structName := snakeCaseToPascalCase(si.Name)
-	writeTypeCommentJen(f, structName, si.Comment)
+	writeTypeCommentJen(f, structName, si.Comment, getInstructionNotes(si.Instructions)...)
 
 	// write out fields
 	var switches []*xml.ProtocolInstruction
@@ -66,6 +66,10 @@ func writeStructShared(f *jen.File, si *types.StructInfo, fullSpec xml.Protocol)
 	}).Line()
 
 	if err != nil {
+		return
+	}
+
+	if err = writeHardcodedDefaults(f, si.Name, si.Instructions); err != nil {
 		return
 	}
 
@@ -163,12 +167,10 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 				if inst.Comment != nil {
 					comments = append(comments, *inst.Comment)
 				}
-				if hardcoded, ok := getNamedHardcodedValue(inst); ok {
-					comments = append(comments, fmt.Sprintf("This field is always serialized as %q. Any value set on this field is discarded.", hardcoded))
+				if hasNonZeroHardcodedDefault(inst) {
+					comments = append(comments, fmt.Sprintf("A zero value is serialized as [%s] unless this object was deserialized.", getHardcodedDefaultName(si.Name, inst)))
 				}
-				if len(comments) > 0 {
-					writeInlineCommentJen(ss, strings.Join(comments, " "))
-				}
+				writeInlineCommentJen(ss, comments...)
 			}
 
 			if fieldTypeInfo.nextImport != nil && fieldTypeInfo.nextImport.Package != si.PackageName {
@@ -195,7 +197,9 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			// length is stored in a local variable for deserialization
 			continue
 		case "switch":
-			g.Id(fmt.Sprintf("%sData", instName)).Id(fmt.Sprintf("%s%sData", si.SwitchStructQualifier, instName))
+			g.Id(fmt.Sprintf("%sData", instName)).Id(fmt.Sprintf("%s%sData", si.SwitchStructQualifier, instName)).Do(func(s *jen.Statement) {
+				writeInlineCommentJen(s, getEmptyCaseComments(inst, instName)...)
+			})
 			switches = append(switches, &si.Instructions[i])
 			isEmpty = false
 		case "chunked":
@@ -213,6 +217,7 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			}
 
 			switches = append(switches, nextSwitches...)
+			isEmpty = false // the nested call handles an empty chunked section
 		case "dummy":
 			continue
 		case "break":
@@ -485,6 +490,10 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 
 			if err != nil {
 				return
+			}
+
+			if hasNonZeroHardcodedDefault(instruction) {
+				serializeCodes = append(getHardcodedDefaultCodes(si.Name, instruction), serializeCodes...)
 			}
 
 			if instructionType == "array" {
@@ -839,6 +848,79 @@ func getNamedHardcodedValue(inst xml.ProtocolInstruction) (string, bool) {
 	return value, len(value) > 0
 }
 
+func writeHardcodedDefaults(f *jen.File, typeName string, instructions []xml.ProtocolInstruction) error {
+	for _, inst := range instructions {
+		if inst.XMLName.Local == "chunked" {
+			if err := writeHardcodedDefaults(f, typeName, inst.Chunked); err != nil {
+				return err
+			}
+			continue
+		}
+
+		hardcoded, ok := getNamedHardcodedValue(inst)
+		if !ok {
+			continue
+		}
+
+		var value jen.Code
+		fieldDesc := fmt.Sprintf("%s.%s", snakeCaseToPascalCase(typeName), snakeCaseToPascalCase(*inst.Name))
+		switch fieldType, _ := types.GetInstructionTypeName(inst); fieldType {
+		case "byte", "char", "short", "three", "int":
+			parsed, err := strconv.Atoi(hardcoded)
+			if err != nil {
+				return fmt.Errorf("named hardcoded field %s has non-numeric value %q", fieldDesc, hardcoded)
+			}
+			value = jen.Lit(parsed)
+		case "string", "encoded_string":
+			value = jen.Lit(hardcoded)
+		default:
+			return fmt.Errorf("named hardcoded field %s has unsupported type %s", fieldDesc, *inst.Type)
+		}
+
+		comment := fmt.Sprintf("The default value of the %s field.", snakeCaseToPascalCase(*inst.Name))
+		if inst.Comment != nil && len(strings.TrimSpace(*inst.Comment)) > 0 {
+			comment = *inst.Comment
+		}
+
+		constName := getHardcodedDefaultName(typeName, inst)
+		writeTypeCommentJen(f, constName, comment)
+		f.Const().Id(constName).Op("=").Add(value).Line()
+	}
+
+	return nil
+}
+
+func getHardcodedDefaultName(typeName string, inst xml.ProtocolInstruction) string {
+	return fmt.Sprintf("%s_Default%s", snakeCaseToPascalCase(typeName), snakeCaseToPascalCase(*inst.Name))
+}
+
+func hasNonZeroHardcodedDefault(inst xml.ProtocolInstruction) bool {
+	hardcoded, ok := getNamedHardcodedValue(inst)
+	if !ok {
+		return false
+	}
+
+	parsed, err := strconv.Atoi(hardcoded)
+	return err != nil || parsed != 0
+}
+
+func getHardcodedDefaultCodes(typeName string, inst xml.ProtocolInstruction) []jen.Code {
+	localName := snakeCaseToCamelCase(*inst.Name)
+
+	var zeroValue jen.Code = jen.Lit(0)
+	if t, _ := types.GetInstructionTypeName(inst); t == "string" || t == "encoded_string" {
+		zeroValue = jen.Lit("")
+	}
+
+	return []jen.Code{
+		jen.Id(localName).Op(":=").Id("s").Dot(snakeCaseToPascalCase(*inst.Name)).Line(),
+		jen.Comment("byteSize is only non-zero when the object was deserialized").Line(),
+		jen.If(jen.Id(localName).Op("==").Add(zeroValue).Op("&&").Id("s").Dot("byteSize").Op("==").Lit(0)).Block(
+			jen.Id(localName).Op("=").Id(getHardcodedDefaultName(typeName, inst)),
+		).Line(),
+	}
+}
+
 func isOptionalStructField(inst xml.ProtocolInstruction) bool {
 	return inst.XMLName.Local == "field" && inst.Optional != nil && *inst.Optional
 }
@@ -865,13 +947,9 @@ func getSerializeForInstruction(instruction xml.ProtocolInstruction, methodType 
 		} else {
 			instructionCode = jen.Id(*instruction.Content)
 		}
-	} else if hardcoded, ok := getNamedHardcodedValue(instruction); ok {
-		// named hardcoded fields always serialize the hardcoded value; the struct member only reflects what was read
-		if isString {
-			instructionCode = jen.Lit(hardcoded)
-		} else {
-			instructionCode = jen.Id(hardcoded)
-		}
+	} else if hasNonZeroHardcodedDefault(instruction) {
+		// the value is resolved to a local variable by getHardcodedDefaultCodes
+		instructionCode = jen.Id(snakeCaseToCamelCase(*instruction.Name))
 	} else {
 		if instruction.XMLName.Local == "length" {
 			if instruction.ReferencedBy != nil {

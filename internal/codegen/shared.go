@@ -53,37 +53,6 @@ func getPackageName(outputDir string) (packageDeclaration string, err error) {
 	return
 }
 
-func sanitizeComment(comment string) string {
-	split := strings.Split(comment, "\n")
-
-	for i := range split {
-		split[i] = strings.TrimSpace(split[i])
-
-		if len(split[i]) > 0 && !strings.HasSuffix(split[i], ".") {
-			split[i] += "."
-		}
-	}
-
-	return strings.Join(split, " ")
-}
-
-func writeTypeCommentJen(f *jen.File, typeName string, comment string) {
-	if comment = sanitizeComment(comment); len(comment) > 0 {
-		f.Commentf("// %s :: %s", typeName, comment)
-	}
-}
-
-func writeInlineCommentJen(c jen.Code, comment string) {
-	if comment = sanitizeComment(comment); len(comment) > 0 {
-		switch v := c.(type) {
-		case *jen.Statement:
-			v.Comment(comment)
-		case *jen.Group:
-			v.Comment(comment)
-		}
-	}
-}
-
 func writeToFileJen(f *jen.File, outFileName string) error {
 	return f.Save(outFileName)
 }

@@ -103,11 +103,11 @@ const (
 	MapTileSpec_ChairDownRight
 	MapTileSpec_ChairUpLeft
 	MapTileSpec_ChairAll
-	MapTileSpec_Reserved8
+	MapTileSpec_Reserved8 // Used internally in the official server.
 	MapTileSpec_Chest
-	MapTileSpec_Reserved10
-	MapTileSpec_Reserved11
-	MapTileSpec_Reserved12
+	MapTileSpec_Reserved10 // Used internally in the official server.
+	MapTileSpec_Reserved11 // Used internally in the official server.
+	MapTileSpec_Reserved12 // Used internally in the official server.
 	MapTileSpec_Reserved13
 	MapTileSpec_Reserved14
 	MapTileSpec_Reserved15
@@ -126,7 +126,7 @@ const (
 	MapTileSpec_Jukebox
 	MapTileSpec_Jump
 	MapTileSpec_Water
-	MapTileSpec_Reserved31
+	MapTileSpec_Reserved31 // "Deep Water" according to vult-r. No behavior in the official client.
 	MapTileSpec_Arena
 	MapTileSpec_AmbientSource
 	MapTileSpec_TimedSpikes

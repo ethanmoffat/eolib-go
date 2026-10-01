@@ -242,7 +242,7 @@ type InnRecord struct {
 	SleepMap              int  // ID of the map the player is sent to after sleeping at the inn.
 	SleepX                int  // X coordinate of the map the player is sent to after sleeping at the inn.
 	SleepY                int  // Y coordinate of the map the player is sent to after sleeping at the inn.
-	AlternateSpawnEnabled bool //  Flag for an alternate spawn point. If true, the server will use this alternate spawn. map, x, and, y based on some other condition.  In the official server, this is used to respawn new characters on the noob island. until they reach a certain level.
+	AlternateSpawnEnabled bool // Flag for an alternate spawn point. If true, the server will use this alternate spawn map, x, and, y based on some other condition. In the official server, this is used to respawn new characters on the noob island until they reach a certain level.
 	AlternateSpawnMap     int
 	AlternateSpawnX       int
 	AlternateSpawnY       int

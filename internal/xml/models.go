@@ -426,10 +426,10 @@ func (pi ProtocolInstruction) expectedFields() (all []string, required []string,
 		all = []string{"Type", "Comment", "Content"}
 		required = []string{"Type"}
 	case "switch":
-		all = []string{"Field", "Cases"}
-		required = all
+		all = []string{"Field", "Cases", "Comment"}
+		required = []string{"Field", "Cases"}
 	case "chunked":
-		all = []string{"Chunked"}
+		all = []string{"Chunked", "Comment"}
 	case "break":
 		break
 	default:

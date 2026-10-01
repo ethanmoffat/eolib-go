@@ -10,6 +10,21 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+### Added
+- Named hardcoded fields now generate a `<Type>_Default<Field>` constant with the spec value, e.g. `client.InitInitClientPacket_DefaultProtocolVersion`.
+- XML comments in the protocol files are now generated as doc comments. Comments on dummies and other instructions without a struct field are added as paragraphs to the doc comment of the containing type, prefixed with a description of the instruction (e.g. "The dummy byte (always 255): …"), and comments in empty switch cases are added to the switch data field. Comments on unnamed hardcoded fields are omitted, since those values aren't visible to consumers.
+
+### Changed
+- Named hardcoded fields now serialize their field value, so deserialized values round-trip exactly and set values are sent. A zero value is serialized as the default value, unless the object was deserialized.
+
+### Fixed
+- Generated doc comments no longer start with an extra space, no longer split sentences that are wrapped across lines in the protocol XML, and no longer add a period after a colon or after a sentence that ends inside quotes or parentheses.
+
+### Updated
+- Pulled in changes for eo-protocol, with impact to generated code:
+    - [Name hardcoded client fields verified by the official server](https://github.com/cirras/eo-protocol/commit/8ccc442c1ea448b68caa5dbf561873d226def184)
+- Pulled in changes for eo-captured-packets for test parity with protocol changes.
+
 ## [3.2.1] - 2026-09-28
 
 ### Fixed

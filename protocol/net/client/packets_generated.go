@@ -7,15 +7,18 @@ import (
 	"github.com/ethanmoffat/eolib-go/v3/protocol/net"
 )
 
-// InitInitClientPacket ::  Connection initialization request. This packet is unencrypted.
+// InitInitClientPacket :: Connection initialization request. This packet is unencrypted.
 type InitInitClientPacket struct {
 	byteSize int
 
-	Challenge int
-	Version   net.Version
-
-	Hdid string
+	Challenge       int
+	Version         net.Version
+	ProtocolVersion int // The official server verifies that this number is 112. A zero value is serialized as [InitInitClientPacket_DefaultProtocolVersion] unless this object was deserialized.
+	Hdid            string
 }
+
+// InitInitClientPacket_DefaultProtocolVersion :: The official server verifies that this number is 112.
+const InitInitClientPacket_DefaultProtocolVersion = 112
 
 func (s InitInitClientPacket) Family() net.PacketFamily {
 	return net.PacketFamily_Init
@@ -42,8 +45,13 @@ func (s *InitInitClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	if err = s.Version.Serialize(writer); err != nil {
 		return
 	}
-	// 112 : field : char
-	if err = writer.AddChar(112); err != nil {
+	// ProtocolVersion : field : char
+	protocolVersion := s.ProtocolVersion
+	// byteSize is only non-zero when the object was deserialized
+	if protocolVersion == 0 && s.byteSize == 0 {
+		protocolVersion = InitInitClientPacket_DefaultProtocolVersion
+	}
+	if err = writer.AddChar(protocolVersion); err != nil {
 		return
 	}
 	// HdidLength : length : char
@@ -68,8 +76,8 @@ func (s *InitInitClientPacket) Deserialize(reader *data.EoReader) (err error) {
 	if err = s.Version.Deserialize(reader); err != nil {
 		return
 	}
-	// 112 : field : char
-	reader.GetChar()
+	// ProtocolVersion : field : char
+	s.ProtocolVersion = reader.GetChar()
 	// HdidLength : length : char
 	hdidLength := reader.GetChar()
 	// Hdid : field : string
@@ -463,9 +471,11 @@ func (s *AccountAgreeClientPacket) Deserialize(reader *data.EoReader) (err error
 type CharacterRequestClientPacket struct {
 	byteSize int
 
-	RequestString string // This field is always serialized as "NEW". Any value set on this field is discarded.
-
+	RequestString string // A zero value is serialized as [CharacterRequestClientPacket_DefaultRequestString] unless this object was deserialized.
 }
+
+// CharacterRequestClientPacket_DefaultRequestString :: The default value of the RequestString field.
+const CharacterRequestClientPacket_DefaultRequestString = "NEW"
 
 func (s CharacterRequestClientPacket) Family() net.PacketFamily {
 	return net.PacketFamily_Character
@@ -486,7 +496,12 @@ func (s *CharacterRequestClientPacket) Serialize(writer *data.EoWriter) (err err
 
 	writer.SanitizeStrings = true
 	// RequestString : field : string
-	if err = writer.AddString("NEW"); err != nil {
+	requestString := s.RequestString
+	// byteSize is only non-zero when the object was deserialized
+	if requestString == "" && s.byteSize == 0 {
+		requestString = CharacterRequestClientPacket_DefaultRequestString
+	}
+	if err = writer.AddString(requestString); err != nil {
 		return
 	}
 	writer.AddByte(255)
@@ -655,7 +670,7 @@ type CharacterRemoveClientPacket struct {
 	byteSize int
 
 	SessionId   int
-	CharacterId int //  The official client sends a short, which gets written as a variable-sized integer. (2-4 bytes) due to a quirk of the official encoding routine. However, the official server expects an int.
+	CharacterId int // The official client sends a short, which gets written as a variable-sized integer (2-4 bytes) due to a quirk of the official encoding routine. However, the official server expects an int.
 }
 
 func (s CharacterRemoveClientPacket) Family() net.PacketFamily {
@@ -877,7 +892,7 @@ type WelcomeAgreeFileTypeData interface {
 type WelcomeAgreeFileTypeDataEmf struct {
 	byteSize int
 
-	FileId int
+	FileId int // Unlike the pub file IDs, the EMF file ID is a short.
 }
 
 // ByteSize gets the deserialized size of this object. This value is zero for an object that was not deserialized from data.
@@ -3651,7 +3666,7 @@ type ItemDropClientPacket struct {
 	byteSize int
 
 	Item   net.ThreeItem
-	Coords ByteCoords //  The official client sends 255 byte values for the coords if an item is dropped via. the GUI button. 255 values here should be interpreted to mean "drop at current coords". Otherwise, the x and y fields contain encoded numbers that must be explicitly. decoded to get the actual x and y values.
+	Coords ByteCoords // The official client sends 255 byte values for the coords if an item is dropped via the GUI button. 255 values here should be interpreted to mean "drop at current coords". Otherwise, the x and y fields contain encoded numbers that must be explicitly decoded to get the actual x and y values.
 }
 
 func (s ItemDropClientPacket) Family() net.PacketFamily {
@@ -5307,8 +5322,12 @@ func (s *GuildRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 type GuildAcceptClientPacket struct {
 	byteSize int
 
+	SessionId       int // The official client really does send this random harcoded 20202 value. A zero value is serialized as [GuildAcceptClientPacket_DefaultSessionId] unless this object was deserialized.
 	InviterPlayerId int
 }
+
+// GuildAcceptClientPacket_DefaultSessionId :: The official client really does send this random harcoded 20202 value.
+const GuildAcceptClientPacket_DefaultSessionId = 20202
 
 func (s GuildAcceptClientPacket) Family() net.PacketFamily {
 	return net.PacketFamily_Guild
@@ -5327,8 +5346,13 @@ func (s *GuildAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// 20202 : field : int
-	if err = writer.AddInt(20202); err != nil {
+	// SessionId : field : int
+	sessionId := s.SessionId
+	// byteSize is only non-zero when the object was deserialized
+	if sessionId == 0 && s.byteSize == 0 {
+		sessionId = GuildAcceptClientPacket_DefaultSessionId
+	}
+	if err = writer.AddInt(sessionId); err != nil {
 		return
 	}
 	// InviterPlayerId : field : short
@@ -5343,8 +5367,8 @@ func (s *GuildAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// 20202 : field : int
-	reader.GetInt()
+	// SessionId : field : int
+	s.SessionId = reader.GetInt()
 	// InviterPlayerId : field : short
 	s.InviterPlayerId = reader.GetShort()
 	s.byteSize = reader.Position() - readerStartPosition
@@ -6487,8 +6511,12 @@ func (s *SpellUseClientPacket) Deserialize(reader *data.EoReader) (err error) {
 type TradeRequestClientPacket struct {
 	byteSize int
 
-	PlayerId int
+	RequestType int // The official server verifies that this number is 138. A zero value is serialized as [TradeRequestClientPacket_DefaultRequestType] unless this object was deserialized.
+	PlayerId    int
 }
+
+// TradeRequestClientPacket_DefaultRequestType :: The official server verifies that this number is 138.
+const TradeRequestClientPacket_DefaultRequestType = 138
 
 func (s TradeRequestClientPacket) Family() net.PacketFamily {
 	return net.PacketFamily_Trade
@@ -6507,8 +6535,13 @@ func (s *TradeRequestClientPacket) Serialize(writer *data.EoWriter) (err error) 
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// 138 : field : char
-	if err = writer.AddChar(138); err != nil {
+	// RequestType : field : char
+	requestType := s.RequestType
+	// byteSize is only non-zero when the object was deserialized
+	if requestType == 0 && s.byteSize == 0 {
+		requestType = TradeRequestClientPacket_DefaultRequestType
+	}
+	if err = writer.AddChar(requestType); err != nil {
 		return
 	}
 	// PlayerId : field : short
@@ -6523,8 +6556,8 @@ func (s *TradeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// 138 : field : char
-	reader.GetChar()
+	// RequestType : field : char
+	s.RequestType = reader.GetChar()
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
 	s.byteSize = reader.Position() - readerStartPosition
@@ -6536,8 +6569,12 @@ func (s *TradeRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 type TradeAcceptClientPacket struct {
 	byteSize int
 
-	PlayerId int
+	RequestType int // The official server verifies that this number is 0.
+	PlayerId    int
 }
+
+// TradeAcceptClientPacket_DefaultRequestType :: The official server verifies that this number is 0.
+const TradeAcceptClientPacket_DefaultRequestType = 0
 
 func (s TradeAcceptClientPacket) Family() net.PacketFamily {
 	return net.PacketFamily_Trade
@@ -6556,8 +6593,8 @@ func (s *TradeAcceptClientPacket) Serialize(writer *data.EoWriter) (err error) {
 	oldSanitizeStrings := writer.SanitizeStrings
 	defer func() { writer.SanitizeStrings = oldSanitizeStrings }()
 
-	// 0 : field : char
-	if err = writer.AddChar(0); err != nil {
+	// RequestType : field : char
+	if err = writer.AddChar(s.RequestType); err != nil {
 		return
 	}
 	// PlayerId : field : short
@@ -6572,8 +6609,8 @@ func (s *TradeAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	defer func() { reader.SetIsChunked(oldIsChunked) }()
 
 	readerStartPosition := reader.Position()
-	// 0 : field : char
-	reader.GetChar()
+	// RequestType : field : char
+	s.RequestType = reader.GetChar()
 	// PlayerId : field : short
 	s.PlayerId = reader.GetShort()
 	s.byteSize = reader.Position() - readerStartPosition
@@ -6768,7 +6805,7 @@ type QuestUseClientPacket struct {
 	byteSize int
 
 	NpcIndex int
-	QuestId  int //  Quest ID is 0 unless the player explicitly selects a quest from the quest switcher.
+	QuestId  int // Quest ID is 0 unless the player explicitly selects a quest from the quest switcher.
 }
 
 func (s QuestUseClientPacket) Family() net.PacketFamily {

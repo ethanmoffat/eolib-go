@@ -678,7 +678,7 @@ type Emf struct {
 	Items          []MapItem
 	TileSpecRows   []MapTileSpecRow
 	WarpRows       []MapWarpRow
-	GraphicLayers  []MapGraphicLayer //  The 9 layers of map graphics. Order is [Ground, Object, Overlay, Down Wall, Right Wall, Roof, Top, Shadow, Overlay2].
+	GraphicLayers  []MapGraphicLayer // The 9 layers of map graphics. Order is [Ground, Object, Overlay, Down Wall, Right Wall, Roof, Top, Shadow, Overlay2].
 	Signs          []MapSign
 }
 

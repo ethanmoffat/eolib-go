@@ -9,7 +9,7 @@ import (
 	"github.com/ethanmoffat/eolib-go/v3/protocol/pub"
 )
 
-// InitInitServerPacket ::  Reply to connection initialization and requests for unencrypted data. This packet is unencrypted.
+// InitInitServerPacket :: Reply to connection initialization and requests for unencrypted data. This packet is unencrypted.
 type InitInitServerPacket struct {
 	byteSize int
 
@@ -137,7 +137,7 @@ type InitInitBanTypeData interface {
 	protocol.EoData
 }
 
-// InitInitBanTypeData0 ::  The official client treats any value below 2 as a temporary ban. The official server sends 1, but some game server implementations. erroneously send 0.
+// InitInitBanTypeData0 :: The official client treats any value below 2 as a temporary ban. The official server sends 1, but some game server implementations erroneously send 0.
 type InitInitBanTypeData0 struct {
 	byteSize int
 
@@ -1287,8 +1287,8 @@ func (s *ConnectionPlayerServerPacket) Deserialize(reader *data.EoReader) (err e
 type AccountReplyServerPacket struct {
 	byteSize int
 
-	ReplyCode     AccountReply //  Sometimes an AccountReply code, sometimes a session ID for account creation.
-	ReplyCodeData AccountReplyReplyCodeData
+	ReplyCode     AccountReply              // Sometimes an AccountReply code, sometimes a session ID for account creation.
+	ReplyCodeData AccountReplyReplyCodeData // When ReplyCode is 0, 4, 8 or 9: No effect in the official client.
 }
 
 type AccountReplyReplyCodeData interface {
@@ -1499,7 +1499,7 @@ func (s *AccountReplyReplyCodeDataRequestDenied) Deserialize(reader *data.EoRead
 	return
 }
 
-// AccountReplyReplyCodeDataDefault ::  In this case (reply_code > 9), reply_code is a session ID for account creation.
+// AccountReplyReplyCodeDataDefault :: In this case (reply_code > 9), reply_code is a session ID for account creation.
 type AccountReplyReplyCodeDataDefault struct {
 	byteSize int
 
@@ -1691,8 +1691,8 @@ func (s *AccountReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 type CharacterReplyServerPacket struct {
 	byteSize int
 
-	ReplyCode     CharacterReply //  Sometimes a CharacterReply code, sometimes a session ID for character creation.
-	ReplyCodeData CharacterReplyReplyCodeData
+	ReplyCode     CharacterReply              // Sometimes a CharacterReply code, sometimes a session ID for character creation.
+	ReplyCodeData CharacterReplyReplyCodeData // When ReplyCode is 0, 7, 8 or 9: No effect in the official client.
 }
 
 type CharacterReplyReplyCodeData interface {
@@ -1955,7 +1955,7 @@ func (s *CharacterReplyReplyCodeDataDeleted) Deserialize(reader *data.EoReader) 
 	return
 }
 
-// CharacterReplyReplyCodeDataDefault ::  In this case (reply_code > 9), reply_code is a session ID for character creation.
+// CharacterReplyReplyCodeDataDefault :: In this case (reply_code > 9), reply_code is a session ID for character creation.
 type CharacterReplyReplyCodeDataDefault struct {
 	byteSize int
 }
@@ -4166,7 +4166,7 @@ func (s *TalkServerServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	return
 }
 
-// TalkListServerPacket ::  Global chat backfill. Sent by the official game server when a player opens the global chat tab.
+// TalkListServerPacket :: Global chat backfill. Sent by the official game server when a player opens the global chat tab.
 type TalkListServerPacket struct {
 	byteSize int
 
@@ -7352,7 +7352,7 @@ type ItemReplyItemTypeDataExpReward struct {
 	byteSize int
 
 	Experience  int
-	LevelUp     int //  A value greater than 0 is "new level" and indicates the player leveled up.
+	LevelUp     int // A value greater than 0 is "new level" and indicates the player leveled up.
 	StatPoints  int
 	SkillPoints int
 	MaxHp       int
@@ -8225,6 +8225,8 @@ func (s *JukeboxAgreeServerPacket) Deserialize(reader *data.EoReader) (err error
 }
 
 // JukeboxReplyServerPacket :: Reply to unsuccessfully requesting a song.
+//
+// The dummy short (always 1): "Someone else already requested a song, please wait a moment." (Official server erroneously sends this when you don't have enough gold).
 type JukeboxReplyServerPacket struct {
 	byteSize int
 }
@@ -8792,7 +8794,7 @@ func (s *PaperdollReplyServerPacket) Deserialize(reader *data.EoReader) (err err
 type PaperdollPingServerPacket struct {
 	byteSize int
 
-	ClassId int // The player's current class ID (not the item's required class ID).
+	ClassId int // The player's current class ID (not the item's required class ID). There is no visible effect in the client, it simply re-assigns the player's class.
 }
 
 func (s PaperdollPingServerPacket) Family() net.PacketFamily {
@@ -9283,7 +9285,7 @@ func (s *PlayersNet242ServerPacket) Deserialize(reader *data.EoReader) (err erro
 type DoorOpenServerPacket struct {
 	byteSize int
 
-	Coords protocol.Coords //  The official server erroneously encodes the Y coordinate as a short. The official client reads each coordinate as a char.
+	Coords protocol.Coords // The official server erroneously encodes the Y coordinate as a short. The official client reads each coordinate as a char.
 }
 
 func (s DoorOpenServerPacket) Family() net.PacketFamily {
@@ -9670,7 +9672,7 @@ func (s *ChestSpecServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
-// ChestCloseServerPacket ::  Reply to trying to interact with a locked or "broken" chest. The official client assumes a broken chest if the packet is under 2 bytes in length.
+// ChestCloseServerPacket :: Reply to trying to interact with a locked or "broken" chest. The official client assumes a broken chest if the packet is under 2 bytes in length.
 type ChestCloseServerPacket struct {
 	byteSize int
 
@@ -11327,6 +11329,8 @@ func (s *GuildAcceptServerPacket) Deserialize(reader *data.EoReader) (err error)
 }
 
 // GuildKickServerPacket :: Left the guild.
+//
+// The dummy byte (always 255): The official server never sends this packet, so the dummy byte is unknown. This packet is only known as a result of decompiling the official client.
 type GuildKickServerPacket struct {
 	byteSize int
 }
@@ -11866,7 +11870,7 @@ func (s *SpellTargetOtherServerPacket) Deserialize(reader *data.EoReader) (err e
 type SpellReplyServerPacket struct {
 	byteSize int
 
-	SpellId int
+	SpellId int // The official client updates the casting character's SP by reading the spell's SP cost from the pub file.
 	Hp      int
 	Tp      int
 }
@@ -14259,7 +14263,7 @@ type RecoverReplyServerPacket struct {
 
 	Experience  int
 	Karma       int
-	LevelUp     *int //  A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
+	LevelUp     *int // A value greater than 0 is "new level" and indicates the player leveled up. The official client reads this if the packet is larger than 6 bytes.
 	StatPoints  *int // The official client reads this if the player leveled up.
 	SkillPoints *int // The official client reads this if the player leveled up.
 }

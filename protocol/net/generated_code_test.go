@@ -54,23 +54,44 @@ func TestOptionalStructFieldTruncatedData(t *testing.T) {
 	assert.Nil(t, packet.LevelUp)
 }
 
-func TestNamedHardcodedFieldSerializesHardcodedValue(t *testing.T) {
+func TestNamedHardcodedFieldZeroValueSerializesDefault(t *testing.T) {
+	var packet client.CharacterRequestClientPacket
+
+	writer := data.NewEoWriter()
+	require.NoError(t, packet.Serialize(writer))
+
+	assert.Equal(t, []byte{'N', 'E', 'W', 0xFF}, writer.Array())
+}
+
+func TestNamedHardcodedFieldSetValueIsSerialized(t *testing.T) {
+	packet := client.CharacterRequestClientPacket{RequestString: "OLD"}
+
+	writer := data.NewEoWriter()
+	require.NoError(t, packet.Serialize(writer))
+
+	assert.Equal(t, []byte{'O', 'L', 'D', 0xFF}, writer.Array())
+}
+
+func TestNamedHardcodedFieldDeserializedValueRoundTrips(t *testing.T) {
 	tests := []struct {
 		name          string
+		input         []byte
 		requestString string
 	}{
-		{"Unset", ""},
-		{"DifferentValue", "OLD"},
+		{"DefaultValue", []byte{'N', 'E', 'W', 0xFF}, "NEW"},
+		{"DifferentValue", []byte{'O', 'L', 'D', 0xFF}, "OLD"},
+		{"ZeroValue", []byte{0xFF}, ""},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			packet := client.CharacterRequestClientPacket{RequestString: tt.requestString}
+			var packet client.CharacterRequestClientPacket
+			require.NoError(t, packet.Deserialize(data.NewEoReader(tt.input)))
+			assert.Equal(t, tt.requestString, packet.RequestString)
 
 			writer := data.NewEoWriter()
 			require.NoError(t, packet.Serialize(writer))
-
-			assert.Equal(t, []byte{'N', 'E', 'W', 0xFF}, writer.Array())
+			assert.Equal(t, tt.input, writer.Array())
 		})
 	}
 }

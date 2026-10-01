@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/xml"
 	"flag"
 	"fmt"
 	"io"
@@ -72,7 +71,7 @@ func main() {
 		}
 
 		var next eoxml.Protocol
-		if err := xml.Unmarshal(bytes, &next); err != nil {
+		if err := eoxml.Unmarshal(bytes, &next); err != nil {
 			fmt.Printf("error unmarshalling xml: %v\n", err)
 			os.Exit(1)
 		}
