@@ -179,6 +179,8 @@ type sequenceState struct {
 	reachedDummy        bool
 	reachedUnsizedArray bool
 	fieldNames          map[string]bool
+	// switchField is the field of the switch in the current scope. It is kept across a break, since chunks share a scope.
+	switchField string
 }
 
 func (st sequenceState) merge(other sequenceState) sequenceState {
@@ -224,7 +226,7 @@ func validateSequence(instructions []ProtocolInstruction, isChunked bool, state 
 		case "dummy":
 			state.reachedDummy = true
 		case "break":
-			*state = sequenceState{fieldNames: state.fieldNames}
+			*state = sequenceState{fieldNames: state.fieldNames, switchField: state.switchField}
 		case "chunked":
 			if err := validateSequence(inst.Chunked, true, state); err != nil {
 				return err
@@ -237,6 +239,7 @@ func validateSequence(instructions []ProtocolInstruction, isChunked bool, state 
 			merged := *state
 			for _, cs := range inst.Cases {
 				caseState := *state
+				caseState.switchField = ""
 				if err := validateSequence(cs.Instructions, isChunked, &caseState); err != nil {
 					return err
 				}
@@ -253,6 +256,12 @@ func validateSwitch(inst ProtocolInstruction, state *sequenceState) error {
 	if inst.Field == nil || !state.fieldNames[*inst.Field] {
 		return fmt.Errorf("validation error: switch must reference a preceding field (%s)", instructionDescription(inst))
 	}
+
+	// switch factories set one switch per scope
+	if len(state.switchField) > 0 {
+		return fmt.Errorf("validation error: switch factories don't support multiple switches in one scope (switches on %s and %s)", state.switchField, *inst.Field)
+	}
+	state.switchField = *inst.Field
 
 	values := map[string]bool{}
 	for i, cs := range inst.Cases {

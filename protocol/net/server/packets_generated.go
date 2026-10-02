@@ -820,6 +820,128 @@ func (s *InitInitServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
+// NewInitInitWithOutOfDate creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_OutOfDate] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithOutOfDate(data *InitInitReplyCodeDataOutOfDate) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_OutOfDate}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_OutOfDate, ReplyCodeData: data}
+}
+
+// NewInitInitWithOk creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_Ok] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithOk(data *InitInitReplyCodeDataOk) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_Ok}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_Ok, ReplyCodeData: data}
+}
+
+// NewInitInitWithBannedTemporary creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_Banned] and ReplyCodeData set to a new [InitInitReplyCodeDataBanned] with BanType set to [InitBan_Temporary] and BanTypeData set to data.
+// If data is nil, BanTypeData is left nil and serializing the result returns an error.
+func NewInitInitWithBannedTemporary(data *InitInitBanTypeDataTemporary) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_Banned, ReplyCodeData: &InitInitReplyCodeDataBanned{BanType: InitBan_Temporary}}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_Banned, ReplyCodeData: &InitInitReplyCodeDataBanned{BanType: InitBan_Temporary, BanTypeData: data}}
+}
+
+// NewInitInitWithBannedPermanent creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_Banned] and ReplyCodeData set to a new [InitInitReplyCodeDataBanned] with BanType set to [InitBan_Permanent].
+func NewInitInitWithBannedPermanent() *InitInitServerPacket {
+	return &InitInitServerPacket{ReplyCode: InitReply_Banned, ReplyCodeData: &InitInitReplyCodeDataBanned{BanType: InitBan_Permanent}}
+}
+
+// NewInitInitWithBanTypeData0 creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_Banned] and ReplyCodeData set to a new [InitInitReplyCodeDataBanned] with BanType set to 0 and BanTypeData set to data.
+// If data is nil, BanTypeData is left nil and serializing the result returns an error.
+func NewInitInitWithBanTypeData0(data *InitInitBanTypeData0) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_Banned, ReplyCodeData: &InitInitReplyCodeDataBanned{BanType: 0}}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_Banned, ReplyCodeData: &InitInitReplyCodeDataBanned{BanType: 0, BanTypeData: data}}
+}
+
+// NewInitInitWithWarpMap creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_WarpMap] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithWarpMap(data *InitInitReplyCodeDataWarpMap) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_WarpMap}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_WarpMap, ReplyCodeData: data}
+}
+
+// NewInitInitWithFileEmf creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_FileEmf] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithFileEmf(data *InitInitReplyCodeDataFileEmf) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_FileEmf}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_FileEmf, ReplyCodeData: data}
+}
+
+// NewInitInitWithFileEif creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_FileEif] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithFileEif(data *InitInitReplyCodeDataFileEif) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_FileEif}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_FileEif, ReplyCodeData: data}
+}
+
+// NewInitInitWithFileEnf creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_FileEnf] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithFileEnf(data *InitInitReplyCodeDataFileEnf) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_FileEnf}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_FileEnf, ReplyCodeData: data}
+}
+
+// NewInitInitWithFileEsf creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_FileEsf] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithFileEsf(data *InitInitReplyCodeDataFileEsf) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_FileEsf}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_FileEsf, ReplyCodeData: data}
+}
+
+// NewInitInitWithPlayersList creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_PlayersList] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithPlayersList(data *InitInitReplyCodeDataPlayersList) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_PlayersList}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_PlayersList, ReplyCodeData: data}
+}
+
+// NewInitInitWithMapMutation creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_MapMutation] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithMapMutation(data *InitInitReplyCodeDataMapMutation) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_MapMutation}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_MapMutation, ReplyCodeData: data}
+}
+
+// NewInitInitWithPlayersListFriends creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_PlayersListFriends] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithPlayersListFriends(data *InitInitReplyCodeDataPlayersListFriends) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_PlayersListFriends}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_PlayersListFriends, ReplyCodeData: data}
+}
+
+// NewInitInitWithFileEcf creates a new [InitInitServerPacket] with ReplyCode set to [InitReply_FileEcf] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewInitInitWithFileEcf(data *InitInitReplyCodeDataFileEcf) *InitInitServerPacket {
+	if data == nil {
+		return &InitInitServerPacket{ReplyCode: InitReply_FileEcf}
+	}
+	return &InitInitServerPacket{ReplyCode: InitReply_FileEcf, ReplyCodeData: data}
+}
+
 // WarpPlayerServerPacket :: Equivalent to INIT_INIT with InitReply.WarpMap.
 type WarpPlayerServerPacket struct {
 	byteSize int
@@ -1687,6 +1809,50 @@ func (s *AccountReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 	return
 }
 
+// NewAccountReplyWithExists creates a new [AccountReplyServerPacket] with ReplyCode set to [AccountReply_Exists] and ReplyCodeData set to a new [AccountReplyReplyCodeDataExists].
+func NewAccountReplyWithExists() *AccountReplyServerPacket {
+	return &AccountReplyServerPacket{ReplyCode: AccountReply_Exists, ReplyCodeData: &AccountReplyReplyCodeDataExists{}}
+}
+
+// NewAccountReplyWithNotApproved creates a new [AccountReplyServerPacket] with ReplyCode set to [AccountReply_NotApproved] and ReplyCodeData set to a new [AccountReplyReplyCodeDataNotApproved].
+func NewAccountReplyWithNotApproved() *AccountReplyServerPacket {
+	return &AccountReplyServerPacket{ReplyCode: AccountReply_NotApproved, ReplyCodeData: &AccountReplyReplyCodeDataNotApproved{}}
+}
+
+// NewAccountReplyWithCreated creates a new [AccountReplyServerPacket] with ReplyCode set to [AccountReply_Created] and ReplyCodeData set to a new [AccountReplyReplyCodeDataCreated].
+func NewAccountReplyWithCreated() *AccountReplyServerPacket {
+	return &AccountReplyServerPacket{ReplyCode: AccountReply_Created, ReplyCodeData: &AccountReplyReplyCodeDataCreated{}}
+}
+
+// NewAccountReplyWithChangeFailed creates a new [AccountReplyServerPacket] with ReplyCode set to [AccountReply_ChangeFailed] and ReplyCodeData set to a new [AccountReplyReplyCodeDataChangeFailed].
+func NewAccountReplyWithChangeFailed() *AccountReplyServerPacket {
+	return &AccountReplyServerPacket{ReplyCode: AccountReply_ChangeFailed, ReplyCodeData: &AccountReplyReplyCodeDataChangeFailed{}}
+}
+
+// NewAccountReplyWithChanged creates a new [AccountReplyServerPacket] with ReplyCode set to [AccountReply_Changed] and ReplyCodeData set to a new [AccountReplyReplyCodeDataChanged].
+func NewAccountReplyWithChanged() *AccountReplyServerPacket {
+	return &AccountReplyServerPacket{ReplyCode: AccountReply_Changed, ReplyCodeData: &AccountReplyReplyCodeDataChanged{}}
+}
+
+// NewAccountReplyWithRequestDenied creates a new [AccountReplyServerPacket] with ReplyCode set to [AccountReply_RequestDenied] and ReplyCodeData set to a new [AccountReplyReplyCodeDataRequestDenied].
+func NewAccountReplyWithRequestDenied() *AccountReplyServerPacket {
+	return &AccountReplyServerPacket{ReplyCode: AccountReply_RequestDenied, ReplyCodeData: &AccountReplyReplyCodeDataRequestDenied{}}
+}
+
+// NewAccountReplyWithDefault creates a new [AccountReplyServerPacket] with ReplyCode set to code and ReplyCodeData set to data, for a ReplyCode value that is handled by the default case.
+// It returns an error if code is the value of another case.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewAccountReplyWithDefault(code AccountReply, data *AccountReplyReplyCodeDataDefault) (*AccountReplyServerPacket, error) {
+	switch code {
+	case 0, AccountReply_Exists, AccountReply_NotApproved, AccountReply_Created, 4, AccountReply_ChangeFailed, AccountReply_Changed, AccountReply_RequestDenied, 8, 9:
+		return nil, fmt.Errorf("ReplyCode %d has its own case and is not handled by the default case", code)
+	}
+	if data == nil {
+		return &AccountReplyServerPacket{ReplyCode: code}, nil
+	}
+	return &AccountReplyServerPacket{ReplyCode: code, ReplyCodeData: data}, nil
+}
+
 // CharacterReplyServerPacket :: Reply to client Character-family packets.
 type CharacterReplyServerPacket struct {
 	byteSize int
@@ -2139,6 +2305,54 @@ func (s *CharacterReplyServerPacket) Deserialize(reader *data.EoReader) (err err
 	return
 }
 
+// NewCharacterReplyWithExists creates a new [CharacterReplyServerPacket] with ReplyCode set to [CharacterReply_Exists] and ReplyCodeData set to a new [CharacterReplyReplyCodeDataExists].
+func NewCharacterReplyWithExists() *CharacterReplyServerPacket {
+	return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Exists, ReplyCodeData: &CharacterReplyReplyCodeDataExists{}}
+}
+
+// NewCharacterReplyWithFull creates a new [CharacterReplyServerPacket] with ReplyCode set to [CharacterReply_Full] and ReplyCodeData set to a new [CharacterReplyReplyCodeDataFull].
+func NewCharacterReplyWithFull() *CharacterReplyServerPacket {
+	return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Full, ReplyCodeData: &CharacterReplyReplyCodeDataFull{}}
+}
+
+// NewCharacterReplyWithFull3 creates a new [CharacterReplyServerPacket] with ReplyCode set to [CharacterReply_Full3] and ReplyCodeData set to a new [CharacterReplyReplyCodeDataFull3].
+func NewCharacterReplyWithFull3() *CharacterReplyServerPacket {
+	return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Full3, ReplyCodeData: &CharacterReplyReplyCodeDataFull3{}}
+}
+
+// NewCharacterReplyWithNotApproved creates a new [CharacterReplyServerPacket] with ReplyCode set to [CharacterReply_NotApproved] and ReplyCodeData set to a new [CharacterReplyReplyCodeDataNotApproved].
+func NewCharacterReplyWithNotApproved() *CharacterReplyServerPacket {
+	return &CharacterReplyServerPacket{ReplyCode: CharacterReply_NotApproved, ReplyCodeData: &CharacterReplyReplyCodeDataNotApproved{}}
+}
+
+// NewCharacterReplyWithOk creates a new [CharacterReplyServerPacket] with ReplyCode set to [CharacterReply_Ok] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewCharacterReplyWithOk(data *CharacterReplyReplyCodeDataOk) *CharacterReplyServerPacket {
+	if data == nil {
+		return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Ok}
+	}
+	return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Ok, ReplyCodeData: data}
+}
+
+// NewCharacterReplyWithDeleted creates a new [CharacterReplyServerPacket] with ReplyCode set to [CharacterReply_Deleted] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewCharacterReplyWithDeleted(data *CharacterReplyReplyCodeDataDeleted) *CharacterReplyServerPacket {
+	if data == nil {
+		return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Deleted}
+	}
+	return &CharacterReplyServerPacket{ReplyCode: CharacterReply_Deleted, ReplyCodeData: data}
+}
+
+// NewCharacterReplyWithDefault creates a new [CharacterReplyServerPacket] with ReplyCode set to code and ReplyCodeData set to a new [CharacterReplyReplyCodeDataDefault], for a ReplyCode value that is handled by the default case.
+// It returns an error if code is the value of another case.
+func NewCharacterReplyWithDefault(code CharacterReply) (*CharacterReplyServerPacket, error) {
+	switch code {
+	case 0, CharacterReply_Exists, CharacterReply_Full, CharacterReply_Full3, CharacterReply_NotApproved, CharacterReply_Ok, CharacterReply_Deleted, 7, 8, 9:
+		return nil, fmt.Errorf("ReplyCode %d has its own case and is not handled by the default case", code)
+	}
+	return &CharacterReplyServerPacket{ReplyCode: code, ReplyCodeData: &CharacterReplyReplyCodeDataDefault{}}, nil
+}
+
 // CharacterPlayerServerPacket :: Reply to client request to delete a character from the account (Character_Take).
 type CharacterPlayerServerPacket struct {
 	byteSize int
@@ -2566,6 +2780,40 @@ func (s *LoginReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewLoginReplyWithWrongUser creates a new [LoginReplyServerPacket] with ReplyCode set to [LoginReply_WrongUser] and ReplyCodeData set to a new [LoginReplyReplyCodeDataWrongUser].
+func NewLoginReplyWithWrongUser() *LoginReplyServerPacket {
+	return &LoginReplyServerPacket{ReplyCode: LoginReply_WrongUser, ReplyCodeData: &LoginReplyReplyCodeDataWrongUser{}}
+}
+
+// NewLoginReplyWithWrongUserPassword creates a new [LoginReplyServerPacket] with ReplyCode set to [LoginReply_WrongUserPassword] and ReplyCodeData set to a new [LoginReplyReplyCodeDataWrongUserPassword].
+func NewLoginReplyWithWrongUserPassword() *LoginReplyServerPacket {
+	return &LoginReplyServerPacket{ReplyCode: LoginReply_WrongUserPassword, ReplyCodeData: &LoginReplyReplyCodeDataWrongUserPassword{}}
+}
+
+// NewLoginReplyWithOk creates a new [LoginReplyServerPacket] with ReplyCode set to [LoginReply_Ok] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewLoginReplyWithOk(data *LoginReplyReplyCodeDataOk) *LoginReplyServerPacket {
+	if data == nil {
+		return &LoginReplyServerPacket{ReplyCode: LoginReply_Ok}
+	}
+	return &LoginReplyServerPacket{ReplyCode: LoginReply_Ok, ReplyCodeData: data}
+}
+
+// NewLoginReplyWithBanned creates a new [LoginReplyServerPacket] with ReplyCode set to [LoginReply_Banned] and ReplyCodeData set to a new [LoginReplyReplyCodeDataBanned].
+func NewLoginReplyWithBanned() *LoginReplyServerPacket {
+	return &LoginReplyServerPacket{ReplyCode: LoginReply_Banned, ReplyCodeData: &LoginReplyReplyCodeDataBanned{}}
+}
+
+// NewLoginReplyWithLoggedIn creates a new [LoginReplyServerPacket] with ReplyCode set to [LoginReply_LoggedIn] and ReplyCodeData set to a new [LoginReplyReplyCodeDataLoggedIn].
+func NewLoginReplyWithLoggedIn() *LoginReplyServerPacket {
+	return &LoginReplyServerPacket{ReplyCode: LoginReply_LoggedIn, ReplyCodeData: &LoginReplyReplyCodeDataLoggedIn{}}
+}
+
+// NewLoginReplyWithBusy creates a new [LoginReplyServerPacket] with ReplyCode set to [LoginReply_Busy] and ReplyCodeData set to a new [LoginReplyReplyCodeDataBusy].
+func NewLoginReplyWithBusy() *LoginReplyServerPacket {
+	return &LoginReplyServerPacket{ReplyCode: LoginReply_Busy, ReplyCodeData: &LoginReplyReplyCodeDataBusy{}}
 }
 
 // WelcomeReplyServerPacket :: Reply to selecting a character / entering game.
@@ -3103,6 +3351,34 @@ func (s *WelcomeReplyServerPacket) Deserialize(reader *data.EoReader) (err error
 	return
 }
 
+// NewWelcomeReplyWithSelectCharacter creates a new [WelcomeReplyServerPacket] with WelcomeCode set to [WelcomeCode_SelectCharacter] and WelcomeCodeData set to data.
+// If data is nil, WelcomeCodeData is left nil and serializing the result returns an error.
+func NewWelcomeReplyWithSelectCharacter(data *WelcomeReplyWelcomeCodeDataSelectCharacter) *WelcomeReplyServerPacket {
+	if data == nil {
+		return &WelcomeReplyServerPacket{WelcomeCode: WelcomeCode_SelectCharacter}
+	}
+	return &WelcomeReplyServerPacket{WelcomeCode: WelcomeCode_SelectCharacter, WelcomeCodeData: data}
+}
+
+// NewWelcomeReplyWithEnterGame creates a new [WelcomeReplyServerPacket] with WelcomeCode set to [WelcomeCode_EnterGame] and WelcomeCodeData set to data.
+// If data is nil, WelcomeCodeData is left nil and serializing the result returns an error.
+func NewWelcomeReplyWithEnterGame(data *WelcomeReplyWelcomeCodeDataEnterGame) *WelcomeReplyServerPacket {
+	if data == nil {
+		return &WelcomeReplyServerPacket{WelcomeCode: WelcomeCode_EnterGame}
+	}
+	return &WelcomeReplyServerPacket{WelcomeCode: WelcomeCode_EnterGame, WelcomeCodeData: data}
+}
+
+// NewWelcomeReplyWithServerBusy creates a new [WelcomeReplyServerPacket] with WelcomeCode set to [WelcomeCode_ServerBusy].
+func NewWelcomeReplyWithServerBusy() *WelcomeReplyServerPacket {
+	return &WelcomeReplyServerPacket{WelcomeCode: WelcomeCode_ServerBusy}
+}
+
+// NewWelcomeReplyWithLoggedIn creates a new [WelcomeReplyServerPacket] with WelcomeCode set to [WelcomeCode_LoggedIn].
+func NewWelcomeReplyWithLoggedIn() *WelcomeReplyServerPacket {
+	return &WelcomeReplyServerPacket{WelcomeCode: WelcomeCode_LoggedIn}
+}
+
 // AdminInteractReplyServerPacket :: Incoming admin message.
 type AdminInteractReplyServerPacket struct {
 	byteSize int
@@ -3315,6 +3591,24 @@ func (s *AdminInteractReplyServerPacket) Deserialize(reader *data.EoReader) (err
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewAdminInteractReplyWithMessage creates a new [AdminInteractReplyServerPacket] with MessageType set to [AdminMessage_Message] and MessageTypeData set to data.
+// If data is nil, MessageTypeData is left nil and serializing the result returns an error.
+func NewAdminInteractReplyWithMessage(data *AdminInteractReplyMessageTypeDataMessage) *AdminInteractReplyServerPacket {
+	if data == nil {
+		return &AdminInteractReplyServerPacket{MessageType: AdminMessage_Message}
+	}
+	return &AdminInteractReplyServerPacket{MessageType: AdminMessage_Message, MessageTypeData: data}
+}
+
+// NewAdminInteractReplyWithReport creates a new [AdminInteractReplyServerPacket] with MessageType set to [AdminMessage_Report] and MessageTypeData set to data.
+// If data is nil, MessageTypeData is left nil and serializing the result returns an error.
+func NewAdminInteractReplyWithReport(data *AdminInteractReplyMessageTypeDataReport) *AdminInteractReplyServerPacket {
+	if data == nil {
+		return &AdminInteractReplyServerPacket{MessageType: AdminMessage_Report}
+	}
+	return &AdminInteractReplyServerPacket{MessageType: AdminMessage_Report, MessageTypeData: data}
 }
 
 // AdminInteractRemoveServerPacket :: Nearby player disappearing (admin hide).
@@ -6940,6 +7234,20 @@ func (s *StatSkillReplyServerPacket) Deserialize(reader *data.EoReader) (err err
 	return
 }
 
+// NewStatSkillReplyWithRemoveItems creates a new [StatSkillReplyServerPacket] with ReplyCode set to [SkillMasterReply_RemoveItems].
+func NewStatSkillReplyWithRemoveItems() *StatSkillReplyServerPacket {
+	return &StatSkillReplyServerPacket{ReplyCode: SkillMasterReply_RemoveItems}
+}
+
+// NewStatSkillReplyWithWrongClass creates a new [StatSkillReplyServerPacket] with ReplyCode set to [SkillMasterReply_WrongClass] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewStatSkillReplyWithWrongClass(data *StatSkillReplyReplyCodeDataWrongClass) *StatSkillReplyServerPacket {
+	if data == nil {
+		return &StatSkillReplyServerPacket{ReplyCode: SkillMasterReply_WrongClass}
+	}
+	return &StatSkillReplyServerPacket{ReplyCode: SkillMasterReply_WrongClass, ReplyCodeData: data}
+}
+
 // StatSkillTakeServerPacket :: Response from learning a skill from a skill master.
 type StatSkillTakeServerPacket struct {
 	byteSize int
@@ -7553,6 +7861,176 @@ func (s *ItemReplyServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewItemReplyWithGeneral creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_General].
+func NewItemReplyWithGeneral() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_General}
+}
+
+// NewItemReplyWithReserved1 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved1].
+func NewItemReplyWithReserved1() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved1}
+}
+
+// NewItemReplyWithCurrency creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Currency].
+func NewItemReplyWithCurrency() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Currency}
+}
+
+// NewItemReplyWithHeal creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Heal] and ItemTypeData set to data.
+// If data is nil, ItemTypeData is left nil and serializing the result returns an error.
+func NewItemReplyWithHeal(data *ItemReplyItemTypeDataHeal) *ItemReplyServerPacket {
+	if data == nil {
+		return &ItemReplyServerPacket{ItemType: pub.Item_Heal}
+	}
+	return &ItemReplyServerPacket{ItemType: pub.Item_Heal, ItemTypeData: data}
+}
+
+// NewItemReplyWithTeleport creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Teleport].
+func NewItemReplyWithTeleport() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Teleport}
+}
+
+// NewItemReplyWithReserved5 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved5].
+func NewItemReplyWithReserved5() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved5}
+}
+
+// NewItemReplyWithExpReward creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_ExpReward] and ItemTypeData set to data.
+// If data is nil, ItemTypeData is left nil and serializing the result returns an error.
+func NewItemReplyWithExpReward(data *ItemReplyItemTypeDataExpReward) *ItemReplyServerPacket {
+	if data == nil {
+		return &ItemReplyServerPacket{ItemType: pub.Item_ExpReward}
+	}
+	return &ItemReplyServerPacket{ItemType: pub.Item_ExpReward, ItemTypeData: data}
+}
+
+// NewItemReplyWithReserved7 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved7].
+func NewItemReplyWithReserved7() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved7}
+}
+
+// NewItemReplyWithReserved8 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved8].
+func NewItemReplyWithReserved8() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved8}
+}
+
+// NewItemReplyWithKey creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Key].
+func NewItemReplyWithKey() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Key}
+}
+
+// NewItemReplyWithWeapon creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Weapon].
+func NewItemReplyWithWeapon() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Weapon}
+}
+
+// NewItemReplyWithShield creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Shield].
+func NewItemReplyWithShield() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Shield}
+}
+
+// NewItemReplyWithArmor creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Armor].
+func NewItemReplyWithArmor() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Armor}
+}
+
+// NewItemReplyWithHat creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Hat].
+func NewItemReplyWithHat() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Hat}
+}
+
+// NewItemReplyWithBoots creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Boots].
+func NewItemReplyWithBoots() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Boots}
+}
+
+// NewItemReplyWithGloves creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Gloves].
+func NewItemReplyWithGloves() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Gloves}
+}
+
+// NewItemReplyWithAccessory creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Accessory].
+func NewItemReplyWithAccessory() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Accessory}
+}
+
+// NewItemReplyWithBelt creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Belt].
+func NewItemReplyWithBelt() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Belt}
+}
+
+// NewItemReplyWithNecklace creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Necklace].
+func NewItemReplyWithNecklace() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Necklace}
+}
+
+// NewItemReplyWithRing creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Ring].
+func NewItemReplyWithRing() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Ring}
+}
+
+// NewItemReplyWithArmlet creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Armlet].
+func NewItemReplyWithArmlet() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Armlet}
+}
+
+// NewItemReplyWithBracer creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Bracer].
+func NewItemReplyWithBracer() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Bracer}
+}
+
+// NewItemReplyWithAlcohol creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Alcohol].
+func NewItemReplyWithAlcohol() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Alcohol}
+}
+
+// NewItemReplyWithEffectPotion creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_EffectPotion] and ItemTypeData set to data.
+// If data is nil, ItemTypeData is left nil and serializing the result returns an error.
+func NewItemReplyWithEffectPotion(data *ItemReplyItemTypeDataEffectPotion) *ItemReplyServerPacket {
+	if data == nil {
+		return &ItemReplyServerPacket{ItemType: pub.Item_EffectPotion}
+	}
+	return &ItemReplyServerPacket{ItemType: pub.Item_EffectPotion, ItemTypeData: data}
+}
+
+// NewItemReplyWithHairDye creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_HairDye] and ItemTypeData set to data.
+// If data is nil, ItemTypeData is left nil and serializing the result returns an error.
+func NewItemReplyWithHairDye(data *ItemReplyItemTypeDataHairDye) *ItemReplyServerPacket {
+	if data == nil {
+		return &ItemReplyServerPacket{ItemType: pub.Item_HairDye}
+	}
+	return &ItemReplyServerPacket{ItemType: pub.Item_HairDye, ItemTypeData: data}
+}
+
+// NewItemReplyWithCureCurse creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_CureCurse] and ItemTypeData set to data.
+// If data is nil, ItemTypeData is left nil and serializing the result returns an error.
+func NewItemReplyWithCureCurse(data *ItemReplyItemTypeDataCureCurse) *ItemReplyServerPacket {
+	if data == nil {
+		return &ItemReplyServerPacket{ItemType: pub.Item_CureCurse}
+	}
+	return &ItemReplyServerPacket{ItemType: pub.Item_CureCurse, ItemTypeData: data}
+}
+
+// NewItemReplyWithReserved26 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved26].
+func NewItemReplyWithReserved26() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved26}
+}
+
+// NewItemReplyWithReserved27 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved27].
+func NewItemReplyWithReserved27() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved27}
+}
+
+// NewItemReplyWithReserved28 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved28].
+func NewItemReplyWithReserved28() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved28}
+}
+
+// NewItemReplyWithReserved29 creates a new [ItemReplyServerPacket] with ItemType set to [pub.Item_Reserved29].
+func NewItemReplyWithReserved29() *ItemReplyServerPacket {
+	return &ItemReplyServerPacket{ItemType: pub.Item_Reserved29}
 }
 
 // ItemDropServerPacket :: Reply to dropping items on the ground.
@@ -8604,6 +9082,20 @@ func (s *WarpRequestServerPacket) Deserialize(reader *data.EoReader) (err error)
 	return
 }
 
+// NewWarpRequestWithLocal creates a new [WarpRequestServerPacket] with WarpType set to [Warp_Local].
+func NewWarpRequestWithLocal() *WarpRequestServerPacket {
+	return &WarpRequestServerPacket{WarpType: Warp_Local}
+}
+
+// NewWarpRequestWithMapSwitch creates a new [WarpRequestServerPacket] with WarpType set to [Warp_MapSwitch] and WarpTypeData set to data.
+// If data is nil, WarpTypeData is left nil and serializing the result returns an error.
+func NewWarpRequestWithMapSwitch(data *WarpRequestWarpTypeDataMapSwitch) *WarpRequestServerPacket {
+	if data == nil {
+		return &WarpRequestServerPacket{WarpType: Warp_MapSwitch}
+	}
+	return &WarpRequestServerPacket{WarpType: Warp_MapSwitch, WarpTypeData: data}
+}
+
 // WarpAgreeServerPacket :: Reply after accepting a warp.
 type WarpAgreeServerPacket struct {
 	byteSize int
@@ -8723,6 +9215,20 @@ func (s *WarpAgreeServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewWarpAgreeWithLocal creates a new [WarpAgreeServerPacket] with WarpType set to [Warp_Local].
+func NewWarpAgreeWithLocal() *WarpAgreeServerPacket {
+	return &WarpAgreeServerPacket{WarpType: Warp_Local}
+}
+
+// NewWarpAgreeWithMapSwitch creates a new [WarpAgreeServerPacket] with WarpType set to [Warp_MapSwitch] and WarpTypeData set to data.
+// If data is nil, WarpTypeData is left nil and serializing the result returns an error.
+func NewWarpAgreeWithMapSwitch(data *WarpAgreeWarpTypeDataMapSwitch) *WarpAgreeServerPacket {
+	if data == nil {
+		return &WarpAgreeServerPacket{WarpType: Warp_MapSwitch}
+	}
+	return &WarpAgreeServerPacket{WarpType: Warp_MapSwitch, WarpTypeData: data}
 }
 
 // PaperdollReplyServerPacket :: Reply to requesting a paperdoll.
@@ -9995,6 +10501,29 @@ func (s *PartyReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	return
 }
 
+// NewPartyReplyWithAlreadyInAnotherParty creates a new [PartyReplyServerPacket] with ReplyCode set to [PartyReplyCode_AlreadyInAnotherParty] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewPartyReplyWithAlreadyInAnotherParty(data *PartyReplyReplyCodeDataAlreadyInAnotherParty) *PartyReplyServerPacket {
+	if data == nil {
+		return &PartyReplyServerPacket{ReplyCode: PartyReplyCode_AlreadyInAnotherParty}
+	}
+	return &PartyReplyServerPacket{ReplyCode: PartyReplyCode_AlreadyInAnotherParty, ReplyCodeData: data}
+}
+
+// NewPartyReplyWithAlreadyInYourParty creates a new [PartyReplyServerPacket] with ReplyCode set to [PartyReplyCode_AlreadyInYourParty] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewPartyReplyWithAlreadyInYourParty(data *PartyReplyReplyCodeDataAlreadyInYourParty) *PartyReplyServerPacket {
+	if data == nil {
+		return &PartyReplyServerPacket{ReplyCode: PartyReplyCode_AlreadyInYourParty}
+	}
+	return &PartyReplyServerPacket{ReplyCode: PartyReplyCode_AlreadyInYourParty, ReplyCodeData: data}
+}
+
+// NewPartyReplyWithPartyIsFull creates a new [PartyReplyServerPacket] with ReplyCode set to [PartyReplyCode_PartyIsFull].
+func NewPartyReplyWithPartyIsFull() *PartyReplyServerPacket {
+	return &PartyReplyServerPacket{ReplyCode: PartyReplyCode_PartyIsFull}
+}
+
 // PartyCreateServerPacket :: Member list received when party is first joined.
 type PartyCreateServerPacket struct {
 	byteSize int
@@ -10560,6 +11089,138 @@ func (s *GuildReplyServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewGuildReplyWithBusy creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_Busy].
+func NewGuildReplyWithBusy() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_Busy}
+}
+
+// NewGuildReplyWithNotApproved creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_NotApproved].
+func NewGuildReplyWithNotApproved() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_NotApproved}
+}
+
+// NewGuildReplyWithAlreadyMember creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_AlreadyMember].
+func NewGuildReplyWithAlreadyMember() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_AlreadyMember}
+}
+
+// NewGuildReplyWithNoCandidates creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_NoCandidates].
+func NewGuildReplyWithNoCandidates() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_NoCandidates}
+}
+
+// NewGuildReplyWithExists creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_Exists].
+func NewGuildReplyWithExists() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_Exists}
+}
+
+// NewGuildReplyWithCreateBegin creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_CreateBegin].
+func NewGuildReplyWithCreateBegin() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_CreateBegin}
+}
+
+// NewGuildReplyWithCreateAddConfirm creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_CreateAddConfirm] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewGuildReplyWithCreateAddConfirm(data *GuildReplyReplyCodeDataCreateAddConfirm) *GuildReplyServerPacket {
+	if data == nil {
+		return &GuildReplyServerPacket{ReplyCode: GuildReply_CreateAddConfirm}
+	}
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_CreateAddConfirm, ReplyCodeData: data}
+}
+
+// NewGuildReplyWithCreateAdd creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_CreateAdd] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewGuildReplyWithCreateAdd(data *GuildReplyReplyCodeDataCreateAdd) *GuildReplyServerPacket {
+	if data == nil {
+		return &GuildReplyServerPacket{ReplyCode: GuildReply_CreateAdd}
+	}
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_CreateAdd, ReplyCodeData: data}
+}
+
+// NewGuildReplyWithRecruiterOffline creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RecruiterOffline].
+func NewGuildReplyWithRecruiterOffline() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RecruiterOffline}
+}
+
+// NewGuildReplyWithRecruiterNotHere creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RecruiterNotHere].
+func NewGuildReplyWithRecruiterNotHere() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RecruiterNotHere}
+}
+
+// NewGuildReplyWithRecruiterWrongGuild creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RecruiterWrongGuild].
+func NewGuildReplyWithRecruiterWrongGuild() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RecruiterWrongGuild}
+}
+
+// NewGuildReplyWithNotRecruiter creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_NotRecruiter].
+func NewGuildReplyWithNotRecruiter() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_NotRecruiter}
+}
+
+// NewGuildReplyWithJoinRequest creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_JoinRequest] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewGuildReplyWithJoinRequest(data *GuildReplyReplyCodeDataJoinRequest) *GuildReplyServerPacket {
+	if data == nil {
+		return &GuildReplyServerPacket{ReplyCode: GuildReply_JoinRequest}
+	}
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_JoinRequest, ReplyCodeData: data}
+}
+
+// NewGuildReplyWithNotPresent creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_NotPresent].
+func NewGuildReplyWithNotPresent() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_NotPresent}
+}
+
+// NewGuildReplyWithAccountLow creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_AccountLow].
+func NewGuildReplyWithAccountLow() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_AccountLow}
+}
+
+// NewGuildReplyWithAccepted creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_Accepted].
+func NewGuildReplyWithAccepted() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_Accepted}
+}
+
+// NewGuildReplyWithNotFound creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_NotFound].
+func NewGuildReplyWithNotFound() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_NotFound}
+}
+
+// NewGuildReplyWithUpdated creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_Updated].
+func NewGuildReplyWithUpdated() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_Updated}
+}
+
+// NewGuildReplyWithRanksUpdated creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RanksUpdated].
+func NewGuildReplyWithRanksUpdated() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RanksUpdated}
+}
+
+// NewGuildReplyWithRemoveLeader creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RemoveLeader].
+func NewGuildReplyWithRemoveLeader() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RemoveLeader}
+}
+
+// NewGuildReplyWithRemoveNotMember creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RemoveNotMember].
+func NewGuildReplyWithRemoveNotMember() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RemoveNotMember}
+}
+
+// NewGuildReplyWithRemoved creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_Removed].
+func NewGuildReplyWithRemoved() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_Removed}
+}
+
+// NewGuildReplyWithRankingLeader creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RankingLeader].
+func NewGuildReplyWithRankingLeader() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RankingLeader}
+}
+
+// NewGuildReplyWithRankingNotMember creates a new [GuildReplyServerPacket] with ReplyCode set to [GuildReply_RankingNotMember].
+func NewGuildReplyWithRankingNotMember() *GuildReplyServerPacket {
+	return &GuildReplyServerPacket{ReplyCode: GuildReply_RankingNotMember}
 }
 
 // GuildRequestServerPacket :: Guild create request.
@@ -13494,6 +14155,24 @@ func (s *QuestListServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
+// NewQuestListWithProgress creates a new [QuestListServerPacket] with Page set to [net.QuestPage_Progress] and PageData set to data.
+// If data is nil, PageData is left nil and serializing the result returns an error.
+func NewQuestListWithProgress(data *QuestListPageDataProgress) *QuestListServerPacket {
+	if data == nil {
+		return &QuestListServerPacket{Page: net.QuestPage_Progress}
+	}
+	return &QuestListServerPacket{Page: net.QuestPage_Progress, PageData: data}
+}
+
+// NewQuestListWithHistory creates a new [QuestListServerPacket] with Page set to [net.QuestPage_History] and PageData set to data.
+// If data is nil, PageData is left nil and serializing the result returns an error.
+func NewQuestListWithHistory(data *QuestListPageDataHistory) *QuestListServerPacket {
+	if data == nil {
+		return &QuestListServerPacket{Page: net.QuestPage_History}
+	}
+	return &QuestListServerPacket{Page: net.QuestPage_History, PageData: data}
+}
+
 // ItemAcceptServerPacket :: Nearby player leveled up from quest.
 type ItemAcceptServerPacket struct {
 	byteSize int
@@ -13951,6 +14630,45 @@ func (s *MarriageReplyServerPacket) Deserialize(reader *data.EoReader) (err erro
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewMarriageReplyWithAlreadyMarried creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_AlreadyMarried].
+func NewMarriageReplyWithAlreadyMarried() *MarriageReplyServerPacket {
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_AlreadyMarried}
+}
+
+// NewMarriageReplyWithNotMarried creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_NotMarried].
+func NewMarriageReplyWithNotMarried() *MarriageReplyServerPacket {
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_NotMarried}
+}
+
+// NewMarriageReplyWithSuccess creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_Success] and ReplyCodeData set to data.
+// If data is nil, ReplyCodeData is left nil and serializing the result returns an error.
+func NewMarriageReplyWithSuccess(data *MarriageReplyReplyCodeDataSuccess) *MarriageReplyServerPacket {
+	if data == nil {
+		return &MarriageReplyServerPacket{ReplyCode: MarriageReply_Success}
+	}
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_Success, ReplyCodeData: data}
+}
+
+// NewMarriageReplyWithNotEnoughGold creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_NotEnoughGold].
+func NewMarriageReplyWithNotEnoughGold() *MarriageReplyServerPacket {
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_NotEnoughGold}
+}
+
+// NewMarriageReplyWithWrongName creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_WrongName].
+func NewMarriageReplyWithWrongName() *MarriageReplyServerPacket {
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_WrongName}
+}
+
+// NewMarriageReplyWithServiceBusy creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_ServiceBusy].
+func NewMarriageReplyWithServiceBusy() *MarriageReplyServerPacket {
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_ServiceBusy}
+}
+
+// NewMarriageReplyWithDivorceNotification creates a new [MarriageReplyServerPacket] with ReplyCode set to [MarriageReply_DivorceNotification].
+func NewMarriageReplyWithDivorceNotification() *MarriageReplyServerPacket {
+	return &MarriageReplyServerPacket{ReplyCode: MarriageReply_DivorceNotification}
 }
 
 // PriestOpenServerPacket :: Response from talking to a priest NPC.
@@ -14515,6 +15233,15 @@ func (s *EffectUseServerPacket) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
+// NewEffectUseWithQuake creates a new [EffectUseServerPacket] with Effect set to [MapEffect_Quake] and EffectData set to data.
+// If data is nil, EffectData is left nil and serializing the result returns an error.
+func NewEffectUseWithQuake(data *EffectUseEffectDataQuake) *EffectUseServerPacket {
+	if data == nil {
+		return &EffectUseServerPacket{Effect: MapEffect_Quake}
+	}
+	return &EffectUseServerPacket{Effect: MapEffect_Quake, EffectData: data}
+}
+
 // EffectAgreeServerPacket :: Effects playing on nearby tiles.
 type EffectAgreeServerPacket struct {
 	byteSize int
@@ -14861,6 +15588,24 @@ func (s *EffectSpecServerPacket) Deserialize(reader *data.EoReader) (err error) 
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewEffectSpecWithTpDrain creates a new [EffectSpecServerPacket] with MapDamageType set to [MapDamage_TpDrain] and MapDamageTypeData set to data.
+// If data is nil, MapDamageTypeData is left nil and serializing the result returns an error.
+func NewEffectSpecWithTpDrain(data *EffectSpecMapDamageTypeDataTpDrain) *EffectSpecServerPacket {
+	if data == nil {
+		return &EffectSpecServerPacket{MapDamageType: MapDamage_TpDrain}
+	}
+	return &EffectSpecServerPacket{MapDamageType: MapDamage_TpDrain, MapDamageTypeData: data}
+}
+
+// NewEffectSpecWithSpikes creates a new [EffectSpecServerPacket] with MapDamageType set to [MapDamage_Spikes] and MapDamageTypeData set to data.
+// If data is nil, MapDamageTypeData is left nil and serializing the result returns an error.
+func NewEffectSpecWithSpikes(data *EffectSpecMapDamageTypeDataSpikes) *EffectSpecServerPacket {
+	if data == nil {
+		return &EffectSpecServerPacket{MapDamageType: MapDamage_Spikes}
+	}
+	return &EffectSpecServerPacket{MapDamageType: MapDamage_Spikes, MapDamageTypeData: data}
 }
 
 // EffectAdminServerPacket :: Nearby character taking spike damage.

@@ -10,6 +10,9 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+### Added
+- Generated factory functions for types with switch data set the code and the matching data together, e.g. `server.NewLoginReplyWithOk(data)`, `server.NewLoginReplyWithWrongUser()` and `server.NewInitInitWithBannedTemporary(data)` (nested switches are flattened). Default cases take the code and return an error if it has its own case, e.g. `server.NewAccountReplyWithDefault(code, data)`. See the README for the naming rules and the recommended way to read switch data.
+
 ### Changed
 - The protocol generator now exits with a non-zero status when code generation fails.
 

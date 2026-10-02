@@ -1180,6 +1180,51 @@ func (s *WelcomeAgreeClientPacket) Deserialize(reader *data.EoReader) (err error
 	return
 }
 
+// NewWelcomeAgreeWithEmf creates a new [WelcomeAgreeClientPacket] with FileType set to [File_Emf] and FileTypeData set to data.
+// If data is nil, FileTypeData is left nil and serializing the result returns an error.
+func NewWelcomeAgreeWithEmf(data *WelcomeAgreeFileTypeDataEmf) *WelcomeAgreeClientPacket {
+	if data == nil {
+		return &WelcomeAgreeClientPacket{FileType: File_Emf}
+	}
+	return &WelcomeAgreeClientPacket{FileType: File_Emf, FileTypeData: data}
+}
+
+// NewWelcomeAgreeWithEif creates a new [WelcomeAgreeClientPacket] with FileType set to [File_Eif] and FileTypeData set to data.
+// If data is nil, FileTypeData is left nil and serializing the result returns an error.
+func NewWelcomeAgreeWithEif(data *WelcomeAgreeFileTypeDataEif) *WelcomeAgreeClientPacket {
+	if data == nil {
+		return &WelcomeAgreeClientPacket{FileType: File_Eif}
+	}
+	return &WelcomeAgreeClientPacket{FileType: File_Eif, FileTypeData: data}
+}
+
+// NewWelcomeAgreeWithEnf creates a new [WelcomeAgreeClientPacket] with FileType set to [File_Enf] and FileTypeData set to data.
+// If data is nil, FileTypeData is left nil and serializing the result returns an error.
+func NewWelcomeAgreeWithEnf(data *WelcomeAgreeFileTypeDataEnf) *WelcomeAgreeClientPacket {
+	if data == nil {
+		return &WelcomeAgreeClientPacket{FileType: File_Enf}
+	}
+	return &WelcomeAgreeClientPacket{FileType: File_Enf, FileTypeData: data}
+}
+
+// NewWelcomeAgreeWithEsf creates a new [WelcomeAgreeClientPacket] with FileType set to [File_Esf] and FileTypeData set to data.
+// If data is nil, FileTypeData is left nil and serializing the result returns an error.
+func NewWelcomeAgreeWithEsf(data *WelcomeAgreeFileTypeDataEsf) *WelcomeAgreeClientPacket {
+	if data == nil {
+		return &WelcomeAgreeClientPacket{FileType: File_Esf}
+	}
+	return &WelcomeAgreeClientPacket{FileType: File_Esf, FileTypeData: data}
+}
+
+// NewWelcomeAgreeWithEcf creates a new [WelcomeAgreeClientPacket] with FileType set to [File_Ecf] and FileTypeData set to data.
+// If data is nil, FileTypeData is left nil and serializing the result returns an error.
+func NewWelcomeAgreeWithEcf(data *WelcomeAgreeFileTypeDataEcf) *WelcomeAgreeClientPacket {
+	if data == nil {
+		return &WelcomeAgreeClientPacket{FileType: File_Ecf}
+	}
+	return &WelcomeAgreeClientPacket{FileType: File_Ecf, FileTypeData: data}
+}
+
 // AdminInteractTellClientPacket :: Talk to admin.
 type AdminInteractTellClientPacket struct {
 	byteSize int
@@ -2047,6 +2092,20 @@ func (s *ChairRequestClientPacket) Deserialize(reader *data.EoReader) (err error
 	return
 }
 
+// NewChairRequestWithSit creates a new [ChairRequestClientPacket] with SitAction set to [SitAction_Sit] and SitActionData set to data.
+// If data is nil, SitActionData is left nil and serializing the result returns an error.
+func NewChairRequestWithSit(data *ChairRequestSitActionDataSit) *ChairRequestClientPacket {
+	if data == nil {
+		return &ChairRequestClientPacket{SitAction: SitAction_Sit}
+	}
+	return &ChairRequestClientPacket{SitAction: SitAction_Sit, SitActionData: data}
+}
+
+// NewChairRequestWithStand creates a new [ChairRequestClientPacket] with SitAction set to [SitAction_Stand].
+func NewChairRequestWithStand() *ChairRequestClientPacket {
+	return &ChairRequestClientPacket{SitAction: SitAction_Stand}
+}
+
 // SitRequestClientPacket :: Sit/stand request.
 type SitRequestClientPacket struct {
 	byteSize int
@@ -2148,6 +2207,20 @@ func (s *SitRequestClientPacket) Deserialize(reader *data.EoReader) (err error) 
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewSitRequestWithSit creates a new [SitRequestClientPacket] with SitAction set to [SitAction_Sit] and SitActionData set to data.
+// If data is nil, SitActionData is left nil and serializing the result returns an error.
+func NewSitRequestWithSit(data *SitRequestSitActionDataSit) *SitRequestClientPacket {
+	if data == nil {
+		return &SitRequestClientPacket{SitAction: SitAction_Sit}
+	}
+	return &SitRequestClientPacket{SitAction: SitAction_Sit, SitActionData: data}
+}
+
+// NewSitRequestWithStand creates a new [SitRequestClientPacket] with SitAction set to [SitAction_Stand].
+func NewSitRequestWithStand() *SitRequestClientPacket {
+	return &SitRequestClientPacket{SitAction: SitAction_Stand}
 }
 
 // EmoteReportClientPacket :: Doing an emote.
@@ -3573,6 +3646,24 @@ func (s *StatSkillAddClientPacket) Deserialize(reader *data.EoReader) (err error
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewStatSkillAddWithStat creates a new [StatSkillAddClientPacket] with ActionType set to [Train_Stat] and ActionTypeData set to data.
+// If data is nil, ActionTypeData is left nil and serializing the result returns an error.
+func NewStatSkillAddWithStat(data *StatSkillAddActionTypeDataStat) *StatSkillAddClientPacket {
+	if data == nil {
+		return &StatSkillAddClientPacket{ActionType: Train_Stat}
+	}
+	return &StatSkillAddClientPacket{ActionType: Train_Stat, ActionTypeData: data}
+}
+
+// NewStatSkillAddWithSkill creates a new [StatSkillAddClientPacket] with ActionType set to [Train_Skill] and ActionTypeData set to data.
+// If data is nil, ActionTypeData is left nil and serializing the result returns an error.
+func NewStatSkillAddWithSkill(data *StatSkillAddActionTypeDataSkill) *StatSkillAddClientPacket {
+	if data == nil {
+		return &StatSkillAddClientPacket{ActionType: Train_Skill}
+	}
+	return &StatSkillAddClientPacket{ActionType: Train_Skill, ActionTypeData: data}
 }
 
 // StatSkillJunkClientPacket :: Resetting stats at a skill master.
@@ -5602,6 +5693,29 @@ func (s *GuildAgreeClientPacket) Deserialize(reader *data.EoReader) (err error) 
 	return
 }
 
+// NewGuildAgreeWithDescription creates a new [GuildAgreeClientPacket] with InfoType set to [GuildInfo_Description] and InfoTypeData set to data.
+// If data is nil, InfoTypeData is left nil and serializing the result returns an error.
+func NewGuildAgreeWithDescription(data *GuildAgreeInfoTypeDataDescription) *GuildAgreeClientPacket {
+	if data == nil {
+		return &GuildAgreeClientPacket{InfoType: GuildInfo_Description}
+	}
+	return &GuildAgreeClientPacket{InfoType: GuildInfo_Description, InfoTypeData: data}
+}
+
+// NewGuildAgreeWithRanks creates a new [GuildAgreeClientPacket] with InfoType set to [GuildInfo_Ranks] and InfoTypeData set to data.
+// If data is nil, InfoTypeData is left nil and serializing the result returns an error.
+func NewGuildAgreeWithRanks(data *GuildAgreeInfoTypeDataRanks) *GuildAgreeClientPacket {
+	if data == nil {
+		return &GuildAgreeClientPacket{InfoType: GuildInfo_Ranks}
+	}
+	return &GuildAgreeClientPacket{InfoType: GuildInfo_Ranks, InfoTypeData: data}
+}
+
+// NewGuildAgreeWithBank creates a new [GuildAgreeClientPacket] with InfoType set to [GuildInfo_Bank].
+func NewGuildAgreeWithBank() *GuildAgreeClientPacket {
+	return &GuildAgreeClientPacket{InfoType: GuildInfo_Bank}
+}
+
 // GuildCreateClientPacket :: Final confirm creating a guild.
 type GuildCreateClientPacket struct {
 	byteSize int
@@ -7024,6 +7138,20 @@ func (s *QuestAcceptClientPacket) Deserialize(reader *data.EoReader) (err error)
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewQuestAcceptWithOk creates a new [QuestAcceptClientPacket] with ReplyType set to [DialogReply_Ok] and ReplyTypeData set to a new [QuestAcceptReplyTypeDataOk].
+func NewQuestAcceptWithOk() *QuestAcceptClientPacket {
+	return &QuestAcceptClientPacket{ReplyType: DialogReply_Ok, ReplyTypeData: &QuestAcceptReplyTypeDataOk{}}
+}
+
+// NewQuestAcceptWithLink creates a new [QuestAcceptClientPacket] with ReplyType set to [DialogReply_Link] and ReplyTypeData set to data.
+// If data is nil, ReplyTypeData is left nil and serializing the result returns an error.
+func NewQuestAcceptWithLink(data *QuestAcceptReplyTypeDataLink) *QuestAcceptClientPacket {
+	if data == nil {
+		return &QuestAcceptClientPacket{ReplyType: DialogReply_Link}
+	}
+	return &QuestAcceptClientPacket{ReplyType: DialogReply_Link, ReplyTypeData: data}
 }
 
 // QuestListClientPacket :: Quest history / progress request.

@@ -50,7 +50,11 @@ func writeStruct(f *jen.File, typeName string, fullSpec xml.Protocol) (err error
 		return err
 	}
 
-	err = writeStructShared(f, si, fullSpec)
+	if err = writeStructShared(f, si, fullSpec); err != nil {
+		return
+	}
+
+	err = writeSwitchFactories(f, si, fullSpec)
 	return
 }
 
@@ -197,7 +201,7 @@ func writeStructFields(g *jen.Group, si *types.StructInfo, fullSpec xml.Protocol
 			// length is stored in a local variable for deserialization
 			continue
 		case "switch":
-			g.Id(fmt.Sprintf("%sData", instName)).Id(fmt.Sprintf("%s%sData", si.SwitchStructQualifier, instName)).Do(func(s *jen.Statement) {
+			g.Id(fmt.Sprintf("%sData", instName)).Id(switchInterfaceName(si, *inst.Field)).Do(func(s *jen.Statement) {
 				writeInlineCommentJen(s, getEmptyCaseComments(inst, instName)...)
 			})
 			switches = append(switches, &si.Instructions[i])
@@ -243,28 +247,19 @@ func writeSwitchStructs(f *jen.File, switchInst xml.ProtocolInstruction, si *typ
 		return
 	}
 
-	switchInterfaceName := fmt.Sprintf("%sData", snakeCaseToPascalCase(*switchInst.Field))
-	if len(si.SwitchStructQualifier) > 0 {
-		switchInterfaceName = si.SwitchStructQualifier + switchInterfaceName
-	}
+	interfaceName := switchInterfaceName(si, *switchInst.Field)
 
 	if switchInst.Comment != nil {
-		writeTypeCommentJen(f, switchInterfaceName, *switchInst.Comment)
+		writeTypeCommentJen(f, interfaceName, *switchInst.Comment)
 	}
-	f.Type().Id(switchInterfaceName).Interface(jen.Qual(types.PackagePath("protocol"), "EoData")).Line()
+	f.Type().Id(interfaceName).Interface(jen.Qual(types.PackagePath("protocol"), "EoData")).Line()
 
 	for _, c := range switchInst.Cases {
 		if len(c.Instructions) == 0 {
 			continue
 		}
 
-		var caseName string
-		if c.Default {
-			caseName = "Default"
-		} else {
-			caseName = snakeCaseToPascalCase(c.Value)
-		}
-		caseStructName := fmt.Sprintf("%s%s", switchInterfaceName, caseName)
+		caseStructName := switchCaseStructName(si, *switchInst.Field, c)
 
 		nestedStructInfo := &types.StructInfo{
 			Name:                  caseStructName,
@@ -312,12 +307,10 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 			g.Id("writer").Dot("AddByte").Call(jen.Lit(0xFF))
 		case "switch":
 			// get type of Value field
-			switchFieldSanitizedType := ""
 			switchFieldEnumType := ""
 			for _, tmpInst := range append(outerInstructionList, si.Instructions...) {
 				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
 					switchFieldEnumType = *tmpInst.Type
-					switchFieldSanitizedType = types.SanitizeTypeName(switchFieldEnumType)
 					break
 				}
 			}
@@ -328,36 +321,15 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 					continue
 				}
 
-				var switchDataType string
+				switchDataType := switchCaseStructName(si, *instruction.Field, c)
 				if c.Default {
-					switchDataType = fmt.Sprintf("%sDataDefault", instructionName)
 					switchBlock = append(switchBlock, jen.Default())
 				} else {
-					switchDataType = fmt.Sprintf("%sData%s", instructionName, c.Value)
-					if value, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
-						// case is for an enum value
-						if enumTypeInfo, ok := fullSpec.IsEnum(switchFieldEnumType); !ok {
-							return fmt.Errorf("type %s in switch is not an enum", switchFieldEnumType)
-						} else {
-							packageQualifier := ""
-							if enumTypeInfo.Package != si.PackageName {
-								packageQualifier = enumTypeInfo.Package
-							}
-							switchBlock = append(
-								switchBlock,
-								jen.CaseFunc(func(g *jen.Group) {
-									if packageQualifier != "" {
-										g.Qual(types.PackagePath(packageQualifier), fmt.Sprintf("%s_%s", switchFieldSanitizedType, c.Value))
-									} else {
-										g.Id(fmt.Sprintf("%s_%s", switchFieldSanitizedType, c.Value))
-									}
-								}),
-							)
-						}
-					} else {
-						// case is for an integer constant
-						switchBlock = append(switchBlock, jen.Case(jen.Lit(int(value))))
+					var value caseValue
+					if value, err = getCaseValue(switchFieldEnumType, c.Value, si.PackageName, fullSpec); err != nil {
+						return
 					}
+					switchBlock = append(switchBlock, jen.Case(value.code()))
 				}
 
 				// Serialize call for the case structure
@@ -376,7 +348,7 @@ func writeSerializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Protoco
 								fmt.Sprintf("%sData", instructionName),
 							).Assert(jen.Id("type")).Block(
 								jen.Case(
-									jen.Op("*").Id(fmt.Sprintf("%s%s", si.SwitchStructQualifier, switchDataType)),
+									jen.Op("*").Id(switchDataType),
 								).Block(caseSerialize),
 								jen.Default().Block(
 									jen.Id("err").Op("=").Qual("fmt", "Errorf").Call(
@@ -582,12 +554,10 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 			}
 		case "switch":
 			// get type of Value field
-			switchFieldSanitizedType := ""
 			switchFieldEnumType := ""
 			for _, tmpInst := range append(outerInstructionList, si.Instructions...) {
 				if tmpInst.XMLName.Local == "field" && snakeCaseToPascalCase(*tmpInst.Name) == instructionName {
 					switchFieldEnumType = *tmpInst.Type
-					switchFieldSanitizedType = types.SanitizeTypeName(switchFieldEnumType)
 					break
 				}
 			}
@@ -598,38 +568,20 @@ func writeDeserializeBody(g *jen.Group, si *types.StructInfo, fullSpec xml.Proto
 					continue
 				}
 
-				var switchDataType string
+				switchDataType := switchCaseStructName(si, *instruction.Field, c)
 				if c.Default {
-					switchDataType = fmt.Sprintf("%sDataDefault", instructionName)
 					switchBlock = append(switchBlock, jen.Default())
 				} else {
-					switchDataType = fmt.Sprintf("%sData%s", instructionName, c.Value)
-					if value, err := strconv.ParseInt(c.Value, 10, 32); err != nil {
-						// case is for an enum value
-						if enumTypeInfo, ok := fullSpec.IsEnum(switchFieldEnumType); !ok {
-							return fmt.Errorf("type %s in switch is not an enum", switchFieldEnumType)
-						} else {
-							packageQualifier := ""
-							if enumTypeInfo.Package != si.PackageName {
-								packageQualifier = enumTypeInfo.Package
-							}
-							switchBlock = append(switchBlock, jen.CaseFunc(func(g *jen.Group) {
-								if packageQualifier != "" {
-									g.Qual(types.PackagePath(packageQualifier), fmt.Sprintf("%s_%s", switchFieldSanitizedType, c.Value))
-								} else {
-									g.Id(fmt.Sprintf("%s_%s", switchFieldSanitizedType, c.Value))
-								}
-							}))
-						}
-					} else {
-						// case is for an integer constant
-						switchBlock = append(switchBlock, jen.Case(jen.Lit(int(value))))
+					var value caseValue
+					if value, err = getCaseValue(switchFieldEnumType, c.Value, si.PackageName, fullSpec); err != nil {
+						return
 					}
+					switchBlock = append(switchBlock, jen.Case(value.code()))
 				}
 
 				// Deserialize call for the case structure
 				sDotData := jen.Id("s").Dot(fmt.Sprintf("%sData", instructionName))
-				caseDeserialize := sDotData.Clone().Op("=").Op("&").Id(si.SwitchStructQualifier + switchDataType).Block().Line()
+				caseDeserialize := sDotData.Clone().Op("=").Op("&").Id(switchDataType).Block().Line()
 				caseDeserialize = caseDeserialize.If(
 					jen.Id("err").Op("=").Add(sDotData).Dot("Deserialize").Call(jen.Id("reader")),
 					jen.Id("err").Op("!=").Nil(),

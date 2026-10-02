@@ -1105,6 +1105,33 @@ func (s *AvatarChange) Deserialize(reader *data.EoReader) (err error) {
 	return
 }
 
+// NewAvatarChangeWithEquipment creates a new [AvatarChange] with ChangeType set to [AvatarChange_Equipment] and ChangeTypeData set to data.
+// If data is nil, ChangeTypeData is left nil and serializing the result returns an error.
+func NewAvatarChangeWithEquipment(data *ChangeTypeDataEquipment) *AvatarChange {
+	if data == nil {
+		return &AvatarChange{ChangeType: AvatarChange_Equipment}
+	}
+	return &AvatarChange{ChangeType: AvatarChange_Equipment, ChangeTypeData: data}
+}
+
+// NewAvatarChangeWithHair creates a new [AvatarChange] with ChangeType set to [AvatarChange_Hair] and ChangeTypeData set to data.
+// If data is nil, ChangeTypeData is left nil and serializing the result returns an error.
+func NewAvatarChangeWithHair(data *ChangeTypeDataHair) *AvatarChange {
+	if data == nil {
+		return &AvatarChange{ChangeType: AvatarChange_Hair}
+	}
+	return &AvatarChange{ChangeType: AvatarChange_Hair, ChangeTypeData: data}
+}
+
+// NewAvatarChangeWithHairColor creates a new [AvatarChange] with ChangeType set to [AvatarChange_HairColor] and ChangeTypeData set to data.
+// If data is nil, ChangeTypeData is left nil and serializing the result returns an error.
+func NewAvatarChangeWithHairColor(data *ChangeTypeDataHairColor) *AvatarChange {
+	if data == nil {
+		return &AvatarChange{ChangeType: AvatarChange_HairColor}
+	}
+	return &AvatarChange{ChangeType: AvatarChange_HairColor, ChangeTypeData: data}
+}
+
 // NearbyInfo :: Information about nearby entities.
 type NearbyInfo struct {
 	byteSize int
@@ -3851,6 +3878,20 @@ func (s *DialogEntry) Deserialize(reader *data.EoReader) (err error) {
 	s.byteSize = reader.Position() - readerStartPosition
 
 	return
+}
+
+// NewDialogEntryWithText creates a new [DialogEntry] with EntryType set to [DialogEntry_Text].
+func NewDialogEntryWithText() *DialogEntry {
+	return &DialogEntry{EntryType: DialogEntry_Text}
+}
+
+// NewDialogEntryWithLink creates a new [DialogEntry] with EntryType set to [DialogEntry_Link] and EntryTypeData set to data.
+// If data is nil, EntryTypeData is left nil and serializing the result returns an error.
+func NewDialogEntryWithLink(data *EntryTypeDataLink) *DialogEntry {
+	if data == nil {
+		return &DialogEntry{EntryType: DialogEntry_Link}
+	}
+	return &DialogEntry{EntryType: DialogEntry_Link, EntryTypeData: data}
 }
 
 // MapDrainDamageOther :: Another player taking damage from a map HP drain.

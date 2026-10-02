@@ -16,6 +16,34 @@ go get github.com/ethanmoffat/eolib-go/v3
 
 A sample server skeleton using eolib-go is [available here](https://gist.github.com/ethanmoffat/95eed4ef0eeb524c8a505acb1bcbf956).
 
+### Switch data
+
+Some packets and structs have a code field (e.g. `LoginReplyServerPacket.ReplyCode`) and a data field (e.g. `ReplyCodeData`) that must hold the data type matching the code. Generated factory functions set both together. They are named `New<Type>With<Value>`, where `<Type>` is the type name without the `ClientPacket`/`ServerPacket` suffix:
+
+```go
+// a case with data takes the case data
+ok := server.NewLoginReplyWithOk(&server.LoginReplyReplyCodeDataOk{Characters: characters})
+
+// a code without data to set takes no parameters
+wrongUser := server.NewLoginReplyWithWrongUser()
+
+// nested switches are flattened, and every code along the path is set
+banned := server.NewInitInitWithBannedTemporary(&server.InitInitBanTypeDataTemporary{MinutesRemaining: 30})
+
+// a default case takes the code, and returns an error if the code has its own case
+reply, err := server.NewAccountReplyWithDefault(sessionId, &server.AccountReplyReplyCodeDataDefault{SequenceStart: 12})
+```
+
+Numeric cases with data are named after their data type, e.g. `server.NewInitInitWithBanTypeData0`. If the data passed to a factory is nil, the data field is left nil and serializing the result returns an error.
+
+To read the data, use a type assertion or type switch on the data field. Checking the code as well isn't necessary: deserialization always sets the data type matching the code, and serialization rejects data that doesn't match it.
+
+```go
+if ok, isOk := p.ReplyCodeData.(*server.LoginReplyReplyCodeDataOk); isOk {
+	fmt.Println("characters:", len(ok.Characters))
+}
+```
+
 ## Development Environment
 
 ### Installing go
