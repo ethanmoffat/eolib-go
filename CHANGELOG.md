@@ -10,6 +10,8 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-10-02
+
 ### Added
 - Generated factory functions for types with switch data set the code and the matching data together, e.g. `server.NewLoginReplyWithOk(data)`, `server.NewLoginReplyWithWrongUser()` and `server.NewInitInitWithBannedTemporary(data)` (nested switches are flattened). Default cases take the code and return an error if it has its own case, e.g. `server.NewAccountReplyWithDefault(code, data)`. See the README for the naming rules and the recommended way to read switch data.
 
@@ -227,7 +229,8 @@ Initial release.
     - Verifying server hash
 - Helper functions for converting a packet ID to a strongly-typed implementation of the `net.Packet` interface.
 
-[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.2.2...HEAD
+[Unreleased]: https://github.com/ethanmoffat/eolib-go/compare/v3.3.0...HEAD
+[3.3.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.3.0
 [3.2.2]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.2
 [3.2.1]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.1
 [3.2.0]: https://github.com/ethanmoffat/eolib-go/releases/tag/v3.2.0
