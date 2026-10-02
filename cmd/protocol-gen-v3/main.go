@@ -98,6 +98,7 @@ func main() {
 		protocs = append(protocs, next)
 	}
 
+	failed := false
 	for i, file := range protocolFiles {
 		protoc := protocs[i]
 
@@ -112,17 +113,24 @@ func main() {
 		fmt.Printf("      %3d enums\n", len(protoc.Enums))
 		if err := codegen.GenerateEnums(fullOutputPath, protoc.Enums); err != nil {
 			fmt.Printf("      error generating enums: %v\n", err)
+			failed = true
 		}
 
 		fmt.Printf("      %3d structs\n", len(protoc.Structs))
 		if err := codegen.GenerateStructs(fullOutputPath, protoc.Structs, fullSpec); err != nil {
 			fmt.Printf("      error generating structs: %v\n", err)
+			failed = true
 		}
 
 		fmt.Printf("      %3d packets\n", len(protoc.Packets))
 		if err := codegen.GeneratePackets(fullOutputPath, protoc.Packets, fullSpec); err != nil {
 			fmt.Printf("      error generating packets: %v\n", err)
+			failed = true
 		}
+	}
+
+	if failed {
+		os.Exit(1)
 	}
 }
 

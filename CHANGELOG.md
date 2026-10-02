@@ -10,6 +10,9 @@ yanked: they were tagged without changing the module path, so Go never accepted 
 
 ## [Unreleased]
 
+### Changed
+- The protocol generator now exits with a non-zero status when code generation fails.
+
 ## [3.2.2] - 2026-09-30
 
 ### Added
